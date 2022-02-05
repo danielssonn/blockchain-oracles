@@ -2,9 +2,11 @@ const hre = require("hardhat");
 
 async function main() {
 
+    // keep this static for the most part
     const ORACLE_CONTRACT = "0x7cBF93692cbBA821E69660221Ce604e73a80B40F"
-    const API_CONSUMER_CONTRACT = "0x98Af5f5ff16993D9EB54aFC37b534B1E9155fa5E"
 
+    // changes with any edits and re-deployment of the contract. Remember to fund a new contract with LINK tokens from your wallet!
+    const API_CONSUMER_CONTRACT = "0x98Af5f5ff16993D9EB54aFC37b534B1E9155fa5E"
 
 
     const Oracle = await ethers.getContractFactory("Oracle");
@@ -21,7 +23,7 @@ async function main() {
         API_CONSUMER_CONTRACT // The deployed contract address
     );
 
-    // Send Link to the apiConsumer!   
+
 
     //request info via Oracle
     console.log("Oracle address ", oracle.address)
