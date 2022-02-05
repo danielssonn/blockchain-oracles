@@ -27,7 +27,11 @@ contract APIConsumer is ChainlinkClient {
         oracle = 0x7cBF93692cbBA821E69660221Ce604e73a80B40F;
 
         // This is default, the contract has a setter for this field
+        // This job will look for the external adapter runing on locally @ http://192.168.5.10:8080
         jobId = "b3d9f1e7a16046b49081fcad99b807d0";
+
+        // This job will look for the external adapter on Lambda @ https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter
+        // jobId = "5c28d02f11e149ef9a9e26a5707bfa2f";
 
         fee = 0.1 * 10**18; // (Varies by network and job)
     }

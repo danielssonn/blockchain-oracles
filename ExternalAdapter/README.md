@@ -11,7 +11,9 @@ curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data 
 
 ## Serverless hosts
 
-
+```bash
+curl -X POST -H "content-type:application/json" "https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter" --data '{ "id": 0, "data": { "from": "ETH", "to": "USD" } }'
+```
 
 ### Create the zip
 
@@ -20,6 +22,10 @@ zip -r external-adapter.zip .
 ```
 
 ### Install to AWS Lambda
+
+```bash
+https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter
+```
 
 - In Lambda Functions, create function
 - On the Create function page:
