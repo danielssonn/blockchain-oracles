@@ -36,5 +36,11 @@
 
 AWS
 - [x] Lambda deployment for the extenal adpater
+- [x] https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter
+- [x] test:
+```bash
+curl -X POST -H "content-type:application/json" "https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter" --data '{ "id": 0, "data": { "from": "ETH", "to": "USD" } }'
+```
+
 - most work and logic will happen here!
   
