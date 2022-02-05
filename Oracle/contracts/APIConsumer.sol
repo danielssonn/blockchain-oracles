@@ -8,27 +8,25 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
  * Find information on LINK Token Contracts and get the latest ETH and LINK faucets here: https://docs.chain.link/docs/link-token-contracts/
  */
 
-/**
- * THIS IS AN EXAMPLE CONTRACT WHICH USES HARDCODED VALUES FOR CLARITY.
- * PLEASE DO NOT USE THIS CODE IN PRODUCTION.
- */
 contract APIConsumer is ChainlinkClient {
     using Chainlink for Chainlink.Request;
     uint256 public result;
-    address private oracle;
+    address public oracle;
     bytes32 public jobId;
     uint256 private fee;
 
     /**
      * Network: Kovan
-     * Oracle: 0xc57B33452b4F7BB189bB5AfaE9cc4aBa1f7a4FD8 (Chainlink Devrel
-     * Node)
-     * Job ID: d5270d1c311941d0b08bead21fea7747
+     * Oracle: 0x7cBF93692cbBA821E69660221Ce604e73a80B40F
+     * Job ID: b3d9f1e7a16046b49081fcad99b807d0
      * Fee: 0.1 LINK
      */
     constructor() {
         setPublicChainlinkToken();
+
         oracle = 0x7cBF93692cbBA821E69660221Ce604e73a80B40F;
+
+        // This is default, the contract has a setter for this field
         jobId = "b3d9f1e7a16046b49081fcad99b807d0";
 
         fee = 0.1 * 10**18; // (Varies by network and job)
@@ -64,14 +62,27 @@ contract APIConsumer is ChainlinkClient {
         result = _result;
     }
 
+    /**
+     * Set new jobID on the oracle. The jobs cannot be edited, new jobId is required for each change. See /config/JobIdXY.toml for job specs
+     */
     function setOracleJobId(string memory _jobId) external {
         jobId = stringToBytes32(_jobId);
     }
 
+    /**
+     * Set new jobID on the oracle. The jobs cannot be edited, new jobId is required for each change. See /config/JobIdXY.toml for job specs
+     */
+    function setOracleAddress(address _oracle) external {
+        oracle = _oracle;
+    }
+
+    /**
+     * Conversion to input strings in Etherscan UI
+     */
     function stringToBytes32(string memory source)
         private
         pure
-        returns (bytes32 result)
+        returns (bytes32 converted)
     {
         bytes memory tempEmptyStringTest = bytes(source);
         if (tempEmptyStringTest.length == 0) {
@@ -80,9 +91,7 @@ contract APIConsumer is ChainlinkClient {
 
         assembly {
             // solhint-disable-line no-inline-assembly
-            result := mload(add(source, 32))
+            converted := mload(add(source, 32))
         }
     }
-
-    // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
 }
