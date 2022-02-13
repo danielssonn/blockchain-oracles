@@ -4,7 +4,6 @@ const hre = require("hardhat");
 async function main() {
 
   // We get the contract to deploy
-  const Oracle = await hre.ethers.getContractFactory("Oracle");
 
 
   /** deploy Oracle contract with LINK token contract adddress on Kovan - only once in the inital setup
@@ -12,6 +11,8 @@ async function main() {
    * We do not want to deploy many of these, as it complicates the setup
    * Use deployed contract 0x7cBF93692cbBA821E69660221Ce604e73a80B40F 
    
+    const Oracle = await hre.ethers.getContractFactory("Oracle");
+
     const oracle = await Oracle.deploy('0xa36085F69e2889c224210F603D836748e7dC0088');
     await oracle.deployed();
     console.log("Oracle deployed to:", oracle.address);

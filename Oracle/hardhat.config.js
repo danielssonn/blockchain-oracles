@@ -2,8 +2,7 @@ const { version } = require("chai");
 
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
-require('dotenv').config({ path: __dirname + '/.env' })
-
+require('dotenv').config({ path: '../.env' })
 
 /**
  * .env file
@@ -12,7 +11,7 @@ require('dotenv').config({ path: __dirname + '/.env' })
  * 
  */
 
-const { ALCHEMY_API_KEY, KOVAN_PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
+const { ALCHEMY_API_KEY_KOVAN, ALCHEMY_API_KEY_RINKEBY, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
 
 
 /**
@@ -27,8 +26,12 @@ module.exports = {
   },
   networks: {
     kovan: {
-      url: `https://eth-kovan.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
-      accounts: [`0x${KOVAN_PRIVATE_KEY}`]
+      url: `https://eth-kovan.alchemyapi.io/v2/${ALCHEMY_API_KEY_KOVAN}`,
+      accounts: [`0x${PRIVATE_KEY}`]
+    },
+    rinkeby: {
+      url: `https://eth-kovan.alchemyapi.io/v2/${ALCHEMY_API_KEY_RINKEBY}`,
+      accounts: [`0x${PRIVATE_KEY}`]
     }
   },
   etherscan: {
