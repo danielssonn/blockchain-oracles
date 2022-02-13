@@ -7,7 +7,7 @@
 
 - [x] Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
 - [x] This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
-- [x] Awards can then be minted:
+- [x] Awards can then be minted
 - [x] NFT will be created for the award by the minting process.
 - [x] ETH will be moved from the Award budget, and vested for the winner for a vesting period (1 ETH currently for 10 days)
 - [x] ETH in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
@@ -18,7 +18,7 @@
 - [x] Utility methods for the UI created to display awards, display vested awards, enable the withdrawal via dApp
 - [x] Winner can have multiple awards in parallel, each with its own reward and vesting
 - [ ] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
-- [ ] Compose the NFT into the Award, vs. have the Award be ab NFT itself
+- [ ] Compose the NFT into the Award, vs. have the Award be a NFT itself
 - [ ] test, test, test!
 
 
