@@ -2,22 +2,6 @@
 
 ![](https://github.com/danielssonn/blockchain-oracles/blob/546076cd4f8bf4d02aa43f48d3382a186181afd4/assets/Award%20Contract.png)
 
-## Do you want to play a game?
-
-- [x] Go to https://kovan.etherscan.io/address/0xC7E8bcE270307B3b66a3Be0c4aeBf2594F80DD48#writeContract
-- [x] Find Contract tab
-- [x] Go to Write Contract
-- [x] Connect your Metamask on Kovan testnet, make sure you have some test ETH (https://faucets.chain.link/)
-- [x] Fund your Award contract to set the Award budget via addAwardBalance()
-- [x] Set how much each award will be via setAwardAmount (in Wei!). 
-- [x] Default is 1ETH (1+ 18 zeros), it might be a challenge to get this much test ETH - so lower this.
-- [x] Create an award by minting, use https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1 as tokenURI to test
-- [ ] Will need to generate the Award metadata and tokenURI - and push it to IPFS as part of the minting process
-- [ ] POAP business TBD
-- [x] Award should be vesting
-- [x] In 10 days, the award ETH has vested and can be withdrawn to winner's wallet
-- [ ] **Withdrawal should only work if the winner is still an employee**
-
 
 ## Details
 
@@ -39,5 +23,21 @@
 
 
 Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0xC7E8bcE270307B3b66a3Be0c4aeBf2594F80DD48#writeContract)
+
+## Do you want to play a game?
+
+- [x] Go to the Contract address on Etherscan, above
+- [x] Find Contract tab, you should see verified checkmark
+- [x] Select Write Contract
+- [x] Connect your Metamask on Kovan testnet, make sure you have some test ETH (https://faucets.chain.link/)
+- [x] Fund your Award contract to set the Award budget via addAwardBalance()
+- [x] Set how much each award will be via setAwardAmount (in Wei). 
+- [x] Default is 1ETH (1+ 18 zeros), it might be a challenge to get this much test ETH - so lower this.
+- [x] Create an award by minting, use https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1 as tokenURI to test
+- [ ] Will need to generate the Award metadata and tokenURI - and push it to IPFS as part of the minting process
+- [ ] POAP business is TBD, follow the same split/composition rationale with NFTs?
+- [x] Award should be vesting
+- [x] In 10 days, the award ETH has vested and can be withdrawn to winner's wallet
+- [ ] **Withdrawal should only work if the winner is still an employee**
 
 
