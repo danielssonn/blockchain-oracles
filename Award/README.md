@@ -2,7 +2,7 @@
 
 ![](https://github.com/danielssonn/blockchain-oracles/blob/546076cd4f8bf4d02aa43f48d3382a186181afd4/assets/Award%20Contract.png)
 
-## Steps
+## Do you want to play a game?
 
 - [x] Go to https://kovan.etherscan.io/address/0xC7E8bcE270307B3b66a3Be0c4aeBf2594F80DD48#writeContract
 - [x] Find Contract tab
