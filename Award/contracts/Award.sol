@@ -13,7 +13,7 @@ contract Award is ERC721URIStorage, Ownable {
     uint256 private tokenIds = 0;
 
     // This is the total balance/overall budget for all Awards.
-    uint256 totalAwardBalance = 0;
+    uint256 totalAwardBudget = 0;
 
     // 1 ETH for single award
     uint256 singleAwardAmount = 1 * 10**18;
@@ -34,17 +34,17 @@ contract Award is ERC721URIStorage, Ownable {
         _owner = msg.sender;
     }
 
-    function getToatalAwardBalance() public view returns (uint256) {
-        return totalAwardBalance;
+    function getToatalAwardBudget() public view returns (uint256) {
+        return totalAwardBudget;
     }
 
     // Contract owner can add to the overall Award balance budget
-    function addAwardBalance() public payable onlyOwner {
-        totalAwardBalance = totalAwardBalance + msg.value;
+    function addToAwardsBudget() public payable onlyOwner {
+        totalAwardBudget = totalAwardBudget + msg.value;
     }
 
     // Minting will create an NFT and move some money from the budget to winner's balance where we'll stake it for a bit
-    function mintAward(address recipient, string memory tokenURI)
+    function mintWinner(address recipient, string memory tokenURI)
         public
         onlyOwner
         returns (uint256)
@@ -54,7 +54,7 @@ contract Award is ERC721URIStorage, Ownable {
             "Sorry, the organizers cannot win awards!"
         );
         require(
-            totalAwardBalance - singleAwardAmount > 0,
+            totalAwardBudget - singleAwardAmount > 0,
             "You do not have enough in your Award budget to mint this award."
         );
         uint256 newItemId = tokenIds + 1;
@@ -65,22 +65,26 @@ contract Award is ERC721URIStorage, Ownable {
         wonAwards[recipient][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[recipient][awardNumberForWinner] = block.timestamp;
 
-        totalAwardBalance = totalAwardBalance - singleAwardAmount;
+        totalAwardBudget = totalAwardBudget - singleAwardAmount;
         return newItemId;
     }
 
     // Withdraw the monetary award, if vested ...
-    function withdrawAward(uint256 awardNumber) public payable {
+    function withdrawAwardETH(uint256 awardNumber) public payable {
+        require(
+            isAwardVested(msg.sender, awardNumber),
+            "This award still needs to vest."
+        );
         address payable withdrawTo = payable(msg.sender);
-        uint256 amountToTransfer = getAwardBalance(msg.sender, awardNumber);
+        uint256 amountToTransfer = getAwardETHBalance(msg.sender, awardNumber);
 
         withdrawTo.transfer(amountToTransfer);
-        totalAwardBalance = totalAwardBalance - amountToTransfer;
+        totalAwardBudget = totalAwardBudget - amountToTransfer;
 
         wonAwards[msg.sender][awardNumber] = 0;
     }
 
-    function getAwardBalance(address winnerAddress, uint256 awardNumber)
+    function getAwardETHBalance(address winnerAddress, uint256 awardNumber)
         public
         view
         returns (uint256)
@@ -119,6 +123,20 @@ contract Award is ERC721URIStorage, Ownable {
         return ret;
     }
 
+    function isAwardVested(address winnerAddress, uint256 awardNumber)
+        public
+        view
+        returns (bool)
+    {
+        if (
+            block.timestamp >
+            wonTimestamps[winnerAddress][awardNumber] + awardVestingTime
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     function getAwardTimestamp(address winnerAddress, uint256 awardNumber)
         public
         view
@@ -128,7 +146,7 @@ contract Award is ERC721URIStorage, Ownable {
     }
 
     // Award amount in Wei
-    function setAwardAmount(uint256 amount) public onlyOwner {
+    function setAwardAmountETH(uint256 amount) public onlyOwner {
         singleAwardAmount = amount;
     }
 }

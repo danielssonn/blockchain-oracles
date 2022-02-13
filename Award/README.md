@@ -5,12 +5,12 @@
 
 ## Details
 
-- [x] Awards contract has an overall budget, that can be augmented by addAwardBalance()
+- [x] Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
 - [x] This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
 - [x] Awards can then be minted:
 - [x] NFT will be created for the award by the minting process.
 - [x] ETH will be moved from the Award budget, and vested for the winner for a vesting period (1 ETH currently for 10 days)
-- [x] ETH in the Award can be withdrawn, if vesting period has passed by withdrawAward
+- [x] ETH in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
 - [x] Award will only be minted if there is available budget
 - [x] Award will not be minted for organizers
 - [ ] Think of the minting process and winner having the ability to configure
@@ -22,7 +22,7 @@
 - [ ] test, test, test!
 
 
-Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0xC7E8bcE270307B3b66a3Be0c4aeBf2594F80DD48#writeContract)
+Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0xaE91b4d63F56C671Cc729dE402e2983E68Ecb4b3)
 
 ## Do you want to play a game?
 
@@ -30,10 +30,10 @@ Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0xC7E8bcE270307B3
 - [x] Find Contract tab, you should see verified checkmark
 - [x] Select Write Contract
 - [x] Connect your Metamask on Kovan testnet, make sure you have some test ETH (https://faucets.chain.link/)
-- [x] Fund your Award contract to set the Award budget via addAwardBalance()
-- [x] Set how much each award will be via setAwardAmount (in Wei). 
+- [x] Fund your Award contract to set the Award budget via addToAwardsBudget()
+- [x] Set how much each award will be via setAwardAmountETH (in Wei). 
 - [x] Default is 1ETH (1+ 18 zeros), it might be a challenge to get this much test ETH - so lower this.
-- [x] Create an award by minting, use https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1 as tokenURI to test
+- [x] Create an award by mintWinner(), use https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1 as tokenURI to test
 - [ ] Will need to generate the Award metadata and tokenURI - and push it to IPFS as part of the minting process
 - [ ] POAP business is TBD, follow the same split/composition rationale with NFTs?
 - [x] Award should be vesting
