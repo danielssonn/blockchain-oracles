@@ -1,14 +1,14 @@
 require('dotenv').config({ path: '../.env' })
 
-const ALCHEMY_API_URL = process.env.ALCHEMY_API_URL
+const ALCHEMY_API_URL = process.env.ALCHEMY_API_URL_KOVAN
 const PUBLIC_KEY = process.env.PUBLIC_KEY
-const KOVAN_PRIVATE_KEY = process.env.KOVAN_PRIVATE_KEY
+const PRIVATE_KEY = process.env.PRIVATE_KEY
 
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(ALCHEMY_API_URL)
 
 const contract = require("../artifacts/contracts/Award.sol/Award.json")
-const contractAddress = "0x9B50B6854c2A963f2C0554798De7812069cC97C3"
+const contractAddress = "0xC7E8bcE270307B3b66a3Be0c4aeBf2594F80DD48"
 const awardContract = new web3.eth.Contract(contract.abi, contractAddress)
 
 async function mintAward(tokenURI) {
@@ -30,7 +30,7 @@ async function mintAward(tokenURI) {
 
 
     // 3. Sign transaction and send it
-    const signPromise = web3.eth.accounts.signTransaction(tx, KOVAN_PRIVATE_KEY)
+    const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
 
     signPromise
         .then((signedTx) => {

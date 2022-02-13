@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract Award is ERC721URIStorage, Ownable {
+    // Owner of this contract
+    address _owner;
     // ERC721 tokenIds
     uint256 private tokenIds = 0;
 
@@ -28,7 +30,9 @@ contract Award is ERC721URIStorage, Ownable {
     // Number of wins for each winner
     mapping(address => uint256) winerAwardCount;
 
-    constructor() ERC721("Award", "AWRD") {}
+    constructor() ERC721("Award", "AWRD") {
+        _owner = msg.sender;
+    }
 
     function getToatalAwardBalance() public view returns (uint256) {
         return totalAwardBalance;
@@ -40,23 +44,28 @@ contract Award is ERC721URIStorage, Ownable {
     }
 
     // Minting will create an NFT and move some money from the budget to winner's balance where we'll stake it for a bit
-    // Thi
     function mintAward(address recipient, string memory tokenURI)
         public
         onlyOwner
         returns (uint256)
     {
+        require(
+            recipient != _owner,
+            "Sorry, the organizers cannot win awards!"
+        );
+        require(
+            totalAwardBalance - singleAwardAmount > 0,
+            "You do not have enough in your Award budget to mint this award."
+        );
         uint256 newItemId = tokenIds + 1;
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
         uint256 awardNumberForWinner = winerAwardCount[recipient] + 1;
-
         wonAwards[recipient][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[recipient][awardNumberForWinner] = block.timestamp;
 
         totalAwardBalance = totalAwardBalance - singleAwardAmount;
-
         return newItemId;
     }
 
@@ -116,5 +125,10 @@ contract Award is ERC721URIStorage, Ownable {
         returns (uint256)
     {
         return wonTimestamps[winnerAddress][awardNumber];
+    }
+
+    // Award amount in Wei
+    function setAwardAmount(uint256 amount) public onlyOwner {
+        singleAwardAmount = amount;
     }
 }
