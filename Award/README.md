@@ -7,11 +7,14 @@
 - [x] Go to Write Contract
 - [x] Connect your Metamask on Kovan testnet, make sure you have some test ETH (https://faucets.chain.link/)
 - [x] Fund your Award contract to set the Award budget via addAwardBalance()
-- [x] Set how much each award will be via setAwardAmount (in Wei!). Default is 1ETH (1+ 18 zeros), it might be a challenge to get this much test ETH - so lower this.
+- [x] Set how much each award will be via setAwardAmount (in Wei!). 
+- [x] Default is 1ETH (1+ 18 zeros), it might be a challenge to get this much test ETH - so lower this.
 - [x] Create an award by minting, use https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1 as tokenURI to test
 - [ ] Will need to generate the Award metadata and tokenURI - and push it to IPFS as part of the minting process
+- [ ] POAP business TBD
 - [x] Award should be vesting
 - [x] In 10 days, the award ETH has vested and can be withdrawn to winner's wallet
+- [ ] **Withdrawal should only work if the winner is still an employee**
 
 
 ## Details
