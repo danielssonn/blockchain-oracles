@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "./oracleClient/IOracleClient.sol";
 
 contract AwardNFT is ERC721URIStorage, Ownable {
     // ERC721 tokenIds
@@ -28,6 +30,9 @@ contract AwardNFT is ERC721URIStorage, Ownable {
 }
 
 contract Award is Ownable {
+    // oracleClient to get to off chain HR
+    IOracleClient public oracleclient;
+
     // Owner of this contract
     address _owner;
 
@@ -45,7 +50,7 @@ contract Award is Ownable {
     // call pre-deployed contract
     // AwardNFT public awardNFT = AwardNFT(awardNFTContract);
 
-    // deploy on the fly in constructor
+    // deploy on the fly
     AwardNFT public awardNFT;
 
     // Winner can have mutiple awards, concurrently
@@ -60,10 +65,14 @@ contract Award is Ownable {
     // Number of wins for each winner
     mapping(address => uint256) public winerAwardCount;
 
-    constructor() {
+    // Unique hash representing the winner in off-chain systems
+    mapping(address => bytes32) public winnerOffChain;
+
+    constructor(address oracleclientAddress) {
         _owner = msg.sender;
         awardNFT = new AwardNFT();
         setNFTContract(address(awardNFT));
+        oracleclient = IOracleClient(oracleclientAddress);
     }
 
     function getTotalAwardBudget() public view returns (uint256) {
@@ -97,9 +106,12 @@ contract Award is Ownable {
 
         uint256 awardNumberForWinner = winerAwardCount[winner];
 
+        oracleclient.requestEligibilityOffChain();
+
         wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
         mintedNFTs[winner][awardNumberForWinner] = nftItemId;
+        winnerOffChain[winner] = keccak256(abi.encodePacked(winner));
 
         totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
@@ -110,17 +122,6 @@ contract Award is Ownable {
             isAwardVested(msg.sender, awardNumber),
             "This award still needs to vest."
         );
-        address payable withdrawTo = payable(msg.sender);
-        uint256 amountToTransfer = getAwardETHBalance(msg.sender, awardNumber);
-
-        withdrawTo.transfer(amountToTransfer);
-        totalAwardBudget = totalAwardBudget - amountToTransfer;
-
-        wonAwards[msg.sender][awardNumber] = 0;
-    }
-
-    // Withdraw the monetary award, ignore if vested
-    function withdrawAwardETHRightNow(uint256 awardNumber) public payable {
         address payable withdrawTo = payable(msg.sender);
         uint256 amountToTransfer = getAwardETHBalance(msg.sender, awardNumber);
 

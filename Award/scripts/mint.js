@@ -8,7 +8,7 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(ALCHEMY_API_URL)
 
 const contract = require("../artifacts/contracts/Award.sol/Award.json")
-const contractAddress = "0x29B746f28114a2D91eF4DF9315d16CE5e0C267Ae"
+const contractAddress = "0x8C280e6FeFf8d76E62E1a827E699f6299bedf889"
 const winner = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6"
 const awardContract = new web3.eth.Contract(contract.abi, contractAddress)
 

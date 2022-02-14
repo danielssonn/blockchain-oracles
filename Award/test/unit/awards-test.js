@@ -6,8 +6,11 @@ const { ethers } = require("hardhat")
 describe("Award setup", function () {
 
     before(async function () {
+        MockOracle = await hre.ethers.getContractFactory("MockOracleClient");
+        mock = await MockOracle.deploy();
+
         Award = await hre.ethers.getContractFactory("Award");
-        award = await Award.deploy();
+        award = await Award.deploy(mock.address);
         await award.deployed();
     })
 
