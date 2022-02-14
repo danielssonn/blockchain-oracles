@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract AwardNFT is ERC721URIStorage {
+contract AwardNFT is ERC721URIStorage, Ownable {
     // ERC721 tokenIds
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -15,6 +15,7 @@ contract AwardNFT is ERC721URIStorage {
 
     function mintNFT(address winner, string memory tokenURI)
         external
+        onlyOwner
         returns (uint256)
     {
         _tokenIds.increment();
@@ -41,7 +42,11 @@ contract Award is Ownable {
 
     address awardNFTContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
-    AwardNFT public awardNFT = AwardNFT(awardNFTContract);
+    // call pre-deployed contract
+    // AwardNFT public awardNFT = AwardNFT(awardNFTContract);
+
+    // deploy on the fly in constructor
+    AwardNFT public awardNFT;
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) wonAwards;
@@ -57,6 +62,8 @@ contract Award is Ownable {
 
     constructor() {
         _owner = msg.sender;
+        awardNFT = new AwardNFT();
+        setNFTContract(address(awardNFT));
     }
 
     function getToatalAwardBudget() public view returns (uint256) {

@@ -17,7 +17,7 @@
 - [ ] Currently the minting makes someone a winner and also sets the NFT and monetary reward. We might want to split the **win** and **mint**
 - [x] Utility methods for the UI created to display awards, display vested awards, enable the withdrawal via dApp
 - [x] Winner can have multiple awards in parallel, each with its own reward and vesting
-- [ ] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
+- [x:] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
 - [ ] Compose the NFT into the Award, vs. have the Award be a NFT itself
 - [ ] test, test, test!
 
