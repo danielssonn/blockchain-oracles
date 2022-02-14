@@ -28,7 +28,7 @@ describe("Award setup", function () {
     });
 
     it("Should revert for wrong winner", async function () {
-        expect(award.mintWinner(owner.address, "https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1")).to.be.revertedWith('Sorry, the organizers cannot win awards!');;
+        expect(award.mintWinner(owner.address, "https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1")).to.be.revertedWith('Sorry, the organizers cannot win awards!');
     });
 
 
@@ -63,24 +63,22 @@ describe("Award setup", function () {
             expect(await award.mintedNFTs(addr1.address, 2)).to.equal(2)
 
         });
-        it("Should be vesting for correct time", async function () {
-
-
-        });
-
 
         describe("Withdraw Awards", function () {
 
 
-            it("Should not be withdrawable while vesting", async function () {
+            it("Should get award not vested yet", async function () {
+
+                expect(await award.isAwardVested(addr1.address, 2)).to.equal(false)
 
             });
-            it("Should be withdrawable after vesting", async function () {
+
+            it("Should not be withdrawable if not vested and revert", async function () {
+
+                expect(award.withdrawAwardETH(2)).to.be.revertedWith('This award still needs to vest');
 
             });
-            it("Should update budget correctly after issuing award", async function () {
 
-            });
             it("Should not be withdrawable if not longer employed", async function () {
 
             });

@@ -38,7 +38,7 @@ contract Award is Ownable {
     uint256 singleAwardAmount = 100;
 
     // 10 days award vesting - we are so generous!
-    uint256 awardVestingTime = 10 days;
+    uint256 awardVestingTime = 10;
 
     address awardNFTContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
@@ -119,6 +119,17 @@ contract Award is Ownable {
         wonAwards[msg.sender][awardNumber] = 0;
     }
 
+    // Withdraw the monetary award, ignore if vested
+    function withdrawAwardETHRightNow(uint256 awardNumber) public payable {
+        address payable withdrawTo = payable(msg.sender);
+        uint256 amountToTransfer = getAwardETHBalance(msg.sender, awardNumber);
+
+        withdrawTo.transfer(amountToTransfer);
+        totalAwardBudget = totalAwardBudget - amountToTransfer;
+
+        wonAwards[msg.sender][awardNumber] = 0;
+    }
+
     function getAwardETHBalance(address winnerAddress, uint256 awardNumber)
         public
         view
@@ -165,19 +176,13 @@ contract Award is Ownable {
     {
         if (
             block.timestamp >
-            wonTimestamps[winnerAddress][awardNumber] + awardVestingTime
+            (wonTimestamps[winnerAddress][awardNumber] +
+                awardVestingTime *
+                1 days)
         ) {
             return true;
         }
         return false;
-    }
-
-    function getAwardTimestamp(address winnerAddress, uint256 awardNumber)
-        public
-        view
-        returns (uint256)
-    {
-        return wonTimestamps[winnerAddress][awardNumber];
     }
 
     function getAwardNFTItemId(address winnerAddress, uint256 awardNumber)
