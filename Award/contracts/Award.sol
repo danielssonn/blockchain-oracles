@@ -49,16 +49,16 @@ contract Award is Ownable {
     AwardNFT public awardNFT;
 
     // Winner can have mutiple awards, concurrently
-    mapping(address => mapping(uint256 => uint256)) wonAwards;
+    mapping(address => mapping(uint256 => uint256)) public wonAwards;
 
     // Manage when the user won, to enable vesting
-    mapping(address => mapping(uint256 => uint256)) wonTimestamps;
+    mapping(address => mapping(uint256 => uint256)) public wonTimestamps;
 
     // Keep track of mintend NFTs - winner - awardIdx - itemId on the NFT contract
-    mapping(address => mapping(uint256 => uint256)) mintedNFTs;
+    mapping(address => mapping(uint256 => uint256)) public mintedNFTs;
 
     // Number of wins for each winner
-    mapping(address => uint256) winerAwardCount;
+    mapping(address => uint256) public winerAwardCount;
 
     constructor() {
         _owner = msg.sender;
@@ -93,7 +93,10 @@ contract Award is Ownable {
         );
 
         uint256 nftItemId = awardNFT.mintNFT(winner, tokenURI);
-        uint256 awardNumberForWinner = winerAwardCount[winner] + 1;
+        winerAwardCount[winner] = winerAwardCount[winner] + 1;
+
+        uint256 awardNumberForWinner = winerAwardCount[winner];
+
         wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
         mintedNFTs[winner][awardNumberForWinner] = nftItemId;

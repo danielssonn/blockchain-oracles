@@ -1,5 +1,7 @@
 const { expect } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers } = require("hardhat")
+
+
 
 describe("Award setup", function () {
 
@@ -31,17 +33,38 @@ describe("Award setup", function () {
 
 
     describe("Mint Award", function () {
+        before(async function () {
+            await award.mintWinner(addr1.address, "https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1")
+        })
+
+        it("Should have decreased the budget", async function () {
+
+            expect(await award.getTotalAwardBudget()).to.be.below(ethers.utils.parseEther("1.0"))
+
+
+        });
         it("Should have one winner for one Award", async function () {
+
+            expect(await award.winerAwardCount(addr1.address)).to.equal(1)
+            expect(await award.wonAwards(addr1.address, 1)).to.equal(100)
+            expect(await award.wonTimestamps(addr1.address, 1)).to.be.ok
+
 
         });
 
         it("Should have one winner for two Award", async function () {
+            await award.mintWinner(addr1.address, "https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1")
+            expect(await award.winerAwardCount(addr1.address)).to.equal(2)
+            expect(await award.wonAwards(addr1.address, 2)).to.equal(100)
+            expect(await award.wonTimestamps(addr1.address, 2)).to.be.ok
 
         });
         it("Should have created NFTs with correct IDs", async function () {
+            expect(await award.mintedNFTs(addr1.address, 2)).to.equal(2)
 
         });
         it("Should be vesting for correct time", async function () {
+
 
         });
 
