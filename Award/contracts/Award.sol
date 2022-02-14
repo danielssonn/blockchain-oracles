@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "./oracleClient/IOracleClient.sol";
 
 contract AwardNFT is ERC721URIStorage, Ownable {
     // ERC721 tokenIds
@@ -28,6 +30,9 @@ contract AwardNFT is ERC721URIStorage, Ownable {
 }
 
 contract Award is Ownable {
+    // oracleClient to get to off chain HR
+    IOracleClient public oracleclient;
+
     // Owner of this contract
     address _owner;
 
@@ -38,32 +43,36 @@ contract Award is Ownable {
     uint256 singleAwardAmount = 100;
 
     // 10 days award vesting - we are so generous!
-    uint256 awardVestingTime = 10 days;
+    uint256 awardVestingTime = 10;
 
     address awardNFTContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
     // call pre-deployed contract
     // AwardNFT public awardNFT = AwardNFT(awardNFTContract);
 
-    // deploy on the fly in constructor
+    // deploy on the fly
     AwardNFT public awardNFT;
 
     // Winner can have mutiple awards, concurrently
-    mapping(address => mapping(uint256 => uint256)) wonAwards;
+    mapping(address => mapping(uint256 => uint256)) public wonAwards;
 
     // Manage when the user won, to enable vesting
-    mapping(address => mapping(uint256 => uint256)) wonTimestamps;
+    mapping(address => mapping(uint256 => uint256)) public wonTimestamps;
 
     // Keep track of mintend NFTs - winner - awardIdx - itemId on the NFT contract
-    mapping(address => mapping(uint256 => uint256)) mintedNFTs;
+    mapping(address => mapping(uint256 => uint256)) public mintedNFTs;
 
     // Number of wins for each winner
-    mapping(address => uint256) winerAwardCount;
+    mapping(address => uint256) public winerAwardCount;
 
-    constructor() {
+    // Unique hash representing the winner in off-chain systems
+    mapping(address => bytes32) public winnerOffChain;
+
+    constructor(address oracleclientAddress) {
         _owner = msg.sender;
         awardNFT = new AwardNFT();
         setNFTContract(address(awardNFT));
+        oracleclient = IOracleClient(oracleclientAddress);
     }
 
     function getTotalAwardBudget() public view returns (uint256) {
@@ -93,10 +102,16 @@ contract Award is Ownable {
         );
 
         uint256 nftItemId = awardNFT.mintNFT(winner, tokenURI);
-        uint256 awardNumberForWinner = winerAwardCount[winner] + 1;
+        winerAwardCount[winner] = winerAwardCount[winner] + 1;
+
+        uint256 awardNumberForWinner = winerAwardCount[winner];
+
+        oracleclient.requestEligibilityOffChain();
+
         wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
         mintedNFTs[winner][awardNumberForWinner] = nftItemId;
+        winnerOffChain[winner] = keccak256(abi.encodePacked(winner));
 
         totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
@@ -162,19 +177,13 @@ contract Award is Ownable {
     {
         if (
             block.timestamp >
-            wonTimestamps[winnerAddress][awardNumber] + awardVestingTime
+            (wonTimestamps[winnerAddress][awardNumber] +
+                awardVestingTime *
+                1 days)
         ) {
             return true;
         }
         return false;
-    }
-
-    function getAwardTimestamp(address winnerAddress, uint256 awardNumber)
-        public
-        view
-        returns (uint256)
-    {
-        return wonTimestamps[winnerAddress][awardNumber];
     }
 
     function getAwardNFTItemId(address winnerAddress, uint256 awardNumber)

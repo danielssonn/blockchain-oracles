@@ -18,8 +18,9 @@
 - [x] Utility methods for the UI created to display awards, display vested awards, enable the withdrawal via dApp
 - [x] Winner can have multiple awards in parallel, each with its own reward and vesting
 - [x:] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
-- [ ] Compose the NFT into the Award, vs. have the Award be a NFT itself
-- [ ] test, test, test!
+- [x] Compose the NFT into the Award, vs. have the Award be a NFT itself
+- [x] test: basic unit tests for the Award contract
+- [ ] test, test!
 
 
 Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0x29B746f28114a2D91eF4DF9315d16CE5e0C267Ae)
