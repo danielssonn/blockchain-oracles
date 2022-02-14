@@ -8,7 +8,8 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(ALCHEMY_API_URL)
 
 const contract = require("../artifacts/contracts/Award.sol/Award.json")
-const contractAddress = "0xaE91b4d63F56C671Cc729dE402e2983E68Ecb4b3"
+const contractAddress = "0xAd700464ea1A7ef0AcCE9e5f361c597F8c19ACbc"
+const winner = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6"
 const awardContract = new web3.eth.Contract(contract.abi, contractAddress)
 
 async function mintAward(tokenURI) {
@@ -25,7 +26,7 @@ async function mintAward(tokenURI) {
         to: contractAddress,
         nonce: nonce,
         gas: 500000,
-        data: awardContract.methods.mintAward(PUBLIC_KEY, tokenURI).encodeABI(),
+        data: awardContract.methods.mintWinner(winner, tokenURI).encodeABI(),
     }
 
 
