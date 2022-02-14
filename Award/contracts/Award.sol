@@ -66,7 +66,7 @@ contract Award is Ownable {
         setNFTContract(address(awardNFT));
     }
 
-    function getToatalAwardBudget() public view returns (uint256) {
+    function getTotalAwardBudget() public view returns (uint256) {
         return totalAwardBudget;
     }
 
@@ -86,9 +86,9 @@ contract Award is Ownable {
         public
         onlyOwner
     {
-        // require(winner != _owner, "Sorry, the organizers cannot win awards!");
+        require(winner != _owner, "Sorry, the organizers cannot win awards!");
         require(
-            totalAwardBudget - singleAwardAmount > 0,
+            (totalAwardBudget > singleAwardAmount),
             "Award budget low on funds."
         );
 

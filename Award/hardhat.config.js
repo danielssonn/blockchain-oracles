@@ -14,6 +14,14 @@ require('dotenv').config({ path: '../.env' })
 const { ALCHEMY_API_KEY_KOVAN, ALCHEMY_API_KEY_RINKEBY, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
 
 
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
+  for (const account of accounts) {
+    console.log(account.address);
+  }
+});
+
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
