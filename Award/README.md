@@ -22,7 +22,7 @@
 - [ ] test, test, test!
 
 
-Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0xAd700464ea1A7ef0AcCE9e5f361c597F8c19ACbc)
+Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0x29B746f28114a2D91eF4DF9315d16CE5e0C267Ae)
 
 ## Do you want to play a game?
 

@@ -89,7 +89,7 @@ contract Award is Ownable {
         // require(winner != _owner, "Sorry, the organizers cannot win awards!");
         require(
             totalAwardBudget - singleAwardAmount > 0,
-            "You do not have enough in your Award budget to mint this award."
+            "Award budget low on funds."
         );
 
         uint256 nftItemId = awardNFT.mintNFT(winner, tokenURI);
