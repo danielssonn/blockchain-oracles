@@ -8,7 +8,8 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(ALCHEMY_API_URL)
 
 const contract = require("../artifacts/contracts/Award.sol/Award.json")
-const contractAddress = "0xC7E8bcE270307B3b66a3Be0c4aeBf2594F80DD48"
+const contractAddress = "0x29B746f28114a2D91eF4DF9315d16CE5e0C267Ae"
+const winner = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6"
 const awardContract = new web3.eth.Contract(contract.abi, contractAddress)
 
 async function mintAward(tokenURI) {
@@ -18,14 +19,13 @@ async function mintAward(tokenURI) {
 
     // 1. Get NONCE
     const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
-    console.log("Nonce ", nonce)
     //2 . Compose transaction
     const tx = {
         from: PUBLIC_KEY,
         to: contractAddress,
         nonce: nonce,
         gas: 500000,
-        data: awardContract.methods.mintAward(PUBLIC_KEY, tokenURI).encodeABI(),
+        data: awardContract.methods.mintWinner(winner, tokenURI).encodeABI(),
     }
 
 
@@ -58,4 +58,4 @@ async function mintAward(tokenURI) {
         })
 }
 
-mintAward("https://gateway.pinata.cloud/ipfs/QmcEwKVcDGJEwZx5RC7QyYts2eSmQbvjjGz7fchEfyaYLt")
+mintAward("https://gateway.pinata.cloud/ipfs/QmeSWjzounhpv7V1QvVPaoxqpZgC7QWiwZbNRPFYmfmVuV")

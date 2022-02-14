@@ -6,20 +6,47 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract Award is ERC721URIStorage, Ownable {
+contract AwardNFT is ERC721URIStorage, Ownable {
+    // ERC721 tokenIds
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+
+    constructor() ERC721("Award", "AWRD") {}
+
+    function mintNFT(address winner, string memory tokenURI)
+        external
+        onlyOwner
+        returns (uint256)
+    {
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        _mint(winner, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+
+        return newItemId;
+    }
+}
+
+contract Award is Ownable {
     // Owner of this contract
     address _owner;
-    // ERC721 tokenIds
-    uint256 private tokenIds = 0;
 
     // This is the total balance/overall budget for all Awards.
-    uint256 totalAwardBalance = 0;
+    uint256 totalAwardBudget = 0;
 
-    // 1 ETH for single award
-    uint256 singleAwardAmount = 1 * 10**18;
+    // 1 ETH for single award 1 * 10**18;
+    uint256 singleAwardAmount = 100;
 
     // 10 days award vesting - we are so generous!
     uint256 awardVestingTime = 10 days;
+
+    address awardNFTContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+
+    // call pre-deployed contract
+    // AwardNFT public awardNFT = AwardNFT(awardNFTContract);
+
+    // deploy on the fly in constructor
+    AwardNFT public awardNFT;
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) wonAwards;
@@ -27,60 +54,69 @@ contract Award is ERC721URIStorage, Ownable {
     // Manage when the user won, to enable vesting
     mapping(address => mapping(uint256 => uint256)) wonTimestamps;
 
+    // Keep track of mintend NFTs - winner - awardIdx - itemId on the NFT contract
+    mapping(address => mapping(uint256 => uint256)) mintedNFTs;
+
     // Number of wins for each winner
     mapping(address => uint256) winerAwardCount;
 
-    constructor() ERC721("Award", "AWRD") {
+    constructor() {
         _owner = msg.sender;
+        awardNFT = new AwardNFT();
+        setNFTContract(address(awardNFT));
     }
 
-    function getToatalAwardBalance() public view returns (uint256) {
-        return totalAwardBalance;
+    function getTotalAwardBudget() public view returns (uint256) {
+        return totalAwardBudget;
     }
 
     // Contract owner can add to the overall Award balance budget
-    function addAwardBalance() public payable onlyOwner {
-        totalAwardBalance = totalAwardBalance + msg.value;
+    function addToAwardsBudget() public payable onlyOwner {
+        totalAwardBudget = totalAwardBudget + msg.value;
+    }
+
+    function setNFTContract(address nftContractAddress) public onlyOwner {
+        awardNFTContract = nftContractAddress;
     }
 
     // Minting will create an NFT and move some money from the budget to winner's balance where we'll stake it for a bit
-    function mintAward(address recipient, string memory tokenURI)
+    // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract!
+    // For now, we'll select an arbitrary winner
+    function mintWinner(address winner, string memory tokenURI)
         public
         onlyOwner
-        returns (uint256)
     {
+        require(winner != _owner, "Sorry, the organizers cannot win awards!");
         require(
-            recipient != _owner,
-            "Sorry, the organizers cannot win awards!"
+            (totalAwardBudget > singleAwardAmount),
+            "Award budget low on funds."
         );
-        require(
-            totalAwardBalance - singleAwardAmount > 0,
-            "You do not have enough in your Award budget to mint this award."
-        );
-        uint256 newItemId = tokenIds + 1;
-        _mint(recipient, newItemId);
-        _setTokenURI(newItemId, tokenURI);
 
-        uint256 awardNumberForWinner = winerAwardCount[recipient] + 1;
-        wonAwards[recipient][awardNumberForWinner] = singleAwardAmount;
-        wonTimestamps[recipient][awardNumberForWinner] = block.timestamp;
+        uint256 nftItemId = awardNFT.mintNFT(winner, tokenURI);
+        uint256 awardNumberForWinner = winerAwardCount[winner] + 1;
+        wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
+        wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
+        mintedNFTs[winner][awardNumberForWinner] = nftItemId;
 
-        totalAwardBalance = totalAwardBalance - singleAwardAmount;
-        return newItemId;
+        totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
 
     // Withdraw the monetary award, if vested ...
-    function withdrawAward(uint256 awardNumber) public payable {
+    function withdrawAwardETH(uint256 awardNumber) public payable {
+        require(
+            isAwardVested(msg.sender, awardNumber),
+            "This award still needs to vest."
+        );
         address payable withdrawTo = payable(msg.sender);
-        uint256 amountToTransfer = getAwardBalance(msg.sender, awardNumber);
+        uint256 amountToTransfer = getAwardETHBalance(msg.sender, awardNumber);
 
         withdrawTo.transfer(amountToTransfer);
-        totalAwardBalance = totalAwardBalance - amountToTransfer;
+        totalAwardBudget = totalAwardBudget - amountToTransfer;
 
         wonAwards[msg.sender][awardNumber] = 0;
     }
 
-    function getAwardBalance(address winnerAddress, uint256 awardNumber)
+    function getAwardETHBalance(address winnerAddress, uint256 awardNumber)
         public
         view
         returns (uint256)
@@ -119,6 +155,20 @@ contract Award is ERC721URIStorage, Ownable {
         return ret;
     }
 
+    function isAwardVested(address winnerAddress, uint256 awardNumber)
+        public
+        view
+        returns (bool)
+    {
+        if (
+            block.timestamp >
+            wonTimestamps[winnerAddress][awardNumber] + awardVestingTime
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     function getAwardTimestamp(address winnerAddress, uint256 awardNumber)
         public
         view
@@ -127,8 +177,20 @@ contract Award is ERC721URIStorage, Ownable {
         return wonTimestamps[winnerAddress][awardNumber];
     }
 
+    function getAwardNFTItemId(address winnerAddress, uint256 awardNumber)
+        public
+        view
+        returns (uint256)
+    {
+        return mintedNFTs[winnerAddress][awardNumber];
+    }
+
+    function getAwardNFTContrat() public view returns (address) {
+        return awardNFTContract;
+    }
+
     // Award amount in Wei
-    function setAwardAmount(uint256 amount) public onlyOwner {
+    function setAwardAmountETH(uint256 amount) public onlyOwner {
         singleAwardAmount = amount;
     }
 }

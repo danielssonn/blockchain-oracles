@@ -835,8 +835,8 @@
       ]
     },
     "/Users/danielssonn/git/blockchain_cibc/Oracle/contracts/APIConsumer.sol": {
-      "lastModificationDate": 1644087225110,
-      "contentHash": "fd8a3c4da448d4e3db9e99406cde1445",
+      "lastModificationDate": 1644097244108,
+      "contentHash": "ea297c6aea7d37441bd7cc681dc94b20",
       "sourceName": "contracts/APIConsumer.sol",
       "solcConfig": {
         "version": "0.8.7",
