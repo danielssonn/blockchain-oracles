@@ -202,4 +202,8 @@ contract Award is Ownable {
     function setAwardAmountETH(uint256 amount) public onlyOwner {
         singleAwardAmount = amount;
     }
+
+    function setAwardVestingTime(uint256 vestingTimeInDays) public onlyOwner {
+        awardVestingTime = vestingTimeInDays;
+    }
 }
