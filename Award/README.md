@@ -1,6 +1,6 @@
 # NFT based Awards
 
-![](https://github.com/danielssonn/blockchain-oracles/blob/c0744b74fbc0372c1b20d61cd8ce4556b935d9c7/assets/Award%20Contract.png)
+![](../assets/Award%20Contract.png)
 
 
 ## Details
