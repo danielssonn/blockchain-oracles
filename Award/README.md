@@ -19,6 +19,7 @@
 - [x] Winner can have multiple awards in parallel, each with its own reward and vesting
 - [x:] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
 - [x] Compose the NFT into the Award, vs. have the Award be a NFT itself
+- [ ] On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list'
 - [x] test: basic unit tests for the Award contract
 - [ ] test, test!
 
