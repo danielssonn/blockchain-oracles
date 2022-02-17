@@ -11,7 +11,7 @@ require('dotenv').config({ path: '../.env' })
  * 
  */
 
-const { ALCHEMY_API_KEY_KOVAN, ALCHEMY_API_KEY_RINKEBY, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
+const { ALCHEMY_API_KEY_KOVAN, ALCHEMY_API_KEY_RINKEBY, PRIVATE_KEY, ETHERSCAN_API_KEY, ALCHEMY_API_KEY_MAINNET } = process.env;
 
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -40,6 +40,11 @@ module.exports = {
     rinkeby: {
       url: `https://eth-kovan.alchemyapi.io/v2/${ALCHEMY_API_KEY_RINKEBY}`,
       accounts: [`0x${PRIVATE_KEY}`]
+    },
+    hardhat: {
+      forking: {
+        url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY_MAINNET}`,
+      }
     }
   },
   etherscan: {
