@@ -22,7 +22,8 @@
 - [ ] On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list'
 - [x] test: basic unit tests for the Award contract
 - [ ] test, test!
-- [ ] Figure out the on and off-chain identity matching / DID
+- [ ] Figure out the on and off-chain identity matching / DID 
+![](../assets/Identity%20Mapping.png) 
 - [ ] hook up and optimize Oracles interactions
 
 
