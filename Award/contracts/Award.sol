@@ -31,7 +31,9 @@ contract AwardNFT is ERC721URIStorage, Ownable {
 
 contract Award is Ownable {
     // oracleClient to get to off chain HR
-    IOracleClient public oracleclient;
+    IOracleClient public hrAdapter;
+
+    IOracleClient public amlAdapter;
 
     // Owner of this contract
     address _owner;
@@ -68,11 +70,12 @@ contract Award is Ownable {
     // Unique hash representing the winner in off-chain systems
     mapping(address => bytes32) public winnerOffChain;
 
-    constructor(address oracleclientAddress) {
+    constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
         awardNFT = new AwardNFT();
         setNFTContract(address(awardNFT));
-        oracleclient = IOracleClient(oracleclientAddress);
+        hrAdapter = IOracleClient(_hrAdapter);
+        amlAdapter = IOracleClient(_amlAdapter);
     }
 
     function getTotalAwardBudget() public view returns (uint256) {
@@ -106,7 +109,8 @@ contract Award is Ownable {
 
         uint256 awardNumberForWinner = winerAwardCount[winner];
 
-        oracleclient.requestEligibilityOffChain();
+        hrAdapter.requestEligibilityOffChain(winner);
+        amlAdapter.requestAMLCheck(winner);
 
         wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
