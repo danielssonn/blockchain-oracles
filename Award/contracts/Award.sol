@@ -70,6 +70,9 @@ contract Award is Ownable {
     // Unique hash representing the winner in off-chain systems
     mapping(address => bytes32) public winnerOffChain;
 
+    // Manage the AML pass. The AMLAdapter Oracle should update this
+    mapping(address => bool) public winnerAMLCheck;
+
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
         awardNFT = new AwardNFT();

@@ -17,11 +17,13 @@
 - [ ] Currently the minting makes someone a winner and also sets the NFT and monetary reward. We might want to split the **win** and **mint**
 - [x] Utility methods for the UI created to display awards, display vested awards, enable the withdrawal via dApp
 - [x] Winner can have multiple awards in parallel, each with its own reward and vesting
-- [x:] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
+- [x] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
 - [x] Compose the NFT into the Award, vs. have the Award be a NFT itself
 - [ ] On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list'
 - [x] test: basic unit tests for the Award contract
 - [ ] test, test!
+- [ ] Figure out the on and off-chain identity matching / DID
+- [ ] hook up and optimize Oracles interactions
 
 
 Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0x29B746f28114a2D91eF4DF9315d16CE5e0C267Ae)
