@@ -38,3 +38,7 @@ This new system has all of the following:
 - [x] Potential to compose governance and coordination structures, from the ground up
 - [x] Ability to create the virtuous feedback loop, built in
 - [x] Long term enablement
+
+
+
+**Now let's go back to our incentive system in employee recognition and Awards, and apply the above principles**
