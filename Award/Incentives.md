@@ -20,7 +20,7 @@ We can rank the interaction on couple of levels
     - [x] Have a much longer time window, enabling long term relationship
 
 
-**Q: Can we have a new system with the transparency and efficiency of the barter system, but with a long term viability, providing the mutual incentive to each party?**
+**Q: Can we have a new system with the transparency and efficiency of the barter system, but with a efficient long term viability, providing mutual incentive to each party?**
 
 A: Yes, by using Smart Contracts and Tokenomics principles of crypto currency, as foundation for the new economic incentive system.
 
