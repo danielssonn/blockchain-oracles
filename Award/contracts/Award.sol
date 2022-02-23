@@ -29,6 +29,27 @@ contract AwardNFT is ERC721URIStorage, Ownable {
     }
 }
 
+contract AwardCertificate is ERC721URIStorage, Ownable {
+    // ERC721 tokenIds
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+
+    constructor() ERC721("Award Certificate", "AWRDCERT") {}
+
+    function mintNFT(address winner, string memory tokenURI)
+        external
+        onlyOwner
+        returns (uint256)
+    {
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        _mint(winner, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+
+        return newItemId;
+    }
+}
+
 contract Award is Ownable {
     // oracleClient to get to off chain HR
     IOracleClient public hrAdapter;
@@ -70,7 +91,7 @@ contract Award is Ownable {
     // Unique hash representing the winner in off-chain systems
     mapping(address => bytes32) public winnerOffChain;
 
-    // Manage the AML pass. The AMLAdapter Oracle should update this
+    // Manage the AML pass. @TODO: The AMLAdapter Oracle should update this
     mapping(address => bool) public winnerAMLCheck;
 
     constructor(address _hrAdapter, address _amlAdapter) {
