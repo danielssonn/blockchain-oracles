@@ -1,4 +1,4 @@
-# NFT based Awards
+## Awards - new incentive system for rewarding your team
 
 ![](../assets/Award%20Contract.png)
 
