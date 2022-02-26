@@ -10,8 +10,7 @@ describe("Award setup", function () {
         mock = await MockOracle.deploy();
 
         Award = await hre.ethers.getContractFactory("Award");
-        award = await Award.deploy(mock.address);
-        await award.deployed();
+        award = await Award.deploy(mock.address, mock.address)
     })
 
     it("Should revert minting with low budget", async function () {

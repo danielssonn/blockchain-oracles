@@ -8,5 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract MockOracleClient is ChainlinkClient, Ownable {
     constructor() {}
 
-    function requestEligibilityOffChain() external returns (bytes32) {}
+    function requestEligibilityOffChain(address a) external returns (bytes32) {}
+
+    function requestAMLCheck(address a) external returns (bytes32) {}
 }
