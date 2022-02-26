@@ -1,0 +1,31 @@
+{
+    "attributes": [
+        {
+            "trait_type": "Intelligence",
+            "value": "High"
+        },
+        {
+            "trait_type": "Barkitude",
+            "value": "Loud"
+        },
+        {
+            "trait_type": "Herding",
+            "value": "Strong"
+        },
+        {
+            "trait_type": "Handsomness",
+            "value": 10
+        },
+        {
+            "trait_type": "Stamina",
+            "value": 9
+        },
+        {
+            "trait_type": "Foxiness",
+            "value": "YES"
+        }
+    ],
+    "description": "Mango Noir",
+    "image": "https://gateway.pinata.cloud/ipfs/QmP7p2EFdAZodLThE7gr9EvdbRUbVsJA1dHBpz7U3UBKWr",
+    "name": "Mango Noir"
+}
