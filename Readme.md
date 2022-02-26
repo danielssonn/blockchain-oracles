@@ -1,5 +1,8 @@
 ## Awards - new incentive system for rewarding your team
 
+![](./Incentives.md)
+
+
 ![](../assets/Award%20Contract.png)
 
 
