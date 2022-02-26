@@ -1,48 +1,50 @@
-## Lets build ourselves an NFT based Award system
+# NFT based Awards
 
-# You Got The Gift, But It Looks Like You're Waiting For Something.
-
-![](https://github.com/danielssonn/blockchain-oracles/blob/224084dcf3304cf6c4e4ccec9d80e13983945d57/assets/Chainlink%20Architecture.png)
-
-## Yes, that Oracle. What this does:
-- [x] APIConsumer contract can request current Ether price in USD via Oracles
-- [x] Deployed on Kovan testnet: 0x98Af5f5ff16993D9EB54aFC37b534B1E9155fa5E 
-- [x] Resolved via Chainlink Node, via external adapter written in Node.js making the API call to cryptocompare.com
-- [x] APIConsumer Contract gets updated with the current price, within the transaction
-- [ ] Figure out a use case that is relateable to our hackathon, change the contract and API logic. Ex. AML check via the Oracle    
+![](../assets/Award%20Contract.png)
 
 
-## Client
-- [x] Hardhat project scaffolded
-- [x] Added Kovan testnet via Alchemy - get your own key and set it in .env
-- [x] Added Etherscan Contrack publishing - get your own key from Etherscan and set in .env
-- [x] scripts/deploy.js would publish new contracts - if needed
-- [x] scripts/interact.js will call the API Consumer Contract and trigger the transaction 
-- [x] Eventual front end will do something similar to what is happening in interact.js
-- [ ] Still need to create mocks for Chainlink to enable local harhad testing - only [Kovan](https://faucets.chain.link/) in the meantime. 
+## Details
+
+- [x] Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
+- [x] This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
+- [x] Awards can then be minted
+- [x] NFT will be created for the award by the minting process.
+- [x] ETH will be moved from the Award budget, and vested for the winner for a vesting period (1 ETH currently for 10 days)
+- [x] ETH in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
+- [x] Award will only be minted if there is available budget
+- [x] Award will not be minted for organizers
+- [ ] Think of the minting process and winner having the ability to configure
+- [ ] Currently the minting makes someone a winner and also sets the NFT and monetary reward. We might want to split the **win** and **mint**
+- [x] Utility methods for the UI created to display awards, display vested awards, enable the withdrawal via dApp
+- [x] Winner can have multiple awards in parallel, each with its own reward and vesting
+- [x] The NFT in the Award should be more independent from the Award - and possible to trade/move independently
+- [x] Compose the NFT into the Award, vs. have the Award be a NFT itself
+- [ ] On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list'
+- [x] test: basic unit tests for the Award contract
+- [ ] test, test!
+- [ ] Figure out the on and off-chain identity matching / DID 
+![](../assets/Identity%20Mapping.png) 
+- [ ] hook up and optimize Oracles interactions
+
+
+Contract: [Kovan Etherscan](https://kovan.etherscan.io/address/0x29B746f28114a2D91eF4DF9315d16CE5e0C267Ae)
+
+## Do you want to play a game?
+
+- [x] Go to the Contract address on Etherscan, above
+- [x] Find Contract tab, you should see verified checkmark
+- [x] Select Write Contract
+- [x] Connect your Metamask on Kovan testnet, make sure you have some test ETH (https://faucets.chain.link/)
+- [x] Fund your Award contract to set the Award budget via addToAwardsBudget()
+- [x] Set how much each award will be via setAwardAmountETH (in Wei). 
+- [x] Default is 1ETH (1+ 18 zeros), it might be a challenge to get this much test ETH - so lower this.
+- [x] Create an award by mintWinner(), use https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1 as tokenURI to test
+- [ ] Will need to generate the Award metadata and tokenURI - and push it to IPFS as part of the minting process
+- [ ] POAP business is TBD, follow the same split/composition rationale with NFTs?
+- [x] Award should be vesting
+- [x] In 10 days, the award ETH has vested and can be withdrawn to winner's wallet
+- [ ] **Withdrawal should only work if the winner is still an employee**
 
 
 
-## Ethereum
-
-- [x] APIConsumer is the contract that will call the Oracle 
-- [x] Oracle is another contract that knows which Oracle to call
-- [x] Full request -> fulfill roundtrip working via Chainlink Oracle node
-
-
-## Chainlink
-
-- [x] Running a local Chainlink Node in docker
-- [x] Chainlink Node Jobs, Nodes and Bridges are replicated in toml files in /config
-- [x] External Adapter setup in Node.js    
-
-AWS
-- [x] Lambda deployment for the extenal adpater
-- [x] https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter
-- [x] test:
-```bash
-curl -X POST -H "content-type:application/json" "https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter" --data '{ "id": 0, "data": { "from": "ETH", "to": "USD" } }'
-```
-
-- most work and logic will happen here!
   
