@@ -1,9 +1,12 @@
 ## Awards - new incentive system for rewarding your team
 
-![](./Incentives.md)
+
+**[Incentive theory](/Incentives.md)**
+
+![](./assets/Tokenomics.png)
 
 
-![](../assets/Award%20Contract.png)
+![](./assets/Award%20Contract.png)
 
 
 ## Details
