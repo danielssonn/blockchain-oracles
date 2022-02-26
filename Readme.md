@@ -5,7 +5,10 @@
 
 ![](./assets/Tokenomics.png)
 
+**Incentives to nominate**
+![](./assets/Nomination.png)
 
+**Incentives to compete**
 ![](./assets/Award%20Contract.png)
 
 
