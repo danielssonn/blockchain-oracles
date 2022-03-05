@@ -6,49 +6,10 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import "./oracleClient/IOracleClient.sol";
+import "./IOracleClient.sol";
+import "./AwardCertificate.sol";
 
-contract AwardNFT is ERC721URIStorage, Ownable {
-    // ERC721 tokenIds
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
 
-    constructor() ERC721("Award", "AWRD") {}
-
-    function mintNFT(address winner, string memory tokenURI)
-        external
-        onlyOwner
-        returns (uint256)
-    {
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _mint(winner, newItemId);
-        _setTokenURI(newItemId, tokenURI);
-
-        return newItemId;
-    }
-}
-
-contract AwardCertificate is ERC721URIStorage, Ownable {
-    // ERC721 tokenIds
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
-
-    constructor() ERC721("Award Certificate", "AWRDCERT") {}
-
-    function mintNFT(address winner, string memory tokenURI)
-        external
-        onlyOwner
-        returns (uint256)
-    {
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _mint(winner, newItemId);
-        _setTokenURI(newItemId, tokenURI);
-
-        return newItemId;
-    }
-}
 
 contract Award is Ownable {
     // oracleClient to get to off chain HR
@@ -68,13 +29,13 @@ contract Award is Ownable {
     // 10 days award vesting - we are so generous!
     uint256 awardVestingTime = 10;
 
-    address awardNFTContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+    address awardCertificateContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
     // call pre-deployed contract
-    // AwardNFT public awardNFT = AwardNFT(awardNFTContract);
+    // awardCertificate public awardCertificate = awardCertificate(awardCertificateContract);
 
     // deploy on the fly
-    AwardNFT public awardNFT;
+    AwardCertificate public awardCertificate;
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) public wonAwards;
@@ -96,8 +57,8 @@ contract Award is Ownable {
 
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
-        awardNFT = new AwardNFT();
-        setNFTContract(address(awardNFT));
+        awardCertificate = new AwardCertificate();
+        setCerttificateContract(address(awardCertificate));
         hrAdapter = IOracleClient(_hrAdapter);
         amlAdapter = IOracleClient(_amlAdapter);
     }
@@ -111,8 +72,8 @@ contract Award is Ownable {
         totalAwardBudget = totalAwardBudget + msg.value;
     }
 
-    function setNFTContract(address nftContractAddress) public onlyOwner {
-        awardNFTContract = nftContractAddress;
+    function setCerttificateContract(address nftContractAddress) public onlyOwner {
+        awardCertificateContract = nftContractAddress;
     }
 
     // Minting will create an NFT and move some money from the budget to winner's balance where we'll stake it for a bit
@@ -128,7 +89,7 @@ contract Award is Ownable {
             "Award budget low on funds."
         );
 
-        uint256 nftItemId = awardNFT.mintNFT(winner, tokenURI);
+        uint256 nftItemId = awardCertificate.mintNFT(winner, tokenURI);
         winerAwardCount[winner] = winerAwardCount[winner] + 1;
 
         uint256 awardNumberForWinner = winerAwardCount[winner];
@@ -214,7 +175,7 @@ contract Award is Ownable {
         return false;
     }
 
-    function getAwardNFTItemId(address winnerAddress, uint256 awardNumber)
+    function getawardCertificateItemId(address winnerAddress, uint256 awardNumber)
         public
         view
         returns (uint256)
@@ -222,8 +183,8 @@ contract Award is Ownable {
         return mintedNFTs[winnerAddress][awardNumber];
     }
 
-    function getAwardNFTContrat() public view returns (address) {
-        return awardNFTContract;
+    function getawardCertificateContrat() public view returns (address) {
+        return awardCertificateContract;
     }
 
     // Award amount in Wei
