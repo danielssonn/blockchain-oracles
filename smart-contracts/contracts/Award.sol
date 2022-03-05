@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "./IOracleClient.sol";
 import "./AwardCertificate.sol";
+import "./AwardNomination.sol";
 
 
 
@@ -36,6 +37,9 @@ contract Award is Ownable {
 
     // deploy on the fly
     AwardCertificate public awardCertificate;
+    AwardNomination public awardNomination;
+
+    
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) public wonAwards;
@@ -44,7 +48,7 @@ contract Award is Ownable {
     mapping(address => mapping(uint256 => uint256)) public wonTimestamps;
 
     // Keep track of mintend NFTs - winner - awardIdx - itemId on the NFT contract
-    mapping(address => mapping(uint256 => uint256)) public mintedNFTs;
+    mapping(address => mapping(uint256 => uint256)) public mintedCertificates;
 
     // Number of wins for each winner
     mapping(address => uint256) public winerAwardCount;
@@ -55,10 +59,13 @@ contract Award is Ownable {
     // Manage the AML pass. @TODO: The AMLAdapter Oracle should update this
     mapping(address => bool) public winnerAMLCheck;
 
+    /**
+    
+     */
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
         awardCertificate = new AwardCertificate();
-        setCerttificateContract(address(awardCertificate));
+        awardNomination = new AwardNomination();
         hrAdapter = IOracleClient(_hrAdapter);
         amlAdapter = IOracleClient(_amlAdapter);
     }
@@ -72,12 +79,13 @@ contract Award is Ownable {
         totalAwardBudget = totalAwardBudget + msg.value;
     }
 
-    function setCerttificateContract(address nftContractAddress) public onlyOwner {
+    function setCertificateContract(address nftContractAddress) public onlyOwner {
         awardCertificateContract = nftContractAddress;
     }
 
-    // Minting will create an NFT and move some money from the budget to winner's balance where we'll stake it for a bit
-    // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract!
+    // Minting will create a certificare, move some money from the budget to winner's balance where we'll stake it for a bit
+    // Minting will also update the AwardToken distribution in AwardNomination contract, rewarding those who staked the right winner
+    // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract through DAO voting!
     // For now, we'll select an arbitrary winner
     function mintWinner(address winner, string memory tokenURI)
         public
@@ -99,8 +107,10 @@ contract Award is Ownable {
 
         wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
-        mintedNFTs[winner][awardNumberForWinner] = nftItemId;
+        mintedCertificates[winner][awardNumberForWinner] = nftItemId;
         winnerOffChain[winner] = keccak256(abi.encodePacked(winner));
+
+        awardNomination.rebalanceStakes(winner);
 
         totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
@@ -175,15 +185,15 @@ contract Award is Ownable {
         return false;
     }
 
-    function getawardCertificateItemId(address winnerAddress, uint256 awardNumber)
+    function getAwardCertificateItemId(address winnerAddress, uint256 awardNumber)
         public
         view
         returns (uint256)
     {
-        return mintedNFTs[winnerAddress][awardNumber];
+        return mintedCertificates[winnerAddress][awardNumber];
     }
 
-    function getawardCertificateContrat() public view returns (address) {
+    function getAwardCertificateContrat() public view returns (address) {
         return awardCertificateContract;
     }
 
