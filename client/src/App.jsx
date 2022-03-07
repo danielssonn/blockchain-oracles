@@ -1,9 +1,9 @@
-import { Landing } from './components';
+import { Nominee } from './pages';
 
 const App = () => {
   return (
     <div className="min-h-screen">
-      <Landing />
+      <Nominee />
     </div>
   );
 };

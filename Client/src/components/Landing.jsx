@@ -1,18 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
+import { AnchorButton } from './index';
 
-import { IoRocketSharp } from 'react-icons/io5';
-import { FiSend } from 'react-icons/fi';
+// icons
+import { IoWalletOutline } from 'react-icons/io5';
+import { CgProfile } from 'react-icons/cg';
 
-import AnchorLink from 'react-anchor-link-smooth-scroll';
-
-import winner from '../../images/winner.png';
-import thumbUp from '../../images/thumb-up.png';
-import bg1 from '../../images/bg1.png';
-import bg2 from '../../images/bg2.png';
-import bg3 from '../../images/bg3.png';
-import bg4 from '../../images/bg4.png';
-import face from '../../images/face.png';
+// assets
+import IMAGES from '../../images';
 
 const Landing = () => {
   const { connectWallet, currentAccount } = useContext(TransactionContext);
@@ -28,12 +23,14 @@ const Landing = () => {
     window.scrollTo(0, 0);
   };
 
+  const commonStyle = 'flex bg-[#E5F3FF] h-70v mt-10 px-10 justify-center items-center drop-shadow-lg';
+
   return (
     <div id="top" className="flex w-full justify-center items-center bg-[#8796BB] bg-opacity-80">
       <div className="flex flex-col xl:w-2/3 w-5/6 h-screen py-20">
-        <div className="bg-[#E5F3FF] h-70v mt-10 px-10 flex justify-center items-center drop-shadow-lg">
+        <div id="connect" className={`${commonStyle}`}>
           <div className="w-2/5 ">
-            <img src={winner} alt="winner" />
+            <img src={IMAGES.winner} alt="winner" />
           </div>
           <div className="w-3/5 ">
             <div>
@@ -56,74 +53,74 @@ const Landing = () => {
                 <button
                   type="button"
                   onClick={connectWallet}
-                  className="my-2 px-5 h-[50px] text-base font-semibold text-white rounded-md transition-all duration-500 bg-gradient-to-tl from-[#3926AD] via-violet-600 to-[#C367D6] bg-size-200 bg-pos-0 hover:bg-pos-100"
+                  className="flex max-w-fit my-2 px-5 pt-[13px] h-[50px] text-base font-semibold text-white rounded-md transition-all duration-500 bg-gradient-to-tl from-[#3926AD] via-violet-600 to-[#C367D6] bg-size-200 bg-pos-0 hover:bg-pos-100"
                 >
                   Connect Wallet
+                  <IoWalletOutline className="text-white ml-2 mt-1" />
                 </button>
               )}
 
-              {currentAccount && (
-                <AnchorLink
-                  href="#note"
-                  offset="120"
-                  type="button"
-                  className="flex max-w-fit cursor-pointer my-2 px-5 pt-[13px] h-[50px] text-base font-semibold text-white rounded-md transition-all duration-500 bg-gradient-to-tl from-[#3926AD] via-violet-600 to-[#C367D6] bg-size-200 bg-pos-0 hover:bg-pos-100"
-                >
-                  Let's start
-                  <IoRocketSharp className="text-white ml-2 mt-1" />
-                </AnchorLink>
-              )}
+              {currentAccount && <AnchorButton title="Let's start" to="note" family="io5" name="IoRocketSharp" />}
             </div>
           </div>
         </div>
 
-        <div id="note" className="flex bg-[#E5F3FF] h-70v mt-10 px-10 justify-center items-center drop-shadow-lg">
+        <div id="note" className={`${commonStyle}`}>
           <div className="w-3/5 ">
             note
-            <AnchorLink
-              href="#profile"
-              offset="120"
-              type="button"
-              className="flex max-w-fit cursor-pointer my-2 px-5 pt-[13px] h-[50px] text-base font-semibold text-white rounded-md transition-all duration-500 bg-gradient-to-tl from-[#3926AD] via-violet-600 to-[#C367D6] bg-size-200 bg-pos-0 hover:bg-pos-100"
-            >
-              Send A Thanks Message
-              <FiSend className="text-white ml-2 mt-1" />
-            </AnchorLink>
+            <AnchorButton title="Send A Thanks Message" to="profile" family="fi" name="FiSend" />
           </div>
           <div className="w-2/5 ">
-            <img src={thumbUp} alt="bg1" className="w-auto" />
+            <img src={IMAGES.thumbUp} alt="thumbUp" className="w-auto" />
           </div>
         </div>
 
-        <div id="profile" className="flex bg-[#E5F3FF] h-70v mt-10 px-10 justify-center items-center drop-shadow-lg">
+        <div id="profile" className={`${commonStyle}`}>
           <div className="w-3/5 ">
             <h1 className="font-bold text-4xl">Share your achievement!</h1>
-            <h1 className="font-medium text-4xl">Make yourself a Moment Maker Profile Picture</h1>
+            <h1 className="font-medium text-3xl">Make yourself a Moment Maker Profile Picture</h1>
 
             <div className="flex justify-start my-10 pr-10">
-              <img id={bg1} src={bg1} alt="bg1-image" className="w-1/6 mr-10 cursor-pointer" onMouseOver={changeBg} />
-              <img id={bg2} src={bg2} alt="bg2-image" className="w-1/6 mr-10 cursor-pointer" onMouseOver={changeBg} />
-              <img id={bg3} src={bg3} alt="bg3-image" className="w-1/6 mr-10 cursor-pointer" onMouseOver={changeBg} />
-              <img id={bg4} src={bg4} alt="bg4-image" className="w-1/6 mr-10 cursor-pointer" onMouseOver={changeBg} />
+              <img
+                id={IMAGES.bg1}
+                src={IMAGES.bg1}
+                alt="bg1-image"
+                className="w-1/6 mr-10 cursor-pointer"
+                onMouseOver={changeBg}
+              />
+              <img
+                id={IMAGES.bg2}
+                src={IMAGES.bg2}
+                alt="bg2-image"
+                className="w-1/6 mr-10 cursor-pointer"
+                onMouseOver={changeBg}
+              />
+              <img
+                id={IMAGES.bg3}
+                src={IMAGES.bg3}
+                alt="bg3-image"
+                className="w-1/6 mr-10 cursor-pointer"
+                onMouseOver={changeBg}
+              />
+              <img
+                id={IMAGES.bg4}
+                src={IMAGES.bg4}
+                alt="bg4-image"
+                className="w-1/6 mr-10 cursor-pointer"
+                onMouseOver={changeBg}
+              />
             </div>
 
             <button
               type="button"
               className="flex max-w-fit cursor-pointer my-2 px-10 pt-[13px] h-[50px] text-base font-semibold text-white rounded-md transition-all duration-500 bg-gradient-to-tl from-[#3926AD] via-violet-600 to-[#C367D6] bg-size-200 bg-pos-0 hover:bg-pos-100"
             >
-              Select
+              Use As New Profile Picture
+              <CgProfile className="text-white ml-2 mt-1" />
             </button>
-            {/* <AnchorLink
-              href="#profile"
-              offset="120"
-              type="button"
-              className="flex max-w-fit cursor-pointer my-2 px-10 pt-[13px] h-[50px] text-base font-semibold text-white rounded-md transition-all duration-500 bg-gradient-to-tl from-[#3926AD] via-violet-600 to-[#C367D6] bg-size-200 bg-pos-0 hover:bg-pos-100"
-            >
-              Select
-            </AnchorLink> */}
           </div>
           <div className="relative w-2/5 flex justify-center items-center">
-            <img id="profile" src={face} alt="profile-image" className="w-1/2 z-10" />
+            <img id="profile" src={IMAGES.face} alt="profile-image" className="w-1/2 z-10" />
 
             {changeProfileBg ? (
               <img src={profileBg} alt="profile-image" className="absolute w-[300px] h-[300px] z-5" />
