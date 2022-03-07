@@ -67,7 +67,26 @@ const Landing = () => {
 
         <div id="note" className={`${commonStyle}`}>
           <div className="w-3/5 ">
-            note
+            <h1 className="font-bold text-xl mb-5">
+              You has received the{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
+                Purpose Award 250
+              </span>{' '}
+              Award from Jane Smith
+            </h1>
+            <div className="p-5 mb-5 bg-slate-200 rounded-md">
+              <p className="mb-3">Hi John Doe,</p>
+              <p className="mb-5">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+              </p>
+              <p>Thank you!</p>
+
+              <p className="mb-3"> Jane Smith</p>
+            </div>
             <AnchorButton title="Send A Thanks Message" to="profile" family="fi" name="FiSend" />
           </div>
           <div className="w-2/5 ">
