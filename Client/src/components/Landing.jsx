@@ -5,6 +5,7 @@ import { AnchorButton } from './index';
 // icons
 import { IoWalletOutline } from 'react-icons/io5';
 import { CgProfile } from 'react-icons/cg';
+import { FiSend } from 'react-icons/fi';
 
 // assets
 import IMAGES from '../../images';
@@ -67,12 +68,12 @@ const Landing = () => {
 
         <div id="note" className={`${commonStyle}`}>
           <div className="w-3/5 ">
-            <h1 className="font-bold text-xl mb-5">
-              You has received the{' '}
+            <h1 className="font-bold text-3xl mb-5">
+              You received the{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
                 Purpose Award 250
               </span>{' '}
-              Award from Jane Smith
+              from Jane Smith
             </h1>
             <div className="p-5 mb-5 bg-slate-200 rounded-md">
               <p className="mb-3">Hi John Doe,</p>
@@ -87,7 +88,13 @@ const Landing = () => {
 
               <p className="mb-3"> Jane Smith</p>
             </div>
-            <AnchorButton title="Send A Thanks Message" to="profile" family="fi" name="FiSend" />
+            <div className="flex justify-start items-center">
+              <AnchorButton title="Mint A Blockchain Certificate" to="profile" family="si" name="SiEthereum" />
+              <div className="flex cursor-pointer ml-10">
+                <h5 className="text-[#3926AD] font-semibold">Thanks to Jane</h5>
+                <FiSend className="text-[#3926AD] ml-2 mt-1" />
+              </div>
+            </div>
           </div>
           <div className="w-2/5 ">
             <img src={IMAGES.thumbUp} alt="thumbUp" className="w-auto" />
@@ -139,7 +146,7 @@ const Landing = () => {
             </button>
           </div>
           <div className="relative w-2/5 flex justify-center items-center">
-            <img id="profile" src={IMAGES.face} alt="profile-image" className="w-1/2 z-10" />
+            <img id="profile" src={IMAGES.face} alt="profile-image" className="w-1/2 2xl:w-2/5 z-10" />
 
             {changeProfileBg ? (
               <img src={profileBg} alt="profile-image" className="absolute w-[300px] h-[300px] z-5" />

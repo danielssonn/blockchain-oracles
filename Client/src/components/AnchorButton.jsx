@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import * as io5 from 'react-icons/io5';
 import * as fi from 'react-icons/fi';
 import * as cg from 'react-icons/cg';
+import * as si from 'react-icons/si';
 import AnchorLink from 'react-anchor-link-smooth-scroll';
 
 const iconFamilies = {
   io5,
   fi,
   cg,
+  si,
 };
 
 const Icon = ({ family, name }) =>
