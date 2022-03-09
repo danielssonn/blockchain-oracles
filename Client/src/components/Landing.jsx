@@ -29,7 +29,7 @@ const Landing = () => {
   const commonStyle = 'flex bg-[#E5F3FF] h-70v mt-10 px-10 justify-center items-center drop-shadow-lg';
 
   return (
-    <div id="top" className="flex w-full justify-center items-center bg-[#8796BB] bg-opacity-80">
+    <div id="top" className="flex w-full justify-center items-center bg-[#8796BB] bg-opacity-80 ">
       <div className="flex flex-col xl:w-2/3 w-5/6 h-screen py-20">
         <div id="connect" className={`${commonStyle}`}>
           <div className="w-2/5 ">

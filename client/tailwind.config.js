@@ -9,6 +9,9 @@ module.exports = {
         'pos-0': '0% 0%',
         'pos-100': '100% 100%',
       },
+      backgroundImage: {
+        dashboard: "url('./images/bg-dashboard.png')",
+      },
     },
     height: {
       '10v': '10vh',
