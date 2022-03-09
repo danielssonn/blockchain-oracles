@@ -15,11 +15,13 @@ const Landing = () => {
   const [changeProfileBg, setProfileBg] = useState(false);
   const [profileBg, setProfile] = useState();
 
+  // change profile background while hove over
   const changeBg = (e) => {
     setProfileBg(true);
     setProfile(e.target.id);
   };
 
+  // force to scroll to top when reload
   window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   };
