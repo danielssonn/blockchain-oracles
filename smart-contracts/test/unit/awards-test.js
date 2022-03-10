@@ -71,7 +71,7 @@ describe("Award budget not setup", function () {
 
             });
             it("Should have created NFTs with correct IDs", async function () {
-                expect(await award.mintedNFTs(addr1.address, 2)).to.equal(2)
+                expect(await award.mintedCertificates(addr1.address, 2)).to.equal(2)
 
             });
 

@@ -6,49 +6,11 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import "./oracleClient/IOracleClient.sol";
+import "./IOracleClient.sol";
+import "./AwardCertificate.sol";
+import "./AwardNomination.sol";
 
-contract AwardNFT is ERC721URIStorage, Ownable {
-    // ERC721 tokenIds
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
 
-    constructor() ERC721("Award", "AWRD") {}
-
-    function mintNFT(address winner, string memory tokenURI)
-        external
-        onlyOwner
-        returns (uint256)
-    {
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _mint(winner, newItemId);
-        _setTokenURI(newItemId, tokenURI);
-
-        return newItemId;
-    }
-}
-
-contract AwardCertificate is ERC721URIStorage, Ownable {
-    // ERC721 tokenIds
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
-
-    constructor() ERC721("Award Certificate", "AWRDCERT") {}
-
-    function mintNFT(address winner, string memory tokenURI)
-        external
-        onlyOwner
-        returns (uint256)
-    {
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _mint(winner, newItemId);
-        _setTokenURI(newItemId, tokenURI);
-
-        return newItemId;
-    }
-}
 
 contract Award is Ownable {
     // oracleClient to get to off chain HR
@@ -68,13 +30,16 @@ contract Award is Ownable {
     // 10 days award vesting - we are so generous!
     uint256 awardVestingTime = 10;
 
-    address awardNFTContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+    address awardCertificateContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
     // call pre-deployed contract
-    // AwardNFT public awardNFT = AwardNFT(awardNFTContract);
+    // awardCertificate public awardCertificate = awardCertificate(awardCertificateContract);
 
     // deploy on the fly
-    AwardNFT public awardNFT;
+    AwardCertificate public awardCertificate;
+    AwardNomination public awardNomination;
+
+    
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) public wonAwards;
@@ -83,7 +48,7 @@ contract Award is Ownable {
     mapping(address => mapping(uint256 => uint256)) public wonTimestamps;
 
     // Keep track of mintend NFTs - winner - awardIdx - itemId on the NFT contract
-    mapping(address => mapping(uint256 => uint256)) public mintedNFTs;
+    mapping(address => mapping(uint256 => uint256)) public mintedCertificates;
 
     // Number of wins for each winner
     mapping(address => uint256) public winerAwardCount;
@@ -94,10 +59,13 @@ contract Award is Ownable {
     // Manage the AML pass. @TODO: The AMLAdapter Oracle should update this
     mapping(address => bool) public winnerAMLCheck;
 
+    /**
+    
+     */
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
-        awardNFT = new AwardNFT();
-        setNFTContract(address(awardNFT));
+        awardCertificate = new AwardCertificate();
+        awardNomination = new AwardNomination();
         hrAdapter = IOracleClient(_hrAdapter);
         amlAdapter = IOracleClient(_amlAdapter);
     }
@@ -111,12 +79,13 @@ contract Award is Ownable {
         totalAwardBudget = totalAwardBudget + msg.value;
     }
 
-    function setNFTContract(address nftContractAddress) public onlyOwner {
-        awardNFTContract = nftContractAddress;
+    function setCertificateContract(address nftContractAddress) public onlyOwner {
+        awardCertificateContract = nftContractAddress;
     }
 
-    // Minting will create an NFT and move some money from the budget to winner's balance where we'll stake it for a bit
-    // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract!
+    // Minting will create a certificare, move some money from the budget to winner's balance where we'll stake it for a bit
+    // Minting will also update the AwardToken distribution in AwardNomination contract, rewarding those who staked the right winner
+    // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract through DAO voting!
     // For now, we'll select an arbitrary winner
     function mintWinner(address winner, string memory tokenURI)
         public
@@ -128,7 +97,7 @@ contract Award is Ownable {
             "Award budget low on funds."
         );
 
-        uint256 nftItemId = awardNFT.mintNFT(winner, tokenURI);
+        uint256 nftItemId = awardCertificate.mintNFT(winner, tokenURI);
         winerAwardCount[winner] = winerAwardCount[winner] + 1;
 
         uint256 awardNumberForWinner = winerAwardCount[winner];
@@ -138,8 +107,10 @@ contract Award is Ownable {
 
         wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
-        mintedNFTs[winner][awardNumberForWinner] = nftItemId;
+        mintedCertificates[winner][awardNumberForWinner] = nftItemId;
         winnerOffChain[winner] = keccak256(abi.encodePacked(winner));
+
+        awardNomination.rebalanceStakes(winner);
 
         totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
@@ -214,16 +185,16 @@ contract Award is Ownable {
         return false;
     }
 
-    function getAwardNFTItemId(address winnerAddress, uint256 awardNumber)
+    function getAwardCertificateItemId(address winnerAddress, uint256 awardNumber)
         public
         view
         returns (uint256)
     {
-        return mintedNFTs[winnerAddress][awardNumber];
+        return mintedCertificates[winnerAddress][awardNumber];
     }
 
-    function getAwardNFTContrat() public view returns (address) {
-        return awardNFTContract;
+    function getAwardCertificateContrat() public view returns (address) {
+        return awardCertificateContract;
     }
 
     // Award amount in Wei
