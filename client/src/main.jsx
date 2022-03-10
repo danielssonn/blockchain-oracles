@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Awards } from './pages';
+import { Awards, Nominations } from './pages';
 
 import { TransactionProvider } from './context/TransactionContext';
 const rootElement = document.getElementById('root');
@@ -14,7 +14,8 @@ ReactDOM.render(
       <React.StrictMode>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="Awards" element={<Awards />} />
+          <Route path="awards" element={<Awards />} />
+          <Route path="nominations" element={<Nominations />} />
         </Routes>
       </React.StrictMode>
     </TransactionProvider>

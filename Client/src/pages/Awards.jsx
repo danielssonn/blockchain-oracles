@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
+import { useNavigate } from 'react-router-dom';
 
 import { MdNotifications, MdShoppingCart, MdSettings } from 'react-icons/md';
 import { RiAwardFill } from 'react-icons/ri';
@@ -9,29 +10,36 @@ import { BsStarFill } from 'react-icons/bs';
 import IMAGES from '../../images';
 
 const Awards = () => {
-  const { selectedProfileBg } = useContext(TransactionContext);
-
   const buttonCommonStyle =
     'flex justify-start items-center text-base py-3 xl:px-4 pl-2 xl:font-semibold font-medium mb-3 rounded-lg cursor-pointer';
   const buttonIconCommonStyle = 'mt-1 mr-2 text-2xl';
-  const inactiveColor = 'text-[#A5A6F6]';
+  const inactiveStyle = 'text-[#A5A6F6]';
+  const activeStyle = 'bg-[#5D5FEF] text-white';
+
+  const { selectedProfileBg } = useContext(TransactionContext);
+  const navigate = useNavigate();
+
+  const toMyNominations = () => {
+    navigate('/nominations');
+  };
+
+  const switchButtonStyle = () => {};
 
   return (
     <div className="bg-dashboard bg-center bg-cover min-h-screen min-w-full">
       <div className="grid grid-cols-12 gap-3 w-full min-h-screen xl:px-20 px-10 py-16">
         <div className="xl:px-6 flex flex-col bg-slate-500 col-span-2 bg-opacity-0 pt-20">
-          <button className={`bg-[#5D5FEF] text-white ${buttonCommonStyle}`}>
+          <button className={`${activeStyle} ${buttonCommonStyle}`}>
             <RiAwardFill className={`text-white ${buttonIconCommonStyle}`} /> My Awards
           </button>
-
-          <button className={`${buttonCommonStyle} ${inactiveColor}`}>
-            <BsStarFill className={`${buttonIconCommonStyle} ${inactiveColor}`} /> My Nominations
+          <button onClick={toMyNominations} className={`${buttonCommonStyle} ${inactiveStyle}`}>
+            <BsStarFill className={`${buttonIconCommonStyle} ${inactiveStyle} `} /> My Nominations
           </button>
-          <button className={`${buttonCommonStyle} ${inactiveColor}`}>
-            <MdShoppingCart className={`${buttonIconCommonStyle} ${inactiveColor}`} /> Shopping
+          <button className={`${buttonCommonStyle} ${inactiveStyle}`}>
+            <MdShoppingCart className={`${buttonIconCommonStyle} ${inactiveStyle}`} /> Shopping
           </button>
-          <button className={`${buttonCommonStyle} ${inactiveColor}`}>
-            <MdSettings className={`${buttonIconCommonStyle} ${inactiveColor}`} /> Setting
+          <button className={`${buttonCommonStyle} ${inactiveStyle}`}>
+            <MdSettings className={`${buttonIconCommonStyle} ${inactiveStyle}`} /> Setting
           </button>
         </div>
         <div className="relative bg-gradient-to-r from-white/50 to-white/10 col-span-7 rounded-l-2xl">

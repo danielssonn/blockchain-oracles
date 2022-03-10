@@ -26,7 +26,7 @@ const Landing = () => {
 
   const pickThisProfile = () => {
     mintProfileNFT();
-    navigate('/Awards');
+    navigate('/awards');
   };
 
   // force to scroll to top when reload
