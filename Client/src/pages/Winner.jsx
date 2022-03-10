@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { Landing } from '../components';
 
-const Nominee = () => {
+const Winner = () => {
   return <Landing />;
 };
 
-export default Nominee;
+export default Winner;

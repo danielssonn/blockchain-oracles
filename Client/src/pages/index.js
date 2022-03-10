@@ -1,2 +1,2 @@
-export { default as Nominee } from './Nominee';
-export { default as Nominator } from './Nominator';
+export { default as Winner } from './Winner';
+export { default as Awards } from './Awards';

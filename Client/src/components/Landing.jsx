@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 import { AnchorButton } from './index';
+import { useNavigate } from 'react-router-dom';
 
 // icons
 import { IoWalletOutline } from 'react-icons/io5';
@@ -11,14 +12,21 @@ import { FiSend } from 'react-icons/fi';
 import IMAGES from '../../images';
 
 const Landing = () => {
-  const { connectWallet, currentAccount } = useContext(TransactionContext);
-  const [changeProfileBg, setProfileBg] = useState(false);
-  const [profileBg, setProfile] = useState();
+  const { connectWallet, currentAccount, selectProfileBg, mintProfileNFT } = useContext(TransactionContext);
+  const [hoveredProfileBg, setHoveredProfileBg] = useState(false);
+  const [profileBg, setProfileBg] = useState('');
+  const navigate = useNavigate();
 
   // change profile background while hove over
   const changeBg = (e) => {
-    setProfileBg(true);
-    setProfile(e.target.id);
+    setHoveredProfileBg(true);
+    setProfileBg(e.target.id);
+    selectProfileBg(e.target.id);
+  };
+
+  const pickThisProfile = () => {
+    mintProfileNFT();
+    navigate('/Awards');
   };
 
   // force to scroll to top when reload
@@ -141,6 +149,7 @@ const Landing = () => {
 
             <button
               type="button"
+              onClick={pickThisProfile}
               className="flex max-w-fit cursor-pointer my-2 px-10 pt-[13px] h-[50px] text-base font-semibold text-white rounded-md transition-all duration-500 bg-gradient-to-tl from-[#3926AD] via-violet-600 to-[#C367D6] bg-size-200 bg-pos-0 hover:bg-pos-100"
             >
               Use As New Profile Picture
@@ -150,7 +159,7 @@ const Landing = () => {
           <div className="relative w-2/5 flex justify-center items-center">
             <img id="profile" src={IMAGES.face} alt="profile-image" className="w-1/2 2xl:w-2/5 z-10" />
 
-            {changeProfileBg ? (
+            {hoveredProfileBg ? (
               <img src={profileBg} alt="profile-image" className="absolute w-[300px] h-[300px] z-5" />
             ) : (
               <div className="absolute w-[300px] h-[300px] rounded-full bg-violet-500 z-2"></div>

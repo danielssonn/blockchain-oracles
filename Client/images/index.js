@@ -6,6 +6,8 @@ import bg2 from './bg2.png';
 import bg3 from './bg3.png';
 import bg4 from './bg4.png';
 import face from './face.png';
+import branding from './branding-s.png';
+import points from './points.png';
 
 const bgs = {
   bg1,
@@ -18,6 +20,8 @@ const IMAGES = {
   winner,
   thumbUp,
   face,
+  branding,
+  points,
 };
 
 export default IMAGES;

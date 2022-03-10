@@ -9,6 +9,16 @@ const { ethereum } = window;
 
 export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState('');
+  const [selectedProfileBg, setSelectedProfileBg] = useState('');
+
+  const selectProfileBg = (img) => {
+    setSelectedProfileBg(img);
+    console.log(img);
+  };
+
+  const mintProfileNFT = () => {
+    console.log('mint ' + selectedProfileBg);
+  };
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -47,6 +57,10 @@ export const TransactionProvider = ({ children }) => {
   }, []);
 
   return (
-    <TransactionContext.Provider value={{ connectWallet, currentAccount }}>{children}</TransactionContext.Provider>
+    <TransactionContext.Provider
+      value={{ connectWallet, currentAccount, selectedProfileBg, selectProfileBg, mintProfileNFT }}
+    >
+      {children}
+    </TransactionContext.Provider>
   );
 };
