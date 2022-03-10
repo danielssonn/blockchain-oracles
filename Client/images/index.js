@@ -8,6 +8,7 @@ import bg4 from './bg4.png';
 import face from './face.png';
 import branding from './branding-s.png';
 import points from './points.png';
+import followings from './followings.png';
 
 const bgs = {
   bg1,
@@ -22,6 +23,7 @@ const IMAGES = {
   face,
   branding,
   points,
+  followings,
 };
 
 export default IMAGES;
