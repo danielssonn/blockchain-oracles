@@ -39,6 +39,7 @@ const Landing = () => {
   return (
     <div id="top" className="flex w-full justify-center items-center bg-[#8796BB] bg-opacity-80 ">
       <div className="flex flex-col xl:w-2/3 w-5/6 h-screen py-20">
+        {/* connect wallet */}
         <div id="connect" className={`${commonStyle}`}>
           <div className="w-2/5 ">
             <img src={IMAGES.winner} alt="winner" />
@@ -76,6 +77,7 @@ const Landing = () => {
           </div>
         </div>
 
+        {/* certificate */}
         <div id="note" className={`${commonStyle}`}>
           <div className="w-3/5 ">
             <h1 className="font-bold text-3xl mb-5">
@@ -111,6 +113,7 @@ const Landing = () => {
           </div>
         </div>
 
+        {/* profile picture */}
         <div id="profile" className={`${commonStyle}`}>
           <div className="w-3/5 ">
             <h1 className="font-bold text-4xl">Share your achievement!</h1>
