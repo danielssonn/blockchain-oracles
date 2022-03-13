@@ -1,40 +1,40 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { TransactionContext } from '../context/TransactionContext';
-import { AnchorButton } from './index';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { TransactionContext } from '../context/TransactionContext'
+import { AnchorButton } from './index'
+import { useNavigate } from 'react-router-dom'
 
 // icons
-import { IoWalletOutline } from 'react-icons/io5';
-import { CgProfile } from 'react-icons/cg';
-import { FiSend } from 'react-icons/fi';
+import { IoWalletOutline } from 'react-icons/io5'
+import { CgProfile } from 'react-icons/cg'
+import { FiSend } from 'react-icons/fi'
 
 // assets
-import IMAGES from '../../images';
+import IMAGES from '../../images'
 
 const Landing = () => {
-  const { connectWallet, currentAccount, selectProfileBg, mintProfileNFT } = useContext(TransactionContext);
-  const [hoveredProfileBg, setHoveredProfileBg] = useState(false);
-  const [profileBg, setProfileBg] = useState('');
-  const navigate = useNavigate();
+  const { connectWallet, currentAccount, selectProfileBg, mintProfileNFT } = useContext(TransactionContext)
+  const [hoveredProfileBg, setHoveredProfileBg] = useState(false)
+  const [profileBg, setProfileBg] = useState('')
+  const navigate = useNavigate()
 
   // change profile background while hove over
   const changeBg = (e) => {
-    setHoveredProfileBg(true);
-    setProfileBg(e.target.id);
-    selectProfileBg(e.target.id);
-  };
+    setHoveredProfileBg(true)
+    setProfileBg(e.target.id)
+    selectProfileBg(e.target.id)
+  }
 
   const pickThisProfile = () => {
-    mintProfileNFT();
-    navigate('/awards');
-  };
+    mintProfileNFT()
+    navigate('/awards')
+  }
 
   // force to scroll to top when reload
   window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-  };
+    window.scrollTo(0, 0)
+  }
 
-  const commonStyle = 'flex bg-[#E5F3FF] h-70v mt-10 px-10 justify-center items-center drop-shadow-lg';
+  const commonStyle = 'flex bg-[#E5F3FF] h-70v mt-10 px-10 justify-center items-center drop-shadow-lg'
 
   return (
     <div id="top" className="flex w-full justify-center items-center bg-[#8796BB] bg-opacity-80 ">
@@ -160,18 +160,20 @@ const Landing = () => {
             </button>
           </div>
           <div className="relative w-2/5 flex justify-center items-center">
-            <img id="profile" src={IMAGES.face} alt="profile-image" className="w-1/2 2xl:w-2/5 z-10" />
+            <img id="profile" src={IMAGES.face} alt="profile-image" className="w-3/5 xl:w-1/2 z-10" />
 
-            {hoveredProfileBg ? (
+            {hoveredProfileBg
+              ? (
               <img src={profileBg} alt="profile-image" className="absolute w-[300px] h-[300px] z-5" />
-            ) : (
+                )
+              : (
               <div className="absolute w-[300px] h-[300px] rounded-full bg-violet-500 z-2"></div>
-            )}
+                )}
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Landing;
+export default Landing

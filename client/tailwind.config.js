@@ -3,15 +3,15 @@ module.exports = {
   theme: {
     extend: {
       backgroundSize: {
-        'size-200': '200% 200%',
+        'size-200': '200% 200%'
       },
       backgroundPosition: {
         'pos-0': '0% 0%',
-        'pos-100': '100% 100%',
+        'pos-100': '100% 100%'
       },
       backgroundImage: {
-        dashboard: "url('./images/bg-dashboard.png')",
-      },
+        card: "url('./images/card-bg.png')"
+      }
     },
     height: {
       '10v': '10vh',
@@ -23,8 +23,8 @@ module.exports = {
       '70v': '70vh',
       '80v': '80vh',
       '90v': '90vh',
-      '100v': '100vh',
-    },
+      '100v': '100vh'
+    }
   },
-  plugins: [],
-};
+  plugins: []
+}
