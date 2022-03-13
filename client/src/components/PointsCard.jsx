@@ -5,7 +5,7 @@ import IMAGES from '../../images'
 
 const PointsCard = () => {
   return (
-    <div className="drop-shadow-lg rounded-2xl xl:p-8 p-4 flex flex-col bg-gradient-to-tr from-[#3D4E81] via-[#5753C9] to-[#6E7FF3] mt-10 w-11/12 min-h-50">
+    <div className="drop-shadow-lg rounded-2xl xl:p-8 p-4 flex flex-col bg-gradient-to-tr from-[#3D4E81] via-[#5753C9] to-[#6E7FF3] mt-6 w-11/12 min-h-50">
       <div className="flex w-full justify-between items-center">
         <h4 className="text-white/60 font-semibold xl:text-lg text-base">Moment Maker</h4>
         <img className="xl:w-10 w-6 opacity-60" src={IMAGES.logo} alt="logo" />

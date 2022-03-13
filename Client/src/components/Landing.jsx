@@ -167,7 +167,7 @@ const Landing = () => {
               <img src={profileBg} alt="profile-image" className="absolute w-[300px] h-[300px] z-5" />
                 )
               : (
-              <div className="absolute w-[300px] h-[300px] rounded-full bg-violet-500 z-2"></div>
+              <div className="absolute w-[300px] h-[300px] rounded-full bg-gradient-to-tr from-[#3D4E81] via-[#5753C9] to-[#6E7FF3] z-2"></div>
                 )}
           </div>
         </div>
