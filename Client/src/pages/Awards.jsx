@@ -1,30 +1,30 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { TransactionContext } from '../context/TransactionContext';
-import { useNavigate } from 'react-router-dom';
-import CountUp from 'react-countup';
+import { useContext } from 'react'
+import { TransactionContext } from '../context/TransactionContext'
+import { useNavigate } from 'react-router-dom'
+import CountUp from 'react-countup'
 
-import { MdNotifications, MdShoppingCart, MdSettings } from 'react-icons/md';
-import { RiAwardFill } from 'react-icons/ri';
-import { BsStarFill } from 'react-icons/bs';
+import { MdNotifications, MdShoppingCart, MdSettings } from 'react-icons/md'
+import { RiAwardFill } from 'react-icons/ri'
+import { BsStarFill } from 'react-icons/bs'
 
 // assets
-import IMAGES from '../../images';
+import IMAGES from '../../images'
 
 const Awards = () => {
   const buttonCommonStyle =
-    'flex justify-start items-center text-base py-3 xl:px-4 pl-2 xl:font-semibold font-medium mb-3 rounded-lg cursor-pointer';
-  const buttonIconCommonStyle = 'mt-1 mr-2 text-2xl';
-  const inactiveStyle = 'text-[#A5A6F6]';
-  const activeStyle = 'bg-[#5D5FEF] text-white';
+    'flex justify-start items-center text-base py-3 xl:px-4 pl-2 xl:font-semibold font-medium mb-3 rounded-lg cursor-pointer'
+  const buttonIconCommonStyle = 'mt-1 mr-2 text-2xl'
+  const inactiveStyle = 'text-[#A5A6F6]'
+  const activeStyle = 'bg-[#5D5FEF] text-white'
 
-  const { selectedProfileBg } = useContext(TransactionContext);
-  const navigate = useNavigate();
+  const { selectedProfileBg } = useContext(TransactionContext)
+  const navigate = useNavigate()
 
   const toMyNominations = () => {
-    navigate('/nominations');
-  };
+    navigate('/nominations')
+  }
 
-  const switchButtonStyle = () => {};
+  // const switchButtonStyle = () => {};
 
   return (
     <div className="bg-dashboard bg-center bg-cover min-h-screen min-w-full">
@@ -58,11 +58,13 @@ const Awards = () => {
           <div className="relative w-2/5 flex justify-center items-center">
             <img id="profile" src={IMAGES.face} alt="profile-image" className="w-1/2 z-10" />
 
-            {selectedProfileBg ? (
+            {selectedProfileBg
+              ? (
               <img src={selectedProfileBg} alt="profile-image" className="absolute w-[100%] h-[160%] z-5" />
-            ) : (
+                )
+              : (
               <div className="absolute w-[100%] h-[160%] rounded-full bg-violet-500 z-2"></div>
-            )}
+                )}
           </div>
 
           {/* name */}
@@ -95,7 +97,7 @@ const Awards = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Awards;
+export default Awards
