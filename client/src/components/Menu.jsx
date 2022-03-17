@@ -30,8 +30,8 @@ const Menu = () => {
   const buttonCommonStyle =
     'flex justify-start items-center text-base py-3 xl:px-4 pl-2 xl:font-semibold font-medium mb-3 rounded-lg cursor-pointer'
 
-  const activeBtnStyle = `${buttonCommonStyle} bg-[#5D5FEF] text-white`
-  const activeIconStyle = 'mr-2 text-2xl text-white'
+  const activeBtnStyle = `${buttonCommonStyle} bg-opacity-40 bg-[#A5A6F6] text-[#5D5FEF]`
+  const activeIconStyle = 'mr-2 text-2xl text-[#5D5FEF]'
 
   const inactiveIconStyle = 'mr-2 text-2xl text-[#A5A6F6]'
   const inactiveBtnStyle = `text-[#A5A6F6] ${buttonCommonStyle}`

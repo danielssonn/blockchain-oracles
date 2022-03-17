@@ -10,7 +10,8 @@ module.exports = {
         'pos-100': '100% 100%'
       },
       backgroundImage: {
-        dashboard: "url('./images/bg-dashboard.png')"
+        dashboard: "url('./images/bg-dashboard.png')",
+        nomination: "url('./images/bg-nomi.png')"
       }
     },
     height: {
