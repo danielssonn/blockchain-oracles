@@ -2,7 +2,7 @@ import { Menu, ProfileImage } from '../components'
 
 import { MdNotifications } from 'react-icons/md'
 import { GiTwoCoins } from 'react-icons/gi'
-import { RiWallet3Line, RiMedalLine } from 'react-icons/ri'
+import { RiWallet3Line, RiMedalLine, RiSearchLine } from 'react-icons/ri'
 
 import IMAGES from '../../images'
 
@@ -18,8 +18,78 @@ const Nominations = () => {
 
         {/* middle */}
         <div className="relative bg-gradient-to-r from-white/50 to-white/10 col-span-7 rounded-l-2xl">
-          <div className="xl:px-5 px-3">
-            {/* <img className="absolute xl:-top-8 -top-3" src={IMAGES.branding} alt="branding" /> */}
+          <div className="">
+
+            {/* title bar */}
+            <div className="xl:p-6 p-3 flex justify-between items-center border-b-slate-200 border-b">
+              <h1 className="font-semibold text-3xl text-[#5D5FEF]">My Nominations</h1>
+              <div className="bg-[#F4F5FB] rounded-full cursor-pointer">
+                <RiSearchLine className="text-[#3926AD] text-lg m-3"/>
+              </div>
+            </div>
+
+            {/* my nominations */}
+            <div className="mt-6 px-4">
+
+              <h4 className="font-semibold text-xl text-[#5D5FEF] my-4">My Nominations</h4>
+
+              {/* my nominations */}
+              <div className="flex">
+                <div className="w-5/6 flex">
+
+                  {[1, 2, 3].map((n, i) =>
+                    <div key={n} className="mr-3 w-1/3 py-8 flex flex-col items-center bg-[#FAF7F9] rounded-xl drop-shadow-md cursor-pointer hover:bg-[#A5A6F6]/30">
+
+                      {/* <div className='w-2/5'><img src={IMAGES.np1} alt="np1" /></div> */}
+
+                      <div className="relative w-3/5 flex justify-center items-center mb-4">
+                        <img id="profile" src={IMAGES.face} alt="profile-image" className="w-4/5 z-10" />
+
+                          <img src={IMAGES[`bg${n}`]} alt="profile-image" className="absolute w-[120%] h-[120%] z-5" />
+
+                      </div>
+
+                      <p className="text-sm">Adam Smith{n}</p>
+                      <p className="text-sm">Purpose Award {n}50</p>
+                      <p className="text-sm">Jan 2{n}, 2022</p>
+
+                    </div>
+                  )}
+
+                </div>
+
+                <div className="w-1/6 flex justify-center items-center ">
+                  <button className="cursor-pointer flex justify-center items-center text-4xl font-normal border border-dashed text-[#5D5FEF] hover:bg-[#A5A6F6]/30 border-[#5D5FEF] w-4/5 min-h-full rounded-xl">+</button>
+                </div>
+
+              </div>
+
+              {/* award history */}
+              <div className="flex">
+
+                {/* award history */}
+                <div className="w-2/3 bg-red-300">
+                  <h4>Award History</h4>
+                  <div>
+                    {[0, 1, 2].map((h, i) =>
+                    <div key={h}>
+                      <RiMedalLine className="text-[#383be2] text-3xl" />
+                      <p>Purpose Award {h}50</p>
+                      <p className="text-sm">Jan 2{h}, 202{h}</p>
+                    </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* staking actions */}
+                <div className="w-1/3 bg-slate-400">
+                  <h4>Skating</h4>
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
         </div>
 

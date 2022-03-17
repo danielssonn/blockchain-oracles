@@ -10,6 +10,7 @@ import branding from './branding-s.png'
 import points from './points.png'
 import followings from './followings.png'
 import logo from './logo.png'
+import np1 from './nomi-p-1.png'
 
 const bgs = {
   bg1,
@@ -25,7 +26,8 @@ const IMAGES = {
   branding,
   points,
   followings,
-  logo
+  logo,
+  np1
 }
 
 export default IMAGES
