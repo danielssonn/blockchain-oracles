@@ -16,7 +16,8 @@
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.2",
     "smoothscroll-polyfill": "^0.4.4",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "tailwindcss-neumorphism": "^0.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",

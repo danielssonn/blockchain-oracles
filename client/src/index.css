@@ -13,6 +13,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon{
+  border-radius: 50%;
+background: linear-gradient(145deg, #ffffff, #e6e6e6);
+box-shadow:  25px 25px 49px #d4d4d4,
+             -25px -25px 49px #ffffff;
+}
 
 @tailwind base;
 @tailwind components;

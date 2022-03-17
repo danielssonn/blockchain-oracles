@@ -31,35 +31,36 @@ const Nominations = () => {
             {/* my nominations */}
             <div className="mt-6 px-4">
 
-              <h4 className="font-semibold text-xl text-[#5D5FEF] my-4">My Nominations</h4>
-
-              {/* my nominations */}
+              {/* my nomination list */}
               <div className="flex">
-                <div className="w-5/6 flex">
+                <div className="w-5/6 flex mb-5">
 
+                  {/* nomination cards */}
                   {[1, 2, 3].map((n, i) =>
-                    <div key={n} className="mr-3 w-1/3 py-8 flex flex-col items-center bg-[#FAF7F9] rounded-xl drop-shadow-md cursor-pointer hover:bg-[#A5A6F6]/30">
+                    <div key={n} className="mr-3 w-1/3 py-8 flex flex-col items-center bg-[#E5F3FF] rounded-xl drop-shadow-lg cursor-pointer hover:bg-[#A5A6F6]/30">
 
-                      {/* <div className='w-2/5'><img src={IMAGES.np1} alt="np1" /></div> */}
+                      <div className="relative w-2/5 flex justify-center items-center mb-4">
+                        <img id="profile" src={IMAGES[`nf${n}`]} alt="profile-image" className="w-4/5 z-10" />
 
-                      <div className="relative w-3/5 flex justify-center items-center mb-4">
-                        <img id="profile" src={IMAGES.face} alt="profile-image" className="w-4/5 z-10" />
-
-                          <img src={IMAGES[`bg${n}`]} alt="profile-image" className="absolute w-[120%] h-[120%] z-5" />
-
+                          <img src={IMAGES[`bg${n + 1}`]} alt="profile-image" className="absolute w-[120%] h-[120%] z-5" />
                       </div>
 
                       <p className="text-sm">Adam Smith{n}</p>
                       <p className="text-sm">Purpose Award {n}50</p>
-                      <p className="text-sm">Jan 2{n}, 2022</p>
+                      <p className="text-xs text-stone-500">Jan 2{n}, 2022</p>
 
                     </div>
                   )}
 
                 </div>
 
-                <div className="w-1/6 flex justify-center items-center ">
-                  <button className="cursor-pointer flex justify-center items-center text-4xl font-normal border border-dashed text-[#5D5FEF] hover:bg-[#A5A6F6]/30 border-[#5D5FEF] w-4/5 min-h-full rounded-xl">+</button>
+                {/* new nomination */}
+                <div className="w-1/6 mb-5 flex justify-center items-center ">
+                  <button className="group cursor-pointer flex justify-center items-center text-4xl font-normal border border-dashed text-[#5D5FEF] hover:bg-[#A5A6F6]/30 border-[#5D5FEF] w-4/5 min-h-full rounded-xl">
+                    +
+                    <span className="tooltip-text p-3 rounded hidden group-hover:block text-base mb-24 absolute text-center py-2 px-6 z-5">new</span>
+                    <span className="tooltip-text p-3 rounded hidden group-hover:block text-base mb-14 absolute text-center py-2 px-6 z-5">nomination</span>
+                  </button>
                 </div>
 
               </div>
@@ -68,22 +69,33 @@ const Nominations = () => {
               <div className="flex">
 
                 {/* award history */}
-                <div className="w-2/3 bg-red-300">
-                  <h4>Award History</h4>
+                <div className="w-1/2 bg-white xl:p-6 p-3 rounded-l-2xl">
+                  <h4 className="font-semibold text-xl text-[#5D5FEF]">Award History</h4>
+
                   <div>
                     {[0, 1, 2].map((h, i) =>
-                    <div key={h}>
-                      <RiMedalLine className="text-[#383be2] text-3xl" />
+                    <div key={h} className="flex justify-between items-center p-5 rounded-2xl">
+                      <div className="p-3 flex justify-center items-center rounded-full drop-shadow-lg bg-white/60">
+                        <RiMedalLine className="text-[#383be2] text-3xl" />
+                      </div>
+                      <div>
                       <p>Purpose Award {h}50</p>
-                      <p className="text-sm">Jan 2{h}, 202{h}</p>
+                      <p className="text-xs font-thin text-slate-400">Jan 2{h}, 202{h}</p>
+
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-thin text-slate-400">nominator</p>
+                        <p>John D</p>
+                      </div>
                     </div>
                     )}
                   </div>
                 </div>
 
                 {/* staking actions */}
-                <div className="w-1/3 bg-slate-400">
-                  <h4>Skating</h4>
+                <div className="w-1/2 xl:p-6 p-3 bg-white bg-opacity-60 rounded-r-2xl">
+
+                  <h4 className="font-semibold text-xl text-[#5D5FEF]">Staking</h4>
                 </div>
 
               </div>

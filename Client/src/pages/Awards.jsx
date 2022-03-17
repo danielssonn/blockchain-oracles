@@ -44,10 +44,6 @@ const Awards = () => {
             <img className="w-4/5 m-auto" src={IMAGES.followings} alt="followings" />
           </div>
 
-          {/* Appreciate button */}
-          <button className="w-3/5 my-8 px-4 py-3 bg-[#5D5FEF] rounded-xl text-white font-semibold xl:text-lg text-base drop-shadow-md">
-            Appreciate
-          </button>
         </div>
       </div>
     </div>
