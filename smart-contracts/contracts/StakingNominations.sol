@@ -3,11 +3,12 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./StakingToken.sol";
 import "./RewardToken.sol";
 import "hardhat/console.sol";
 
-contract StakingNominations is Ownable {
+contract StakingNominations is Ownable, ReentrancyGuard {
     // ERC20 token we'll use to distribute rewards for staking
     IERC20 public rewardsToken;
 
@@ -23,7 +24,7 @@ contract StakingNominations is Ownable {
     // all nominators staking into a nominee
     mapping(address => address[]) public nomineeStakers;
 
-    // a nominator can nominate multiple nominees and stake towards them
+    // a nominator can nominate multiple nominees and stake towards them a given amounr
     mapping(address => mapping(address => uint256))
         public nominatorStakesBalance;
 
@@ -41,19 +42,25 @@ contract StakingNominations is Ownable {
         rewardsToken = IERC20(_rewardsToken);
     }
 
-    function stake(address _nominee, uint256 _amount) public {
-        _totalSupply += _amount;
-        _balances[msg.sender] += _amount;
-
+    function stake(address _nominee, uint256 _amount) public nonReentrant {
+        // 1. get the stake transferred
         stakingToken.transferFrom(msg.sender, address(this), _amount);
-        // set stake for a _nominee
+
+        // 2. if not reverted, update the staking balance for the staker and their stake. Could something go wrong here?
         nominatorStakesBalance[msg.sender][_nominee] =
             nominatorStakesBalance[msg.sender][_nominee] +
             _amount;
 
+        // 3. updated the staking lists
         nomineeStakers[_nominee].push(msg.sender);
-
         nominatorStakes[msg.sender].push(_nominee);
+
+        // 4. update total stakes. this is to save on gas when calculating the rewards eventually
+        _totalSupply += _amount;
+        _balances[msg.sender] += _amount;
+
+        // 6. publish staked event ...
+        emit Staked(msg.sender, _amount);
     }
 
     function rebalanceStakes(address winner) public onlyOwner {
@@ -64,10 +71,18 @@ contract StakingNominations is Ownable {
         }
     }
 
-    function withdraw(uint256 _amount) external updateReward(msg.sender) {
+    function withdraw(uint256 _amount)
+        external
+        nonReentrant
+        updateReward(msg.sender)
+    {
+        // UPDATE STAKING MAPPING HERE!
+
         _totalSupply -= _amount;
         _balances[msg.sender] -= _amount;
         stakingToken.transfer(msg.sender, _amount);
+
+        emit Withdrawn(msg.sender, _amount);
     }
 
     function getReward() external updateReward(msg.sender) {
@@ -101,4 +116,7 @@ contract StakingNominations is Ownable {
         userRewardPerTokenPaid[account] = rewardPerTokenStored;
         _;
     }
+
+    event Staked(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
 }
