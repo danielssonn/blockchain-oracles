@@ -71,12 +71,47 @@ contract StakingNominations is Ownable, ReentrancyGuard {
         }
     }
 
-    function withdraw(uint256 _amount)
+    function withdraw(address _nominee, uint256 _amount)
         external
         nonReentrant
         updateReward(msg.sender)
     {
         // UPDATE STAKING MAPPING HERE!
+
+        // Update the staking balance for the staker and their stake. Could something go wrong here?
+
+        nominatorStakesBalance[msg.sender][_nominee] =
+            nominatorStakesBalance[msg.sender][_nominee] -
+            _amount;
+
+        // remove the staker from nominator's list, if the staking balance is zero
+
+        if (nominatorStakesBalance[msg.sender][_nominee] == 0) {
+            // find the staker and remove from nominee list
+
+            for (uint256 i = 0; i < nomineeStakers[_nominee].length - 1; i++) {
+                if (nomineeStakers[_nominee][i] == msg.sender) {
+                    // remove first found msg.sender
+                    nomineeStakers[_nominee][i] = nomineeStakers[_nominee][
+                        nomineeStakers[_nominee].length - 1
+                    ];
+                    nomineeStakers[_nominee].pop();
+                }
+            }
+            for (
+                uint256 i = 0;
+                i < nominatorStakes[msg.sender].length - 1;
+                i++
+            ) {
+                if (nominatorStakes[msg.sender][i] == _nominee) {
+                    // remove first found _nominee
+                    nominatorStakes[msg.sender][i] = nominatorStakes[
+                        msg.sender
+                    ][nominatorStakes[msg.sender].length - 1];
+                    nominatorStakes[msg.sender].pop();
+                }
+            }
+        }
 
         _totalSupply -= _amount;
         _balances[msg.sender] -= _amount;
