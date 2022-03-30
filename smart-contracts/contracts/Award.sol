@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import "./IOracleClient.sol";
+import "./interfaces/IOracleClient.sol";
 import "./AwardCertificate.sol";
 import "./StakingNominations.sol";
 
@@ -30,6 +30,10 @@ contract Award is Ownable {
 
     address awardCertificateContract =
         0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+
+    address stakingToken = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+
+    address rewardToken = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
     // call pre-deployed contract
     // awardCertificate public awardCertificate = awardCertificate(awardCertificateContract);
@@ -62,7 +66,7 @@ contract Award is Ownable {
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
         awardCertificate = new AwardCertificate();
-        awardStaking = new StakingNominations();
+        awardStaking = new StakingNominations(stakingToken, rewardToken);
         hrAdapter = IOracleClient(_hrAdapter);
         amlAdapter = IOracleClient(_amlAdapter);
     }
