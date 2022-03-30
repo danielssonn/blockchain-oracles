@@ -119,7 +119,7 @@ contract Award is Ownable {
         totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
 
-    // Withdraw the monetary award, if vested ...
+    // Withdraw the monetary award, but only if vested ...
     function withdrawAwardETH(uint256 awardNumber) public payable {
         require(
             isAwardVested(msg.sender, awardNumber),

@@ -76,8 +76,6 @@ contract StakingNominations is Ownable, ReentrancyGuard {
         nonReentrant
         updateReward(msg.sender)
     {
-        // UPDATE STAKING MAPPING HERE!
-
         // Update the staking balance for the staker and their stake. Could something go wrong here?
 
         nominatorStakesBalance[msg.sender][_nominee] =
@@ -89,7 +87,7 @@ contract StakingNominations is Ownable, ReentrancyGuard {
         if (nominatorStakesBalance[msg.sender][_nominee] == 0) {
             // find the staker and remove from nominee list
 
-            for (uint256 i = 0; i < nomineeStakers[_nominee].length - 1; i++) {
+            for (uint256 i = 0; i < nomineeStakers[_nominee].length; i++) {
                 if (nomineeStakers[_nominee][i] == msg.sender) {
                     // remove first found msg.sender
                     nomineeStakers[_nominee][i] = nomineeStakers[_nominee][
@@ -98,11 +96,7 @@ contract StakingNominations is Ownable, ReentrancyGuard {
                     nomineeStakers[_nominee].pop();
                 }
             }
-            for (
-                uint256 i = 0;
-                i < nominatorStakes[msg.sender].length - 1;
-                i++
-            ) {
+            for (uint256 i = 0; i < nominatorStakes[msg.sender].length; i++) {
                 if (nominatorStakes[msg.sender][i] == _nominee) {
                     // remove first found _nominee
                     nominatorStakes[msg.sender][i] = nominatorStakes[
