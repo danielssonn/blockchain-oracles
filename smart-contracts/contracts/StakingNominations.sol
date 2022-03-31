@@ -9,33 +9,25 @@ import "./RewardToken.sol";
 import "hardhat/console.sol";
 
 contract StakingNominations is Ownable, ReentrancyGuard {
-    // ERC20 token we'll use to distribute rewards for staking
+    // Two ERC20 Tokens to drive staking and rewards
     IERC20 public rewardsToken;
-
-    // ERC20 token to make stakes
     IERC20 public stakingToken;
 
     uint256 public rewardRate = 100;
     uint256 public lastUpdateTime;
     uint256 public rewardPerTokenStored;
 
-    uint256 private _totalSupply;
-
-    // all nominators staking into a nominee
-    mapping(address => address[]) public nomineeStakers;
-
-    // a nominator can nominate multiple nominees and stake towards them a given amounr
-    mapping(address => mapping(address => uint256))
-        public nominatorStakesBalance;
-
-    // all nominees for a nominator
-    mapping(address => address[]) public nominatorStakes;
-
+    // Total stakes and individual stake balances and rewards
+    uint256 private _totalStakes;
+    mapping(address => uint256) private _balances;
+    mapping(address => uint256) public rewards;
     mapping(address => uint256) public userRewardPerTokenPaid;
 
-    mapping(address => uint256) public rewards;
-
-    mapping(address => uint256) private _balances;
+    // Individual mominators and their nominees with stakes
+    mapping(address => address[]) public nomineeStakers;
+    mapping(address => mapping(address => uint256))
+        public nominatorStakesBalance;
+    mapping(address => address[]) public nominatorStakes;
 
     constructor(address _stakingToken, address _rewardsToken) {
         stakingToken = IERC20(_stakingToken);
@@ -43,23 +35,23 @@ contract StakingNominations is Ownable, ReentrancyGuard {
     }
 
     function stake(address _nominee, uint256 _amount) public nonReentrant {
-        // 1. get the stake transferred
-        stakingToken.transferFrom(msg.sender, address(this), _amount);
-
-        // 2. if not reverted, update the staking balance for the staker and their stake. Could something go wrong here?
+        // 1. update the staking balance for the staker and their stake. Could something go wrong here?
         nominatorStakesBalance[msg.sender][_nominee] =
             nominatorStakesBalance[msg.sender][_nominee] +
             _amount;
 
-        // 3. updated the staking lists
+        // 2. updated the staking lists
         nomineeStakers[_nominee].push(msg.sender);
         nominatorStakes[msg.sender].push(_nominee);
 
-        // 4. update total stakes. this is to save on gas when calculating the rewards eventually
-        _totalSupply += _amount;
+        // 3. update total stakes. this is to save on gas when calculating the rewards eventually
+        _totalStakes += _amount;
         _balances[msg.sender] += _amount;
 
-        // 6. publish staked event ...
+        // 4. get the stake transferred
+        stakingToken.transferFrom(msg.sender, address(this), _amount);
+
+        // 5. publish staked event ...
         emit Staked(msg.sender, _amount);
     }
 
@@ -76,20 +68,17 @@ contract StakingNominations is Ownable, ReentrancyGuard {
         nonReentrant
         updateReward(msg.sender)
     {
-        // Update the staking balance for the staker and their stake. Could something go wrong here?
+        // 1.Update the staking balance for the staker and their stake. Could something go wrong here?
 
         nominatorStakesBalance[msg.sender][_nominee] =
             nominatorStakesBalance[msg.sender][_nominee] -
             _amount;
 
-        // remove the staker from nominator's list, if the staking balance is zero
+        // 2. remove the staker from nominee's list, if the staking balance is zero
 
         if (nominatorStakesBalance[msg.sender][_nominee] == 0) {
-            // find the staker and remove from nominee list
-
             for (uint256 i = 0; i < nomineeStakers[_nominee].length; i++) {
                 if (nomineeStakers[_nominee][i] == msg.sender) {
-                    // remove first found msg.sender
                     nomineeStakers[_nominee][i] = nomineeStakers[_nominee][
                         nomineeStakers[_nominee].length - 1
                     ];
@@ -98,7 +87,6 @@ contract StakingNominations is Ownable, ReentrancyGuard {
             }
             for (uint256 i = 0; i < nominatorStakes[msg.sender].length; i++) {
                 if (nominatorStakes[msg.sender][i] == _nominee) {
-                    // remove first found _nominee
                     nominatorStakes[msg.sender][i] = nominatorStakes[
                         msg.sender
                     ][nominatorStakes[msg.sender].length - 1];
@@ -106,12 +94,14 @@ contract StakingNominations is Ownable, ReentrancyGuard {
                 }
             }
         }
-
-        _totalSupply -= _amount;
+        // 3. update total stakes
+        _totalStakes -= _amount;
         _balances[msg.sender] -= _amount;
+
+        // 4. transfer staking token back
         stakingToken.transfer(msg.sender, _amount);
 
-        emit Withdrawn(msg.sender, _amount);
+        emit Harvested(msg.sender, _amount);
     }
 
     function getReward() external updateReward(msg.sender) {
@@ -121,13 +111,13 @@ contract StakingNominations is Ownable, ReentrancyGuard {
     }
 
     function rewardPerToken() public view returns (uint256) {
-        if (_totalSupply == 0) {
+        if (_totalStakes == 0) {
             return rewardPerTokenStored;
         }
         return
             rewardPerTokenStored +
             (((block.timestamp - lastUpdateTime) * rewardRate * 1e18) /
-                _totalSupply);
+                _totalStakes);
     }
 
     function earned(address account) public view returns (uint256) {
@@ -147,5 +137,6 @@ contract StakingNominations is Ownable, ReentrancyGuard {
     }
 
     event Staked(address indexed user, uint256 amount);
-    event Withdrawn(address indexed user, uint256 amount);
+    event Harvested(address indexed user, uint256 amount);
+    event Kept(address indexed user, uint256 amount);
 }

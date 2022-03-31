@@ -47,11 +47,6 @@ contract HRAdapter is ChainlinkClient {
             this.fulfill.selector
         );
 
-        // Multiply the result by 1000000000000000000 to remove decimals
-        int256 timesAmount = 10**18;
-        request.addInt("times", timesAmount);
-        request.add("from", "ETH");
-
         // Sends the request
         return sendChainlinkRequestTo(oracle, request, fee);
     }
