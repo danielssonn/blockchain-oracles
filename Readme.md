@@ -8,10 +8,9 @@
 
 ![](./assets/Tokenomics.png)
 
-**Incentives to nominate peers**
-![](./assets/Nomination.png)
 
 **Incentives to compete and recieve award**
+git commiy
 ![](./assets/Award%20Contract.png)
 
 ## Staking Contract Details
