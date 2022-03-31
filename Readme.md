@@ -4,14 +4,16 @@
 
 **[Design Principles](https://docs.google.com/presentation/d/1UZkhJqTsQ1D4cJM2yuyLzq9dN4dhGkqrkS6t7tTyMZw/edit?usp=sharing)**
 
-## Design Overview
-
 ![](./assets/Tokenomics.png)
 
 
-**Incentives to compete and recieve award**
-git commiy
+
+## Design Overview
+
+
 ![](./assets/Award%20Contract.png)
+
+
 
 ## Staking Contract Details
 
