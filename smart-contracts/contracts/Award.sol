@@ -42,6 +42,7 @@ contract Award is Ownable {
     AwardCertificate public awardCertificate;
     StakingNominations public awardStaking;
 
+
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) public wonAwards;
 
@@ -63,6 +64,7 @@ contract Award is Ownable {
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
         awardCertificate = new AwardCertificate();
+
         awardStaking = new StakingNominations(stakingToken, rewardToken);
         hrAdapter = IOracleClient(_hrAdapter);
         amlAdapter = IOracleClient(_amlAdapter);

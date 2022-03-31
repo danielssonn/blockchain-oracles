@@ -60,6 +60,9 @@ contract StakingNominations is Ownable, ReentrancyGuard {
         for (uint256 i = 0; i < nomineeStakers[winner].length; ++i) {
             // give them 10x?
             nominatorStakesBalance[nomineeStakers[winner][i]][winner] = 10;
+
+            // The full Tokenomic model will be implemented here
+
         }
     }
 
