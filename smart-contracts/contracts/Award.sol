@@ -35,6 +35,8 @@ contract Award is Ownable {
 
     address rewardToken = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
+    // date until when will this award run
+
     uint awardCycleLength = 52 weeks; 
     
     uint public awardDate = 0; 
