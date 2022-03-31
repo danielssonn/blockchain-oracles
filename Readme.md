@@ -1,11 +1,10 @@
 ## Stake in Success - new incentive system for success recognition
 
 **[Incentive theory](/Incentives.md)**
-
-**[Design Principles](https://docs.google.com/presentation/d/1UZkhJqTsQ1D4cJM2yuyLzq9dN4dhGkqrkS6t7tTyMZw/edit?usp=sharing)**
-
 ![](./assets/Tokenomics.png)
 
+
+**[Design Principles](https://docs.google.com/presentation/d/1UZkhJqTsQ1D4cJM2yuyLzq9dN4dhGkqrkS6t7tTyMZw/edit?usp=sharing)**
 
 
 ## Design Overview
