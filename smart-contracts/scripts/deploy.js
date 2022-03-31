@@ -10,10 +10,12 @@ async function main() {
   // await awardNFT.deployed()
   // console.log("Award contract deployed to address:", awardNFT.address)
 
-  const AwardNFT = await ethers.getContractFactory("Award")
-  const awardNFT = await AwardNFT.deploy("0xB84c29CcDa612a5A63B8e3159Dc7fBe84fe9367c")
-  await awardNFT.deployed()
-  console.log("Award contract deployed to address:", awardNFT.address)
+
+  // 1. deploy StakingToken
+  // 2. deploy RewardToken
+  // 3. deploy Oracles
+  // 4. deploy Award 
+
 }
 
 main()

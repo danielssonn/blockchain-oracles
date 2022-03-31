@@ -6,11 +6,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import "./IOracleClient.sol";
+import "./interfaces/IOracleClient.sol";
 import "./AwardCertificate.sol";
-import "./AwardNomination.sol";
-
-
+import "./StakingNominations.sol";
 
 contract Award is Ownable {
     // oracleClient to get to off chain HR
@@ -30,16 +28,20 @@ contract Award is Ownable {
     // 10 days award vesting - we are so generous!
     uint256 awardVestingTime = 10;
 
-    address awardCertificateContract = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+    address awardCertificateContract =
+        0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+
+    address stakingToken = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
+
+    address rewardToken = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
     // call pre-deployed contract
     // awardCertificate public awardCertificate = awardCertificate(awardCertificateContract);
 
     // deploy on the fly
     AwardCertificate public awardCertificate;
-    AwardNomination public awardNomination;
+    StakingNominations public awardStaking;
 
-    
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) public wonAwards;
@@ -56,16 +58,14 @@ contract Award is Ownable {
     // Unique hash representing the winner in off-chain systems
     mapping(address => bytes32) public winnerOffChain;
 
-    // Manage the AML pass. @TODO: The AMLAdapter Oracle should update this
+    // Manage the AML pass
     mapping(address => bool) public winnerAMLCheck;
 
-    /**
-    
-     */
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
         awardCertificate = new AwardCertificate();
-        awardNomination = new AwardNomination();
+
+        awardStaking = new StakingNominations(stakingToken, rewardToken);
         hrAdapter = IOracleClient(_hrAdapter);
         amlAdapter = IOracleClient(_amlAdapter);
     }
@@ -79,12 +79,15 @@ contract Award is Ownable {
         totalAwardBudget = totalAwardBudget + msg.value;
     }
 
-    function setCertificateContract(address nftContractAddress) public onlyOwner {
+    function setCertificateContract(address nftContractAddress)
+        public
+        onlyOwner
+    {
         awardCertificateContract = nftContractAddress;
     }
 
     // Minting will create a certificare, move some money from the budget to winner's balance where we'll stake it for a bit
-    // Minting will also update the AwardToken distribution in AwardNomination contract, rewarding those who staked the right winner
+    // Minting will also update the AwardToken distribution in awardStaking contract, rewarding those who staked the right winner
     // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract through DAO voting!
     // For now, we'll select an arbitrary winner
     function mintWinner(address winner, string memory tokenURI)
@@ -110,12 +113,12 @@ contract Award is Ownable {
         mintedCertificates[winner][awardNumberForWinner] = nftItemId;
         winnerOffChain[winner] = keccak256(abi.encodePacked(winner));
 
-        awardNomination.rebalanceStakes(winner);
+        awardStaking.rebalanceStakes(winner);
 
         totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
 
-    // Withdraw the monetary award, if vested ...
+    // Withdraw the monetary award, but only if vested ...
     function withdrawAwardETH(uint256 awardNumber) public payable {
         require(
             isAwardVested(msg.sender, awardNumber),
@@ -185,11 +188,10 @@ contract Award is Ownable {
         return false;
     }
 
-    function getAwardCertificateItemId(address winnerAddress, uint256 awardNumber)
-        public
-        view
-        returns (uint256)
-    {
+    function getAwardCertificateItemId(
+        address winnerAddress,
+        uint256 awardNumber
+    ) public view returns (uint256) {
         return mintedCertificates[winnerAddress][awardNumber];
     }
 
