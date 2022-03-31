@@ -1,7 +1,18 @@
+import { Nominee, Nominator } from './pages';
+
 const App = () => {
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello World!</h1>
+    // <BrowserRouter>
+    //   <div className="min-h-screen">
+    //     <Switch>
+    //       <Route path="/" component={Nominee} exact />
+    //       <Route path="/nominator" component={Nominator} exact />
+    //     </Switch>
+    //   </div>
+    // </BrowserRouter>
+
+    <div className="min-h-screen">
+      <Nominee />
     </div>
   );
 };
