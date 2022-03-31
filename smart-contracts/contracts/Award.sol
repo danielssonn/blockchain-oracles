@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "./interfaces/IOracleClient.sol";
 import "./AwardCertificate.sol";
-import "./StakingNominations.sol";
+import "./Staking.sol";
 
 contract Award is Ownable {
     // oracleClient to get to off chain HR
@@ -35,12 +35,19 @@ contract Award is Ownable {
 
     address rewardToken = 0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
+    // date until when will this award run
+
+    uint awardCycleLength = 52 weeks; 
+    
+    uint public awardDate = 0; 
+
+
     // call pre-deployed contract
     // awardCertificate public awardCertificate = awardCertificate(awardCertificateContract);
 
     // deploy on the fly
     AwardCertificate public awardCertificate;
-    StakingNominations public awardStaking;
+    Staking public awardStaking;
 
 
     // Winner can have mutiple awards, concurrently
@@ -63,9 +70,11 @@ contract Award is Ownable {
 
     constructor(address _hrAdapter, address _amlAdapter) {
         _owner = msg.sender;
+
+        awardDate = block.timestamp + awardCycleLength;
         awardCertificate = new AwardCertificate();
 
-        awardStaking = new StakingNominations(stakingToken, rewardToken);
+        awardStaking = new Staking(stakingToken, rewardToken);
         hrAdapter = IOracleClient(_hrAdapter);
         amlAdapter = IOracleClient(_amlAdapter);
     }

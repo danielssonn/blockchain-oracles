@@ -8,7 +8,7 @@ import "./StakingToken.sol";
 import "./RewardToken.sol";
 import "hardhat/console.sol";
 
-contract StakingNominations is Ownable, ReentrancyGuard {
+contract Staking is Ownable, ReentrancyGuard {
     // Two ERC20 Tokens to drive staking and rewards
     IERC20 public rewardsToken;
     IERC20 public stakingToken;
@@ -66,7 +66,7 @@ contract StakingNominations is Ownable, ReentrancyGuard {
         }
     }
 
-    function withdraw(address _nominee, uint256 _amount)
+    function unStake(address _nominee, uint256 _amount)
         external
         nonReentrant
         updateReward(msg.sender)
@@ -104,13 +104,14 @@ contract StakingNominations is Ownable, ReentrancyGuard {
         // 4. transfer staking token back
         stakingToken.transfer(msg.sender, _amount);
 
-        emit Harvested(msg.sender, _amount);
+        emit Unstaked(msg.sender, _amount);
     }
 
-    function getReward() external updateReward(msg.sender) {
+    function harvest() external updateReward(msg.sender) {
         uint256 reward = rewards[msg.sender];
         rewards[msg.sender] = 0;
         rewardsToken.transfer(msg.sender, reward);
+        emit Harvested(msg.sender,reward);
     }
 
     function rewardPerToken() public view returns (uint256) {
@@ -140,6 +141,8 @@ contract StakingNominations is Ownable, ReentrancyGuard {
     }
 
     event Staked(address indexed user, uint256 amount);
+    event Unstaked(address indexed user, uint256 amount);
+
     event Harvested(address indexed user, uint256 amount);
     event Kept(address indexed user, uint256 amount);
 }
