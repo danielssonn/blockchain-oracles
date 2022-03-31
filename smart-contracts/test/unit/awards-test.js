@@ -42,6 +42,10 @@ describe("Award budget pre setup", function () {
             expect(award.mintWinner(owner.address, "https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1")).to.be.revertedWith('Sorry, the organizers cannot win awards!');
         });
 
+        it("Should set award cycle", async function () {
+            expect(await award.awardDate()).to.be.above(0);
+        });
+
 
         describe("Mint Award", function () {
             before(async function () {
