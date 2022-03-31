@@ -8,13 +8,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "chart.js": "^3.7.1",
     "ethers": "^5.5.4",
     "react": "^17.0.2",
     "react-anchor-link-smooth-scroll": "^1.0.12",
+    "react-chartjs-2": "^4.0.1",
+    "react-charts": "^3.0.0-beta.35",
     "react-countup": "^6.1.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.2",
+    "recharts": "^2.1.9",
     "smoothscroll-polyfill": "^0.4.4",
     "styled-components": "^5.3.3",
     "tailwindcss-neumorphism": "^0.1.0"

@@ -11,10 +11,19 @@ module.exports = {
       },
       backgroundImage: {
         dashboard: "url('./images/bg-dashboard.png')",
-        nomination: "url('./images/bg-nomi.png')"
+        trophy: "url('./images/trophy.png')",
+        crown: "url('./images/crown.png')",
+        rocket: "url('./images/rocket.png')",
+        tree: "url('./images/tree.png')",
+        coins: "url('./images/coins.png')",
+        rank: "url('./images/rank.png')",
+        eth: "url('./images/eth.png')"
       }
     },
     height: {
+      '1/3': '33.333333%',
+      '2/5': '40%',
+      '4/5': '80%',
       '10v': '10vh',
       '20v': '20vh',
       '30v': '30vh',

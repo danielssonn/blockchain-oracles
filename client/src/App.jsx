@@ -1,11 +1,11 @@
-import { Winner } from './pages';
+import { Staking } from './pages'
 
 const App = () => {
   return (
     <div className="min-h-screen">
-      <Winner />
+      <Staking />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
