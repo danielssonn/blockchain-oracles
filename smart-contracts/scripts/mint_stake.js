@@ -8,69 +8,75 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(ALCHEMY_API_URL)
 
 
+const  stakingTokencABI = require("../artifacts/contracts/StakingToken.sol/StakingToken.json")
+const  stakingTokenAddress = "0x8AD480A0f14aa1E4e79Bc767D5A2f48D49172abB"
+const  stakingTokenContract = new web3.eth.Contract(stakingTokencABI.abi, stakingTokenAddress)
 
+const stakingContractABI = require("../artifacts/contracts/Staking.sol/Staking.json")
+const stakingContractAddress = "0xC3ea941fDf8347835Af3E82b1B6C3065c4A43e55"
+const stakingContract = new web3.eth.Contract(stakingContractABI.abi, stakingContractAddress)
+
+const stakee = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6";
+
+
+
+/**
+ * 1. Let's give ourselves some staking tokens, so we can stake. Transfer from the StakingToken supply to our wallet's address.
+ */
 async function transferTokens() {
-    contract = require("../artifacts/contracts/StakingToken.sol/StakingToken.json")
-    contractAddress = "0x90Da70646c80Cb1CdeAbE996B729809809983e54"
-    stakingTokenContract = new web3.eth.Contract(contract.abi, contractAddress)
-
-
-    // Au MANUEL! Shift stick FTW! Save the manuals!
+    
 
     const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
     const tx = {
         from: PUBLIC_KEY,
-        to: contractAddress,
+        to: stakingTokenAddress,
         nonce: nonce,
         gas: 500000,
-        data: stakingTokenContract.methods.transfer("0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6", 10*18).encodeABI(),
+        data: stakingTokenContract.methods.transfer(PUBLIC_KEY, 10*18).encodeABI(),
     }
 
     signAndSend(tx);
 }
 
+
+/**
+ * 2. Staking will be done by the Staking contract. We need to approve the Staking contract to transferFrom on the StakingToken contract
+ */
 async function approve() {
-    contract = require("../artifacts/contracts/StakingToken.sol/StakingToken.json")
-    contractAddress = "0x90Da70646c80Cb1CdeAbE996B729809809983e54"
-    stakingTokenContract = new web3.eth.Contract(contract.abi, contractAddress)
-
-
-    // Au MANUEL! Shift stick FTW! Save the manuals!
-
+   
     const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
     const tx = {
         from: PUBLIC_KEY,
-        to: contractAddress,
+        to: stakingTokenAddress,
         nonce: nonce,
         gas: 500000,
-        data: stakingTokenContract.methods.approve('0xC3ea941fDf8347835Af3E82b1B6C3065c4A43e55', 100*18).encodeABI(),
+        data: stakingTokenContract.methods.approve(stakingContractAddress, 10*18).encodeABI(),
     }
 
     signAndSend(tx);
 }
 
-
+/**
+ * 3. Stake!
+ */
 async function stakeTokens(){
-    contract = require("../artifacts/contracts/Staking.sol/Staking.json")
-    contractAddress = "0xC3ea941fDf8347835Af3E82b1B6C3065c4A43e55"
-    stakingContract = new web3.eth.Contract(contract.abi, contractAddress)
 
     const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
         
         const tx = {
             from: PUBLIC_KEY,
-            to: contractAddress,
+            to: stakingContractAddress,
             nonce: nonce,
             gas: 500000,
-            data: stakingContract.methods.stake("0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6", 10*18).encodeABI(),
+            data: stakingContract.methods.stake(stakee, 10*18).encodeABI(),
         }    
     
-        signAndSend(tx);
+    signAndSend(tx);
 
 }
 
 function signAndSend(tx){
-    const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
+    const signPromise =  web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
 
     signPromise
         .then((signedTx) => {
@@ -99,6 +105,10 @@ function signAndSend(tx){
 
 }
 
-// transferTokens()
-// approve()
-// stakeTokens()
+// Run one by one to see how it works, verify mempool in Alchemy, Wallet and contract balances ...
+
+transferTokens();
+// approve();
+// stakeTokens();    
+
+
