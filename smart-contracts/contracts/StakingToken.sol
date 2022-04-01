@@ -5,7 +5,15 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract StakingToken is ERC20, Ownable {
-    constructor(uint256 initialSupply) ERC20("Staking Token", "STKTKN") {
-        _mint(msg.sender, initialSupply);
+    uint constant _initial_supply = 1000 * (10**18);
+    constructor() ERC20("Staking Token", "STKTKN") {
+        _mint(msg.sender, _initial_supply);
     }
+
+    function _testReplenishSupply(uint256 amount) public onlyOwner{
+        _mint(msg.sender, amount*(10*18));
+    }
+
+
+
 }

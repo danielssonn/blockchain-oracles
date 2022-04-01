@@ -10,7 +10,6 @@
 ![](./assets/Award%20Contract.png)
 
 
-
 ## Staking Contract Details
 
 - [x] Staking creates an incentive model for anyone to stake into other people's success
@@ -18,8 +17,10 @@
 - [x] Two ERC20 tokens drive staking - StakingToken and RewardToken
 - [x] StakingTokens are distributed to everyone
 - [x] Supply and distribution of RewardTokens is controlled to increase value and decrease inflationary pressure
-- [x] StakingNominations allows staking, withdrawals and reward management
+- [x] Staking allows staking, withdrawals and reward management
 - [x] Award contract will rebalance the staking rewards upon minting Award winners
+
+https://kovan.etherscan.io/address/0xc3ea941fdf8347835af3e82b1b6c3065c4a43e55#code
 
 ## Award Contract Details
 
@@ -32,6 +33,12 @@
 - [x] Award will not be minted for organizers
 - [x] On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list' via Oracle
 - [x] Off-chain HR check will be performed to ensure the award winner is still an employee when collecting award
+
+https://kovan.etherscan.io/address/0x4AFA778a878EefF963E5b7EB82AB7aEa5ffDE7dF#code
+
+## Staking Token
+
+https://kovan.etherscan.io/address/0x8AD480A0f14aa1E4e79Bc767D5A2f48D49172abB#code
 
 
 
