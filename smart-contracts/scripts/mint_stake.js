@@ -35,7 +35,7 @@ async function transferTokens() {
         data: stakingTokenContract.methods.transfer(PUBLIC_KEY, 10*18).encodeABI(),
     }
 
-    signAndSend(tx);
+    await signAndSend(tx);
 }
 
 
@@ -53,7 +53,7 @@ async function approve() {
         data: stakingTokenContract.methods.approve(stakingContractAddress, 10*18).encodeABI(),
     }
 
-    signAndSend(tx);
+   await  signAndSend(tx);
 }
 
 /**
@@ -71,44 +71,29 @@ async function stakeTokens(){
             data: stakingContract.methods.stake(stakee, 10*18).encodeABI(),
         }    
     
-    signAndSend(tx);
+    await signAndSend(tx);
 
 }
 
-function signAndSend(tx){
-    const signPromise =  web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
+async function signAndSend(tx){
+  
+    const signed  = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY);
+    const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
 
-    signPromise
-        .then((signedTx) => {
-            console.log("sending signed transaction")
-            web3.eth.sendSignedTransaction(
-                signedTx.rawTransaction,
-                function (err, hash) {
-                    if (!err) {
-                        console.log(
-                            "The hash of your transaction is: ",
-                            hash,
-                            "\nCheck Alchemy's Mempool to view the status of your transaction!"
-                        )
-                    } else {
-                        console.log(
-                            "Something went wrong when submitting your transaction:",
-                            err
-                        )
-                    }
-                }
-            )
-        })
-        .catch((err) => {
-            console.log("Promise failed:", err)
-        })
+    console.log(receipt)
+       
+    
+}
+
+async function  main(){
+    
+    await transferTokens();
+    await approve();
+    await stakeTokens();  
 
 }
 
-// Run one by one to see how it works, verify mempool in Alchemy, Wallet and contract balances ...
-
-transferTokens();
-// approve();
-// stakeTokens();    
+main();
+  
 
 
