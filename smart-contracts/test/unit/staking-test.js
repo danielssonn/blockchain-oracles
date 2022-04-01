@@ -11,8 +11,8 @@ describe("Basic Staking", function () {
         StakingToken = await hre.ethers.getContractFactory("StakingToken");
         RewardToken = await hre.ethers.getContractFactory("RewardToken");
 
-        stakingTKN = await StakingToken.deploy(1000);
-        rewardTKN = await RewardToken.deploy(100);
+        stakingTKN = await StakingToken.deploy();
+        rewardTKN = await RewardToken.deploy();
 
         staking = await Staking.deploy(stakingTKN.address, rewardTKN.address);
         await stakingTKN.transfer(addr1.address, 10)
