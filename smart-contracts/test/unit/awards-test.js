@@ -3,7 +3,7 @@ const { ethers } = require("hardhat")
 
 
 
-describe("Award budget not setup", function () {
+describe("Award budget pre setup", function () {
 
     before(async function () {
         MockOracle = await hre.ethers.getContractFactory("MockOracleClient");
@@ -40,6 +40,10 @@ describe("Award budget not setup", function () {
 
         it("Should revert for wrong winner", async function () {
             expect(award.mintWinner(owner.address, "https://gateway.pinata.cloud/ipfs/QmXreJ8rdSBihsDSVKkNG4J44VDJ8Et6bDsKdmBdfGyXH1")).to.be.revertedWith('Sorry, the organizers cannot win awards!');
+        });
+
+        it("Should set award cycle", async function () {
+            expect(await award.awardDate()).to.be.above(0);
         });
 
 
@@ -80,19 +84,17 @@ describe("Award budget not setup", function () {
 
                 it("Should get award not vested yet", async function () {
 
-                    expect(await award.isAwardVested(addr1.address, 2)).to.equal(false)
+                    expect(await award.isAwardVested(addr1.address, 1)).to.equal(false)
 
                 });
 
                 it("Should not be withdrawable if not vested and revert", async function () {
 
-                    expect(award.withdrawAwardETH(2)).to.be.revertedWith('This award still needs to vest');
+                     expect(award.connect(addr1).withdrawAwardETH(1)).to.be.revertedWith('This award still needs to vest');
 
                 });
 
-                it("Should not be withdrawable if not longer employed", async function () {
 
-                });
 
 
             })

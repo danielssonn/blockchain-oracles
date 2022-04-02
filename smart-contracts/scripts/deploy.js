@@ -1,19 +1,41 @@
 async function main() {
-  // const Award = await ethers.getContractFactory("Award")
-  // const award = await Award.deploy()
-  // await award.deployed()
-  // console.log("Award contract deployed to address:", award.address)
 
 
-  // const AwardNFT = await ethers.getContractFactory("AwardNFT")
-  // const awardNFT = await AwardNFT.deploy()
-  // await awardNFT.deployed()
-  // console.log("Award contract deployed to address:", awardNFT.address)
 
-  const AwardNFT = await ethers.getContractFactory("Award")
-  const awardNFT = await AwardNFT.deploy("0xB84c29CcDa612a5A63B8e3159Dc7fBe84fe9367c")
-  await awardNFT.deployed()
-  console.log("Award contract deployed to address:", awardNFT.address)
+  // const StakingToken = await ethers.getContractFactory("StakingToken")
+  // const stakingTKN = await StakingToken.deploy()
+  // await stakingTKN.deployed()
+  // console.log("StakingTKN contract deployed to address:", stakingTKN.address)
+
+
+  // const RewardToken = await ethers.getContractFactory("RewardToken")
+  // const rewardTKN = await RewardToken.deploy()
+  // await rewardTKN.deployed()
+  // console.log("RewardTKN contract deployed to address:", rewardTKN.address)
+
+  const AMLAdapter = await ethers.getContractFactory("AMLAdapter")
+  const amlAdapter = await AMLAdapter.deploy()
+  await amlAdapter.deployed()
+  console.log("AML Oracle contract deployed to address:", amlAdapter.address)
+
+
+  const HRAdapter = await ethers.getContractFactory("HRAdapter")
+  const hrAdapter = await HRAdapter.deploy()
+  await hrAdapter.deployed()
+  console.log("HR Oracle contract deployed to address:", hrAdapter.address)
+
+
+  const Award = await ethers.getContractFactory("Award")
+  const award = await Award.deploy(hrAdapter.address, amlAdapter.address)
+  await award.deployed()
+  console.log("Award contract deployed to address:", award.address)
+
+
+  // 1. deploy StakingToken
+  // 2. deploy RewardToken
+  // 3. deploy Oracles - see ../../oracles 
+  // 4. deploy Award 
+
 }
 
 main()
