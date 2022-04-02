@@ -29,6 +29,10 @@ contract Staking is Ownable, ReentrancyGuard {
         public nominatorStakesBalance;
     mapping(address => address[]) public nominatorStakes;
 
+    mapping(address => uint256) public stakes;
+    mapping(address => uint256) public stakers;
+
+
     constructor(address _stakingToken, address _rewardsToken) {
         stakingToken = IERC20(_stakingToken);
         rewardsToken = IERC20(_rewardsToken);
@@ -48,10 +52,14 @@ contract Staking is Ownable, ReentrancyGuard {
         _totalStakes += _amount;
         _balances[msg.sender] += _amount;
 
-        // 4. get the stake transferred
+        // 4. update total stakes and staker
+        stakes[msg.sender]++;
+        stakers[_nominee]++; 
+
+        // 5. get the stake transferred
         stakingToken.transferFrom(msg.sender, address(this), _amount);
 
-        // 5. publish staked event ...
+        // 6. publish staked event ...
         emit Staked(msg.sender, _amount);
     }
 
@@ -77,7 +85,10 @@ contract Staking is Ownable, ReentrancyGuard {
             nominatorStakesBalance[msg.sender][_nominee] -
             _amount;
 
-        // 2. remove the staker from nominee's list, if the staking balance is zero
+         // 2. update total stakes and staker
+        stakes[msg.sender]--;
+        stakers[_nominee]--; 
+        // 3. remove the staker from nominee's list, if the staking balance is zero
 
         if (nominatorStakesBalance[msg.sender][_nominee] == 0) {
             for (uint256 i = 0; i < nomineeStakers[_nominee].length; i++) {
@@ -138,6 +149,38 @@ contract Staking is Ownable, ReentrancyGuard {
         rewards[account] = earned(account);
         userRewardPerTokenPaid[account] = rewardPerTokenStored;
         _;
+    }
+
+
+    // funky solidity getters for the two arrays of stakers and stakees
+    // mapping(address => address[]) public nomineeStakers;
+    // mapping(address => address[]) public nominatorStakes;
+
+
+    // Some funky Solidity stuff to return the mapping values ...
+    function getAllStakes(address staker)
+        public
+        view
+        returns (address[] memory)
+    {
+        address[] memory ret = new address[](stakes[staker]);
+        for (uint256 i = 0; i < stakes[staker]; i++) {
+
+            ret[i] = nominatorStakes[staker][i];
+        }
+        return ret;
+    }
+
+    function getAllStakers(address stakee)
+        public
+        view
+        returns (address[] memory)
+    {
+        address[] memory ret = new address[](stakers[stakee]);
+        for (uint256 i = 0; i < stakers[stakee]; i++) {
+            ret[i] = nomineeStakers[stakee][i];
+        }
+        return ret;
     }
 
     event Staked(address indexed user, uint256 amount);

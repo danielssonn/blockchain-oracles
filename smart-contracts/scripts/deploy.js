@@ -13,20 +13,20 @@ async function main() {
   // await rewardTKN.deployed()
   // console.log("RewardTKN contract deployed to address:", rewardTKN.address)
 
-  const AMLAdapter = await ethers.getContractFactory("AMLAdapter")
-  const amlAdapter = await AMLAdapter.deploy()
-  await amlAdapter.deployed()
-  console.log("AML Oracle contract deployed to address:", amlAdapter.address)
+  // const AMLAdapter = await ethers.getContractFactory("AMLAdapter")
+  // const amlAdapter = await AMLAdapter.deploy()
+  // await amlAdapter.deployed()
+  // console.log("AML Oracle contract deployed to address:", amlAdapter.address)
 
 
-  const HRAdapter = await ethers.getContractFactory("HRAdapter")
-  const hrAdapter = await HRAdapter.deploy()
-  await hrAdapter.deployed()
-  console.log("HR Oracle contract deployed to address:", hrAdapter.address)
+  // const HRAdapter = await ethers.getContractFactory("HRAdapter")
+  // const hrAdapter = await HRAdapter.deploy()
+  // await hrAdapter.deployed()
+  // console.log("HR Oracle contract deployed to address:", hrAdapter.address)
 
 
   const Award = await ethers.getContractFactory("Award")
-  const award = await Award.deploy(hrAdapter.address, amlAdapter.address)
+  const award = await Award.deploy('0x5fbd2a860d007d54c5b698b0efcd150f8c8cc7d1', '0x6771a1bebac8ff6affc2b88f6240b694675af251')
   await award.deployed()
   console.log("Award contract deployed to address:", award.address)
 
