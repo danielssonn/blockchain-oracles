@@ -7,7 +7,7 @@ import { BiCrown } from 'react-icons/bi'
 
 const WinnerCard = () => {
   return (
-    <div className="rounded-lg  bg-white/60 drop-shadow-md mb-5">
+    <div className="rounded-lg  w-1/4 bg-white/60 drop-shadow-md mr-4">
 
       <div className="flex pr-4 rounded-t-lg items-center justify-between mb-2 border-b bg-[#5841f0]">
         <img src={IMAGES.nf4} alt="person1" className="w-1/5 rounded-tl-lg"/>
@@ -30,7 +30,7 @@ const WinnerCard = () => {
 
           <div className="w-1/2" >
             <p className="text-xs font-thin text-stone-600">Earned</p>
-            <p className="text-xl font-semibold text-[#3926AD]">150 Tokens</p>
+            <p className="font-normal text-[#3926AD]">150 Tokens</p>
           </div>
 
         </div>
@@ -45,15 +45,9 @@ const WinnerCard = () => {
             <p className="text-xs font-thin text-stone-600">% Return</p>
             <div className="flex items-center">
               <MdArrowCircleUp className="text-emerald-700 mr-2 text-xl font-semibold"/>
-              <p className="text-xl font-semibold text-emerald-700">150%</p>
+              <p className="font-normal text-emerald-700">150%</p>
             </div>
           </div>
-
-        </div>
-
-        <div className="flex items-center">
-          <button className="mr-2 w-1/2 py-1 px-5 border bg-white/80 border-[#3926AD] text-[#3926AD] text-sm font-semibold">Keep</button>
-          <button className="mr-2 w-1/2 py-1 px-5 border bg-white/80 border-[#3926AD] text-[#3926AD] text-sm font-semibold">Harvest</button>
 
         </div>
 

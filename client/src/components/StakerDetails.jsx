@@ -1,12 +1,12 @@
 const StakerDetails = () => {
   return (
 
-    <div className="py-6 pr-6 rounded-r-lg bg-white/60 ">
+    <div className="p-6 rounded-r-lg bg-white/60 ">
       <h4 className="mb-3 text-right text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
         <span className="text-sm text-[#5753C9] py-2 px-4 ml-4 font-thin rounded-full">3 stakers | 600 tokens in the pool</span>
       </h4>
 
-      <div className="rounded-lg border border-[#3926AD] flex items-center">
+      <div className="rounded-lg border border-[#3926AD] flex items-center mb-3">
         {/* staking data */}
         <div className="w-2/5 my-8 mx-4 border-r border-[#3926AD]/40">
           <div className="mb-5">

@@ -17,7 +17,9 @@ module.exports = {
         tree: "url('./images/tree.png')",
         coins: "url('./images/coins.png')",
         rank: "url('./images/rank.png')",
-        eth: "url('./images/eth.png')"
+        eth: "url('./images/eth.png')",
+        sand: "url('./images/sand.png')",
+        staking: "url('./images/staking.png')"
       }
     },
     height: {

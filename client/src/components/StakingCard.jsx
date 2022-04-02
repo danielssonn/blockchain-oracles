@@ -6,7 +6,7 @@ import { BiLockAlt } from 'react-icons/bi'
 
 const StakingCard = () => {
   return (
-    <div className="rounded-lg  bg-white/60 drop-shadow-md">
+    <div className="w-1/4 rounded-lg  bg-white/60 drop-shadow-md mr-4">
 
       <div className="flex pr-4 rounded-t-lg items-center justify-between mb-2 border-b bg-white">
         <img src={IMAGES.nf7} alt="person1" className="w-1/5 rounded-tl-lg"/>

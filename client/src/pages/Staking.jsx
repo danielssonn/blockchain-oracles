@@ -46,6 +46,7 @@ const Staking = () => {
           <div className="bg-[#F4F5FB] rounded-full cursor-pointer mr-3">
             <FiMoreVertical className="text-[#5D5FEF] text-lg m-3"/>
           </div>
+          <button className="py-2 px-6 font-semibold text-white bg-[#5841f0] rounded-lg">Connect Wallet</button>
 
         </div>
 
@@ -61,9 +62,9 @@ const Staking = () => {
 
             <div className="rounded-lg mr-2 py-6 pr-6 bg-trophy bg-contain bg-no-repeat flex flex-col">
               <div className="rounded-lg p-4 text-transparent text-6xl font-extrabold bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
-                <h1>STAKE</h1>
-                <h1>ON THE</h1>
-                <h1>SUCCESS</h1>
+                <h1 className="mb-4">Work Together</h1>
+                <h1>Win Together</h1>
+                {/* <h1>SUCCESS</h1> */}
               </div>
             </div>
 
@@ -89,165 +90,97 @@ const Staking = () => {
         </div>
 
         {/* staking investments */}
-        <div>
-          <div className="flex rounded-lg">
+        <div className="flex bg-[#E5F3FF] rounded-lg p-6 mb-4">
 
-            {/* investment list */}
-            <div className="w-4/12 bg-[#E5F3FF] rounded-lg p-6 bg-rank bg-bottom bg-no-repeat">
+          {/* search */}
+          <div className="w-3/12 mr-2">
 
-              {/* table */}
-              <div className="w-full mt-2">
-
-                <h4 className="font-semibold text-[#5D5FEF] mb-3">Popular Candidates</h4>
-
-                {/* title */}
-                <div className="flex items-center p-2 bg-white text-sm text-gray-600 rounded-t-md border-b">
-                  <p className="w-1/5"></p>
-                  <p className="w-1/5">Name</p>
-                  <p className="w-1/5">Tokens in pool</p>
-                  <p className="w-1/5">Stakers</p>
-                </div>
-
-                {/* body */}
-                <div className="bg-white/60 rounded-b-md p-2 text-sm">
-
-                  {/* table row */}
-                  <div className="flex items-center py-2 border-b">
-                    <div className="w-1/5 flex justify-center">
-                      <img src={IMAGES.nf8} alt="person1" className="w-1/2 rounded-full bg-[#383be2]/60"/>
-                    </div>
-
-                    <p className="w-1/5">John D.</p>
-                    <p className="w-1/5">1,000</p>
-                    <p className="w-1/5">8</p>
-                    <button className="w-1/5 py-1 px-2 border border-[#3926AD] text-[#3926AD] text-sm font-semibold">Stake</button>
-
-                  </div>
-
-                  <div className="flex items-center py-2 border-b">
-                    <div className="w-1/5 flex justify-center">
-                      <img src={IMAGES.nf5} alt="person1" className="w-1/2 rounded-full bg-[#383be2]/60"/>
-                    </div>
-
-                    <p className="w-1/5">Lucas L.</p>
-                    <p className="w-1/5">800</p>
-                    <p className="w-1/5">12</p>
-                    <button className="w-1/5 py-1 px-2 border border-[#3926AD] text-[#3926AD] text-sm font-semibold">Stake</button>
-
-                  </div>
-
-                  <div className="flex items-center py-2 border-b">
-                    <div className="w-1/5 flex justify-center">
-                      <img src={IMAGES.nf9} alt="person1" className="w-1/2 rounded-full bg-[#383be2]/60"/>
-                    </div>
-
-                    <p className="w-1/5">Boróka M.</p>
-                    <p className="w-1/5">650</p>
-                    <p className="w-1/5">4</p>
-                    <button className="w-1/5 py-1 px-2 border border-[#3926AD] text-[#3926AD] text-sm font-semibold">Stake</button>
-
-                  </div>
-
-                  <div className="flex items-center py-2 border-b">
-                    <div className="w-1/5 flex justify-center">
-                      <img src={IMAGES.nf6} alt="person1" className="w-1/2 rounded-full bg-[#383be2]/60"/>
-                    </div>
-
-                    <p className="w-1/5">Kamaria L.</p>
-                    <p className="w-1/5">650</p>
-                    <p className="w-1/5">4</p>
-                    <button className="w-1/5 py-1 px-2 border border-[#3926AD] text-[#3926AD] text-sm font-semibold">Stake</button>
-
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-
-            {/* details */}
-            <div className="w-5/12 bg-[#E5F3FF] rounded-lg p-6 mx-2 bg-eth bg-cover">
-
-              <div className="flex items-end">
-
-                {/* title */}
-                <div className="w-1/2 text-5xl font-extrabold text-[#5841f0]">
-                  <h1>Stake ON</h1>
-                  <h1><span className="underline-behind">Lorenz&apos;s</span></h1>
-                  <h1>Success</h1>
-                </div>
-
-                {/* actions */}
-                <div className="w-1/2 flex flex-col items-end">
-
-                  {/* search */}
-                  <div className="flex items-center bg-white w-full rounded-md mb-4">
-                    <RiSearchLine className="my-2 mx-4"/>
-                    <input type="text" placeholder='search for candidate' className="py-2 focus:outline-none w-full rounded-r-md" />
-                  </div>
-
-                  <div className="flex w-full items-center">
-                    <input type="text" placeholder='0 token' className="w-2/3 p-2 focus:outline-none rounded-l-md border-2 border-white focus:border-[#5841f0]"/>
-                    <button className="w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]">Stake</button>
-                  </div>
-
-                </div>
+             {/* search */}
+              <div className="flex items-center bg-white rounded-md mb-4">
+                <RiSearchLine className="m-3"/>
+                <input type="text" placeholder='search for candidate' className="border-2 border-white p-2 focus:outline-none w-full rounded-r-md" />
               </div>
 
-              <div className="flex bg-white/60 mt-4 rounded-lg px-2">
+              {/* title */}
+              <div className="w-full text-5xl font-extrabold text-[#5841f0]">
+                <h1>Stake ON</h1>
+                <h1><span className="underline-behind">Lorenz&apos;s</span></h1>
+                <h1>Success</h1>
+              </div>
 
-                {/* chart */}
-                <div className="w-3/5 py-4">
-                  <Chart/>
+          </div>
+
+          {/* details */}
+          <div className="w-6/12 mx-2">
+
+            {/* stakee */}
+            <div className="flex bg-white/60 rounded-lg py-8 pl-8 pr-12 items-center justify-center">
+
+                <div className="flex justify-center items-center w-1/3 mr-6">
+                  <img src={IMAGES.nf8} alt="person1" className="w-4/5 rounded-full bg-white drop-shadow-lg"/>
                 </div>
 
-                {/* data */}
-                <div className="w-2/5 p-4">
-                  <div className="flex justify-between items-center mb-4 pb-2">
-                    <img src={IMAGES.nf8} alt="person1" className="w-2/5 rounded-full bg-blue-400"/>
-                    <p>Lorenz Ruskin</p>
-                  </div>
+                <div className="w-2/3 flex flex-col">
+                  <p className="text-[#3926AD] text-xl font-bold ">Lorenz Ruskin</p>
+                  <p className="text-xs font-thin text-stone-600 mb-2">Application Developer, Frontline Technology</p>
 
-                  <div className="flex justify-between items-center mb-4 border-b pb-2">
+                  <div className="flex justify-between items-center border-b pb-2">
                     <p>Tokens in Pool</p>
                     <p>670</p>
                   </div>
 
-                  <div className="flex justify-between items-center mb-4 border-b pb-2">
+                  <div className="flex justify-between items-center border-b pb-2">
                     <p>Total Stakers</p>
                     <p>12</p>
                   </div>
 
-                  <div className="flex justify-between items-center mb-4 border-b pb-2">
-                    <p>Total Stakers</p>
-                    <p>12</p>
+                  <div className="flex items-center mt-4">
+                    <input type="text" placeholder='0 token' className="w-2/3 p-2 focus:outline-none rounded-l-md border-2 border-white focus:border-[#5841f0]"/>
+                    <button className="w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]">Stake</button>
                   </div>
-
-                  <div className="flex justify-between items-center mb-4 border-b pb-2">
-                    <p>Total Stakers</p>
-                    <p>12</p>
-                  </div>
-
                 </div>
 
-              </div>
-
             </div>
 
-            {/* my staking list */}
-            <div className="w-3/12 rounded-lg p-6 bg-[#E5F3FF]">
-              <h4 className="font-semibold text-xl text-[#5D5FEF] mb-3">My Staking</h4>
-
-              {/* winner card */}
-              <WinnerCard/>
-
-              {/* staking card */}
-              <StakingCard/>
-
-            </div>
           </div>
+
+          {/* count down rebasing circle */}
+          <div className="w-3/12 bg-sand bg-right-bottom bg-no-repeat rounded-lg px-8 flex flex-col justify-center items-center">
+            <h4 className="text-xl font-semibold text-[#383be2]/80">
+              To Next Winner
+            </h4>
+            <h4 className="text-xl font-semibold text-[#383be2]/80">
+              Announcement
+            </h4>
+
+            <h4 className="mt-4 text-5xl font-bold text-[#383be2]/80 bg-white/60 p-4 rounded-lg">
+              35 Days
+            </h4>
+
+          </div>
+
         </div>
 
+        {/* my staking list */}
+        <div className="rounded-lg p-6 bg-[#E5F3FF] flex justify-center items-center">
+
+          <div className="flex items-center w-4/5 justify-evenly">
+            {/* winner card */}
+            <WinnerCard/>
+
+            {/* staking card */}
+            <StakingCard/>
+
+          </div>
+
+              {/* title */}
+          <div className="w-1/5 text-5xl font-extrabold text-[#383be2]/80 text-right">
+            <h1>My</h1>
+            <h1>Staking</h1>
+            <h1>History</h1>
+          </div>
+
+        </div>
       </div>
     </div>
   )

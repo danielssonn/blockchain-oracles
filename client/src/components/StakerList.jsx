@@ -8,7 +8,7 @@ const StakerList = () => {
   return (
     <div className="p-6 rounded-l-lg bg-white/60 ">
 
-      <h4 className="font-semibold text-xl text-[#5D5FEF] mb-3">Staking Pool</h4>
+      <h4 className="font-semibold text-xl text-[#5D5FEF] mb-3">My Staking Pool</h4>
       <div className="group flex items-center rounded-lg border border-[#3926AD] cursor-pointer pr-6 mb-3">
         <img src={IMAGES.nf3} alt="person1" className="w-[15%] bg-gradient-to-tr from-[#3D4E81] via-[#5753C9] to-[#6E7FF3] rounded-l-lg"/>
         <div className="text-[#3926AD] flex">
