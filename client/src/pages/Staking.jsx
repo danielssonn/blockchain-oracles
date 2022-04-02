@@ -11,7 +11,7 @@
 // Lorenz Ruskin - stake to
 
 // components
-import { Chart, Balance, StakerDetails, StakerList, WinnerCard, StakingCard } from '../components'
+import { Balance, StakerDetails, StakerList, WinnerCard, StakingCard } from '../components'
 
 // assets
 import IMAGES from '../../images'
