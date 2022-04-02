@@ -13,10 +13,11 @@ const  stakingTokenAddress = "0x8AD480A0f14aa1E4e79Bc767D5A2f48D49172abB"
 const  stakingTokenContract = new web3.eth.Contract(stakingTokencABI.abi, stakingTokenAddress)
 
 const stakingContractABI = require("../artifacts/contracts/Staking.sol/Staking.json")
-const stakingContractAddress = "0xC3ea941fDf8347835Af3E82b1B6C3065c4A43e55"
+const stakingContractAddress = "0xc798a6AeFc2d099c1066d786F15C86be57A1f3F0"
 const stakingContract = new web3.eth.Contract(stakingContractABI.abi, stakingContractAddress)
 
-const stakee = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6";
+// const stakee = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6";
+const stakee = '0x89E3428b4d48130e7f19a5217e78cb16f8D4180A';
 
 
 
@@ -79,10 +80,7 @@ async function signAndSend(tx){
   
     const signed  = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY);
     const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
-
-    console.log(receipt)
-       
-    
+    console.log(receipt);
 }
 
 async function  main(){
