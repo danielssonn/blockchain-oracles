@@ -1,5 +1,4 @@
 // assets
-import thumbUp from './thumb-up.png'
 import bg1 from './bg1.png'
 import bg4 from './bg2.png'
 import bg3 from './bg3.png'
@@ -16,6 +15,7 @@ import nf6 from './3.png'
 import nf7 from './4.png'
 import nf8 from './1.png'
 import nf9 from './9.png'
+import user from './user-ph.png'
 
 const bgs = {
   bg1,
@@ -25,7 +25,6 @@ const bgs = {
 }
 const IMAGES = {
   ...bgs,
-  thumbUp,
   face,
   nf1,
   nf2,
@@ -37,7 +36,8 @@ const IMAGES = {
   nf8,
   nf9,
   crown,
-  cibc
+  cibc,
+  user
 }
 
 export default IMAGES

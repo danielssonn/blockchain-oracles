@@ -19,7 +19,8 @@ module.exports = {
         rank: "url('./images/rank.png')",
         eth: "url('./images/eth.png')",
         sand: "url('./images/sand.png')",
-        staking: "url('./images/staking.png')"
+        staking: "url('./images/staking.png')",
+        team: "url('./images/team.png')"
       }
     },
     height: {

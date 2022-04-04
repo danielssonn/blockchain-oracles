@@ -12,7 +12,7 @@ const Balance = () => {
         { title: 'Staked Tokens', balance: 500, bg: 'bg-tree' },
         { title: 'Reward Tokens', balance: 500, bg: 'bg-rocket' }
       ].map((n, i) =>
-        <div key={n} className={`w-1/4 rounded-xl p-8 flex bg-white/60 ${n.bg} bg-cover bg-no-repeat`}>
+        <div key={i} className={`w-1/4 rounded-xl p-8 flex bg-white/60 ${n.bg} bg-cover bg-no-repeat`}>
           <div className="text-left flex flex-col justify-center">
             <p className="text-[#383be2] font-light text-base mb-2">{n.title}</p>
             <div className="flex">

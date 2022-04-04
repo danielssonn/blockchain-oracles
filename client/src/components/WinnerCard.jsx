@@ -7,7 +7,7 @@ import { BiCrown } from 'react-icons/bi'
 
 const WinnerCard = () => {
   return (
-    <div className="rounded-lg  w-1/4 bg-white/60 drop-shadow-md mr-4">
+    <div className="rounded-lg  w-1/4 bg-white/90 drop-shadow-md mr-4">
 
       <div className="flex pr-4 rounded-t-lg items-center justify-between mb-2 border-b bg-[#5841f0]">
         <img src={IMAGES.nf4} alt="person1" className="w-1/5 rounded-tl-lg"/>

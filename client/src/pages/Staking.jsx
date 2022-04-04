@@ -10,8 +10,12 @@
 // Aleida Hussain - staked
 // Lorenz Ruskin - stake to
 
+import React, { useState, useContext } from 'react'
 // components
 import { Balance, StakerDetails, StakerList, WinnerCard, StakingCard } from '../components'
+import { TransactionContext } from '../context/TransactionContext'
+
+import Select from 'react-select'
 
 // assets
 import IMAGES from '../../images'
@@ -22,6 +26,78 @@ import { FiMoreVertical } from 'react-icons/fi'
 import { RiSearchLine } from 'react-icons/ri'
 
 const Staking = () => {
+  const stakeInput = React.createRef()
+
+  const { connectWallet, currentAccount, stake, awardCountDown } = useContext(TransactionContext)
+  const [selectedColleague, setSelectedColleague] = useState('Someone')
+  const [LorenzStaked, setLorenzStaked] = useState(false)
+  const [colleagueSelected, setColleagueSelected] = useState(false)
+  const [colleagueStakingData, setColleagueStakingData] = useState({
+    profile: 'user',
+    fullName: 'Your Colleague Name',
+    jobTitle: 'Check your colleague\'s staking details',
+    stakingPool: 0,
+    totalStakers: 0
+  })
+
+  const colleagues = [{ value: 'Lorenz Ruskin', label: 'Lorenz Ruskin' }]
+
+  const stakingData = [
+    {
+      profile: 'nf8',
+      fullName: 'Lorenz Ruskin',
+      jobTitle: 'Application Developer, Frontline Technology',
+      stakingPool: 670,
+      totalStakers: 12
+    }
+  ]
+
+  const npc = {
+
+    profile: 'nf7',
+    fullName: 'Aleida Hussain',
+    jobTitle: '2022 Annual Achiever Candidate',
+    stakingPool: 500,
+    totalStakers: 20,
+    staked: 100,
+    time: 18
+
+  }
+
+  const addNewStakingCard = (colleague) => {
+    console.log(colleague)
+    colleague.staked = stakeInput.current.value
+    colleague.stakingPool += parseInt(stakeInput.current.value)
+    colleague.jobTitle = '2022 Annual Achiever Candidate'
+    colleague.totalStakers += 1
+    colleague.time = 1
+    setLorenzStaked(true)
+  }
+
+  const onStakeHandler = e => {
+    const v = stakeInput.current.value
+    if (v > 0 && !LorenzStaked) {
+      stake(v)
+      addNewStakingCard(colleagueStakingData)
+    } else {
+      console.log('staking must > 0, stop adding new card')
+    }
+  }
+
+  const handleChange = e => {
+    setSelectedColleague(e.value)
+    setColleagueStakingData(stakingData[0])
+    setColleagueSelected(true)
+  }
+
+  const selectStyle = {
+    control: base => ({
+      ...base,
+      border: 0,
+      boxShadow: 'none'
+    })
+  }
+
   return (
     <div className="bg-dashboard bg-center bg-cover min-h-screen min-w-full px-24 py-8">
 
@@ -46,7 +122,18 @@ const Staking = () => {
           <div className="bg-[#F4F5FB] rounded-full cursor-pointer mr-3">
             <FiMoreVertical className="text-[#5D5FEF] text-lg m-3"/>
           </div>
-          <button className="py-2 px-6 font-semibold text-white bg-[#5841f0] rounded-lg">Connect Wallet</button>
+
+          {!currentAccount && <button
+              className="py-2 px-6 font-semibold text-white bg-[#5841f0] rounded-lg"
+              onClick={connectWallet}>Connect Wallet
+            </button>
+          }
+
+          {currentAccount && <button
+              className="py-2 px-6 font-semibold border border-[#5841f0] rounded-lg"
+              onClick={connectWallet}>Wallet Connected
+            </button>
+          }
 
         </div>
 
@@ -64,7 +151,6 @@ const Staking = () => {
               <div className="rounded-lg p-4 text-transparent text-6xl font-extrabold bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
                 <h1 className="mb-4">Work Together</h1>
                 <h1>Win Together</h1>
-                {/* <h1>SUCCESS</h1> */}
               </div>
             </div>
 
@@ -98,13 +184,19 @@ const Staking = () => {
              {/* search */}
               <div className="flex items-center bg-white rounded-md mb-4">
                 <RiSearchLine className="m-3"/>
-                <input type="text" placeholder='search for candidate' className="border-2 border-white p-2 focus:outline-none w-full rounded-r-md" />
+                <Select
+                  options={colleagues}
+                  placeholder={'search your colleague here'}
+                  styles={selectStyle}
+                  onChange={handleChange}
+                  className="border-2 border-white p-2 focus:outline-none w-full rounded-r-md"/>
+
               </div>
 
               {/* title */}
               <div className="w-full text-5xl font-extrabold text-[#5841f0]">
                 <h1>Stake ON</h1>
-                <h1><span className="underline-behind">Lorenz&apos;s</span></h1>
+                <h1><span className="underline-behind">{selectedColleague}&apos;s</span></h1>
                 <h1>Success</h1>
               </div>
 
@@ -117,26 +209,26 @@ const Staking = () => {
             <div className="flex bg-white/60 rounded-lg py-8 pl-8 pr-12 items-center justify-center">
 
                 <div className="flex justify-center items-center w-1/3 mr-6">
-                  <img src={IMAGES.nf8} alt="person1" className="w-4/5 rounded-full bg-white drop-shadow-lg"/>
+                  <img src={IMAGES[`${colleagueStakingData.profile}`]} alt="person1" className="w-4/5 rounded-full bg-white drop-shadow-lg"/>
                 </div>
 
                 <div className="w-2/3 flex flex-col">
-                  <p className="text-[#3926AD] text-xl font-bold ">Lorenz Ruskin</p>
-                  <p className="text-xs font-thin text-stone-600 mb-2">Application Developer, Frontline Technology</p>
+                  <p className="text-[#3926AD] text-xl font-bold ">{colleagueStakingData.fullName}</p>
+                  <p className="text-xs font-thin text-stone-600 mb-2">{colleagueStakingData.jobTitle}</p>
 
                   <div className="flex justify-between items-center border-b pb-2">
                     <p>Tokens in Pool</p>
-                    <p>670</p>
+                    <p>{colleagueStakingData.stakingPool}</p>
                   </div>
 
                   <div className="flex justify-between items-center border-b pb-2">
                     <p>Total Stakers</p>
-                    <p>12</p>
+                    <p>{colleagueStakingData.totalStakers}</p>
                   </div>
 
                   <div className="flex items-center mt-4">
-                    <input type="text" placeholder='0 token' className="w-2/3 p-2 focus:outline-none rounded-l-md border-2 border-white focus:border-[#5841f0]"/>
-                    <button className="w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]">Stake</button>
+                    <input type="number" ref={stakeInput} placeholder='0 token' required pattern="[0-9]*" className="w-2/3 p-2 focus:outline-none rounded-l-md border-2 border-white focus:border-[#5841f0]" disabled={!colleagueSelected}/>
+                    <button className="w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]" onClick={onStakeHandler} disabled={!colleagueSelected}>Stake</button>
                   </div>
                 </div>
 
@@ -154,7 +246,7 @@ const Staking = () => {
             </h4>
 
             <h4 className="mt-4 text-5xl font-bold text-[#383be2]/80 bg-white/60 p-4 rounded-lg">
-              35 Days
+              {awardCountDown} Days
             </h4>
 
           </div>
@@ -162,19 +254,25 @@ const Staking = () => {
         </div>
 
         {/* my staking list */}
-        <div className="rounded-lg p-6 bg-[#E5F3FF] flex justify-center items-center">
+        <div className="rounded-lg p-6 bg-[#E5F3FF] flex justify-center items-center bg-team bg-left bg-contain bg-no-repeat">
 
-          <div className="flex items-center w-4/5 justify-evenly">
+          <div className="flex items-center w-5/6 justify-end">
             {/* winner card */}
             <WinnerCard/>
 
             {/* staking card */}
-            <StakingCard/>
+            <StakingCard person={npc}/>
+            {LorenzStaked
+              ? (
+              <StakingCard person={colleagueStakingData}/>)
+              : null
+            }
+            {/* <StakingCard/> */}
 
           </div>
 
               {/* title */}
-          <div className="w-1/5 text-5xl font-extrabold text-[#383be2]/80 text-right">
+          <div className="w-1/6 text-5xl font-extrabold text-[#383be2]/80 text-right">
             <h1>My</h1>
             <h1>Staking</h1>
             <h1>History</h1>
