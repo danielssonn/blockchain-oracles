@@ -3,11 +3,10 @@ pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
-/**
- * Request testnet LINK and ETH here: https://faucets.chain.link/
- * Find information on LINK Token Contracts and get the latest ETH and LINK faucets here: https://docs.chain.link/docs/link-token-contracts/
- */
 
+/**
+* Chainlink Oracle to perform AML check against external API
+*/
 contract AMLAdapter is ChainlinkClient {
     using Chainlink for Chainlink.Request;
     uint256 public result;
@@ -15,30 +14,20 @@ contract AMLAdapter is ChainlinkClient {
     bytes32 public jobId;
     uint256 private fee;
 
-    /**
-     * Network: Kovan
-     * Oracle: 0x
-     * Job ID: ??
-     * Fee: 0.1 LINK
-     */
+
     constructor() {
         setPublicChainlinkToken();
 
         oracle = 0x0000000000000000000000000000000000000000;
 
-        // This is default, the contract has a setter for this field
-        // This job will look for the external adapter runing on locally @ http://192.168.5.10:8080
+        // jobs are defined in chainlink console, see ./config/ for defintions examples
         jobId = "";
-
-        // This job will look for the external adapter on Lambda @ https://guaqr4nbt8.execute-api.us-east-1.amazonaws.com/chainlinkExternalAdapter
-        // jobId = "5c28d02f11e149ef9a9e26a5707bfa2f";
-
         fee = 0.1 * 10**18; // (Varies by network and job)
     }
 
     /**
-     * Create a Chainlink request to retrieve API response, find the target
-     * data, then multiply by 1000000000000000000 (to remove decimal places from data).
+     * Create a Chainlink request to retrieve API responset
+     *
      */
     function requestAMLCheck(address checkThisAddress)
         public
@@ -49,7 +38,6 @@ contract AMLAdapter is ChainlinkClient {
             address(this),
             this.fulfill.selector
         );
-        // Sends the request
 
         request.add("check", toString(abi.encodePacked(checkThisAddress)));
         return sendChainlinkRequestTo(oracle, request, fee);
