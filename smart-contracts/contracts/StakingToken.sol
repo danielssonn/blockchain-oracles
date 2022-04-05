@@ -23,11 +23,13 @@ contract StakingToken is ERC20, Ownable {
     function mint(address to, uint256 amount) public returns (bool) {
         
         if(balanceOf(to)==0 && !tokenHolders[to]){
+            console.log("will mint", balanceOf(to),  tokenHolders[to]);
             _mint(to, amount);
             tokenHolders[to] = true;
             emit Minted(to, amount);
             return true;
         } else {
+            console.log("will not mint", balanceOf(to),  tokenHolders[to]);
             emit NotMinted(to, balanceOf(to));
             return false;
         }
