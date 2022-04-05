@@ -26,7 +26,7 @@ const getAwardContract = () => {
 
 export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState('')
-  const [awardCountDown, setAwardCountDown] = useState('')
+  const [awardCountDown, setAwardCountDown] = useState(0)
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -51,6 +51,7 @@ export const TransactionProvider = ({ children }) => {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
 
       setCurrentAccount(accounts[0])
+      getAwardCountDownDays()
     } catch (error) {
       console.log(error)
 
@@ -86,11 +87,17 @@ export const TransactionProvider = ({ children }) => {
       if (!ethereum) return alert('Please install MetaMask.')
 
       const awardContract = getAwardContract()
-      const awardDate = await awardContract.awardDate()
-      const days = parseInt(ethers.utils.formatEther(awardDate._hex))
+      const timestamp = await awardContract.awardDate()
+      const awardTimestamp = ethers.utils.formatEther(timestamp._hex)
+
+      const today = Math.floor(new Date().getTime() / 1000)
+      const awardDate = Math.floor(awardTimestamp * 1000000000000000000)
+
+      const days = Math.floor((awardDate - today) / 86400)
+      console.log(days)
 
       setAwardCountDown(days)
-      console.log('count down', days)
+      console.log('count down', timestamp)
 
       // const budget = await awardContract.getTotalAwardBudget()
 

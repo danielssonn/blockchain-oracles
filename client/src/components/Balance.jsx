@@ -1,16 +1,16 @@
 // assets
 import IMAGES from '../../images'
 
-const Balance = () => {
+const Balance = (tokens) => {
   return (
     <div className="flex items-center justify-evenly bg-[#383be2]/60 py-8 px-2 rounded-lg">
 
       {/* balance card */}
 
       {[
-        { title: 'Available Staking Tokens', balance: 500, bg: 'bg-coins' },
-        { title: 'Staked Tokens', balance: 500, bg: 'bg-tree' },
-        { title: 'Reward Tokens', balance: 500, bg: 'bg-rocket' }
+        { title: 'Available Staking Tokens', balance: tokens.available, bg: 'bg-coins' },
+        { title: 'Staked Tokens', balance: tokens.staked, bg: 'bg-tree' },
+        { title: 'Reward Tokens', balance: 150, bg: 'bg-rocket' }
       ].map((n, i) =>
         <div key={i} className={`w-1/4 rounded-xl p-8 flex bg-white/60 ${n.bg} bg-cover bg-no-repeat`}>
           <div className="text-left flex flex-col justify-center">

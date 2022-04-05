@@ -32,6 +32,8 @@ const Staking = () => {
   const [selectedColleague, setSelectedColleague] = useState('Someone')
   const [LorenzStaked, setLorenzStaked] = useState(false)
   const [colleagueSelected, setColleagueSelected] = useState(false)
+  const [availableStakingTokens, setAvailableStakingTokens] = useState(250)
+  const [stakedTokens, setStakedTokens] = useState(200)
   const [colleagueStakingData, setColleagueStakingData] = useState({
     profile: 'user',
     fullName: 'Your Colleague Name',
@@ -40,7 +42,7 @@ const Staking = () => {
     totalStakers: 0
   })
 
-  const colleagues = [{ value: 'Lorenz Ruskin', label: 'Lorenz Ruskin' }]
+  const colleagues = [{ value: 'Lorenz', label: 'Lorenz Ruskin' }]
 
   const stakingData = [
     {
@@ -75,8 +77,14 @@ const Staking = () => {
   }
 
   const onStakeHandler = e => {
-    const v = stakeInput.current.value
-    if (v > 0 && !LorenzStaked) {
+    const v = parseInt(stakeInput.current.value)
+    if (v > availableStakingTokens) {
+      alert('You don\'t have enough tokens to stake.')
+    }
+
+    if (v > 0 && !LorenzStaked && v <= availableStakingTokens) {
+      setAvailableStakingTokens(availableStakingTokens - v)
+      setStakedTokens(stakedTokens + v)
       stake(v)
       addNewStakingCard(colleagueStakingData)
     } else {
@@ -171,7 +179,7 @@ const Staking = () => {
         {/* Balance */}
         <div className="my-5">
 
-          <Balance/>
+          <Balance available={availableStakingTokens} staked={stakedTokens}/>
 
         </div>
 
