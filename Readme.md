@@ -20,7 +20,7 @@
 - [x] Staking allows staking, withdrawals and reward management
 - [x] Award contract will rebalance the staking rewards upon minting Award winners
 
-https://kovan.etherscan.io/address/0x2aD5BBe325Ca588F48029b5A135BE564e55Cf623#code
+https://kovan.etherscan.io/address/0x4295500Ee314F2C0159cf2d9fBE4914C03477dA1#code
 
 ## Award Contract Details
 
@@ -35,11 +35,11 @@ https://kovan.etherscan.io/address/0x2aD5BBe325Ca588F48029b5A135BE564e55Cf623#co
 - [x] Off-chain HR check will be performed to ensure the award winner is still an employee when collecting award
 - [x] Minting of award will rebalance and rebase all stakes in Staking contract
 
-https://kovan.etherscan.io/address/0xeFCE7E9B8AB2534ce0eA704d5a0709B3dfD5Bb47#code
+https://kovan.etherscan.io/address/0x46830946Bcb254a7f68870ddeef656DFDFF7e491#code
 
 ## Staking Token
 
-https://kovan.etherscan.io/address/0x464841a4d01d299873f6815190061b350159bcf0#readContract
+https://kovan.etherscan.io/address/0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E#code
 
 
 

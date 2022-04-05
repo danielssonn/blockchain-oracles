@@ -3,9 +3,15 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
+
 
 contract StakingToken is ERC20, Ownable {
+
     uint constant _initial_supply = 1000 * (10**18);
+
+    mapping (address => bool) tokenHolders;
+
     constructor() ERC20("Staking Token", "STKTKN") {
         _mint(msg.sender, _initial_supply);
     }
@@ -14,9 +20,20 @@ contract StakingToken is ERC20, Ownable {
         _mint(msg.sender, amount*(10*18));
     }
 
-    function mint(address to, uint256 value) public returns (bool) {
-        require(value <= 10000000 ether, "dont be greedy");
-        _mint(to, value);
-        return true;
+    function mint(address to, uint256 amount) public returns (bool) {
+        
+        if(balanceOf(to)==0 && !tokenHolders[to]){
+            _mint(to, amount);
+            tokenHolders[to] = true;
+            emit Minted(to, amount);
+            return true;
+        } else {
+            emit NotMinted(to, balanceOf(to));
+            return false;
+        }
+       
     }
+    event Minted(address indexed user, uint256 amount);
+    event NotMinted(address indexed user, uint256 amount);
+
 }
