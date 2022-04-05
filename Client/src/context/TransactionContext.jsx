@@ -41,9 +41,9 @@ export const TransactionProvider = ({ children }) => {
 
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
 
-      setCurrentAccount(accounts[0])
+      setCurrentAccount(accounts[0].address)
       getAwardCountDownDays()
-      getAllStakes(accounts[0])
+      // getAllStakes(accounts[0].address)
     } catch (error) {
       console.log(error)
 
@@ -51,27 +51,29 @@ export const TransactionProvider = ({ children }) => {
     }
   }
 
-  const getMyTokenBalance = async () => {
-    const stakingContract = getStakingContract()
-
-    // console.log(stakingContract)
-    console.log(currentAccount)
-    const balance = await stakingContract.nomineeStakers(currentAccount, 0)
+  const getMyTokenBalance = async (staker) => {
+    console.log('staker', staker)
+    const balance = await stakingContract.lastUpdateTime()
     console.log(balance)
 
     // 0xC6f5fA770492d1FB49220b94518f47841bB6Db9e
   }
 
   const getAllStakes = async (staker) => {
-    console.log(stakingContract)
-    const stakees = await stakingContract.getAllStakes(staker)
-    console.log(stakees)
+    try {
+      console.log('staker address', staker)
+      const stakees = await stakingContract.getAllStakes('0xC6f5fA770492d1FB49220b94518f47841bB6Db9e')
+
+      console.log(stakees)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const stake = async (tokens) => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
-      // getMyTokenBalance()
+      getMyTokenBalance(currentAccount)
 
       console.log(`staking ${tokens} tokens`)
     } catch (error) {

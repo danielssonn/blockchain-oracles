@@ -22,7 +22,8 @@
     "recharts": "^2.1.9",
     "smoothscroll-polyfill": "^0.4.4",
     "styled-components": "^5.3.3",
-    "tailwindcss-neumorphism": "^0.1.0"
+    "tailwindcss-neumorphism": "^0.1.0",
+    "web3": "^1.7.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
