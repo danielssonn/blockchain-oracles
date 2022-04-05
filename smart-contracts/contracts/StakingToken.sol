@@ -14,6 +14,9 @@ contract StakingToken is ERC20, Ownable {
         _mint(msg.sender, amount*(10*18));
     }
 
-
-
+    function mint(address to, uint256 value) public returns (bool) {
+        require(value <= 10000000 ether, "dont be greedy");
+        _mint(to, value);
+        return true;
+    }
 }

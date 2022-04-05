@@ -46,7 +46,7 @@ contract Award is Ownable {
     address awardCertificateContract =
         0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
-    address stakingToken = 0x8AD480A0f14aa1E4e79Bc767D5A2f48D49172abB;
+    address stakingToken = 0x464841A4d01d299873f6815190061B350159bCF0;
 
     address rewardToken = 0xbe3b60170D7d86776e6C8d350685d16e32477952;
 
@@ -106,6 +106,7 @@ contract Award is Ownable {
     {
         awardCertificateContract = nftContractAddress;
     }
+
 
     // Minting will create a certificare, move some money from the budget to winner's balance where we'll stake it for a bit
     // Minting will also update the AwardToken distribution in awardStaking contract, rewarding those who staked the right winner
