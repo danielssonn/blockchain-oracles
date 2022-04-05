@@ -46,7 +46,7 @@ contract Award is Ownable {
     address awardCertificateContract =
         0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
-    address stakingToken = 0x464841A4d01d299873f6815190061B350159bCF0;
+    address stakingToken = 0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E;
 
     address rewardToken = 0xbe3b60170D7d86776e6C8d350685d16e32477952;
 

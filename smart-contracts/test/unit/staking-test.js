@@ -21,6 +21,7 @@ describe("Basic Staking", function () {
 
     })
 
+
     it("Should update stakin balance", async function () {
 
         expect(await staking.nominatorStakesBalance(owner.address,addr1.address)).to.equal(10)
