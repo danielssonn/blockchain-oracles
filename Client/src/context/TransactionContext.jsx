@@ -8,21 +8,11 @@ export const TransactionContext = React.createContext()
 
 const { ethereum } = window
 
-const getStakingContract = () => {
-  const provider = new ethers.providers.Web3Provider(ethereum)
-  const signer = provider.getSigner()
-  const stakingContract = new ethers.Contract(stakingContractAddress, stakingABI, signer)
+const provider = new ethers.providers.Web3Provider(ethereum)
+const signer = provider.getSigner()
 
-  return stakingContract
-}
-
-const getAwardContract = () => {
-  const provider = new ethers.providers.Web3Provider(ethereum)
-  const signer = provider.getSigner()
-  const stakingContract = new ethers.Contract(awardContractAddress, awardABI, signer)
-
-  return stakingContract
-}
+const stakingContract = new ethers.Contract(stakingContractAddress, stakingABI, signer)
+const awardContract = new ethers.Contract(awardContractAddress, awardABI, signer)
 
 export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState('')
@@ -36,6 +26,7 @@ export const TransactionProvider = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0])
+        getAllStakes(accounts[0])
       } else {
         console.log('No accounts found')
       }
@@ -52,6 +43,7 @@ export const TransactionProvider = ({ children }) => {
 
       setCurrentAccount(accounts[0])
       getAwardCountDownDays()
+      getAllStakes(accounts[0])
     } catch (error) {
       console.log(error)
 
@@ -70,6 +62,12 @@ export const TransactionProvider = ({ children }) => {
     // 0xC6f5fA770492d1FB49220b94518f47841bB6Db9e
   }
 
+  const getAllStakes = async (staker) => {
+    console.log(stakingContract)
+    const stakees = await stakingContract.getAllStakes(staker)
+    console.log(stakees)
+  }
+
   const stake = async (tokens) => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
@@ -86,7 +84,6 @@ export const TransactionProvider = ({ children }) => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
 
-      const awardContract = getAwardContract()
       const timestamp = await awardContract.awardDate()
       const awardTimestamp = ethers.utils.formatEther(timestamp._hex)
 
@@ -94,16 +91,9 @@ export const TransactionProvider = ({ children }) => {
       const awardDate = Math.floor(awardTimestamp * 1000000000000000000)
 
       const days = Math.floor((awardDate - today) / 86400)
-      console.log(days)
+      console.log('days', days)
 
       setAwardCountDown(days)
-      console.log('count down', timestamp)
-
-      // const budget = await awardContract.getTotalAwardBudget()
-
-      // console.log(ethers.utils.formatEther(budget._hex))
-
-      // setAwardCountDown(days)
     } catch (error) {
       console.log(error)
       throw new Error('No ethereum object')
