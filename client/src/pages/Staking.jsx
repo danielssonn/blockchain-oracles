@@ -55,7 +55,7 @@ const Staking = () => {
     {
       profile: 'nf1',
       fullName: 'Wen MacBay',
-      jobTitle: 'Application Developer, Frontline Technology',
+      jobTitle: 'Project Manager, Personal Lending',
       stakingPool: 670,
       totalStakers: 12
     }
@@ -184,7 +184,7 @@ const Staking = () => {
         </div>
 
         {/* Balance */}
-        <div className="my-5">
+        <div className="my-4">
 
           <Balance available={availableStakingTokens} staked={stakedTokens}/>
 
@@ -228,9 +228,7 @@ const Staking = () => {
                 </div>
 
                 <div className="w-2/3 pr-10">
-                  {/* <p className="text-[#383be2]/80 pb-4 text-right">
-                    {awardCountDown} Days To Next Announcement
-                  </p> */}
+
                   <div className= "flex flex-col ">
 
                     <p className="text-[#3926AD] text-xl font-bold ">{colleagueStakingData.fullName}</p>
@@ -258,46 +256,32 @@ const Staking = () => {
 
           </div>
 
-          {/* count down rebasing circle */}
-          {/* <div className="w-3/12 bg-sand bg-right-bottom bg-no-repeat rounded-lg px-8 flex flex-col justify-center items-center">
-            <h4 className="text-xl font-semibold text-[#383be2]/80">
-              To Next Winner
-            </h4>
-            <h4 className="text-xl font-semibold text-[#383be2]/80">
-              Announcement
-            </h4>
-
-            <h4 className="mt-4 text-5xl font-bold text-[#383be2]/80 bg-white/60 p-4 rounded-lg">
-              {awardCountDown} Days
-            </h4>
-
-          </div> */}
-
         </div>
 
         {/* my staking list */}
         <div className="rounded-lg p-6 bg-[#E5F3FF] flex justify-center items-center bg-team bg-left bg-contain bg-no-repeat">
 
-          <div className="flex items-center w-5/6 justify-end">
-            {/* winner card */}
-            <WinnerCard/>
+          <div className='w-3/12'></div>
+          <div className="flex items-center w-7/12 justify-start">
 
             {/* staking card */}
-            <StakingCard person={npc}/>
+
             {LorenzStaked
               ? (
               <StakingCard person={colleagueStakingData}/>)
               : null
             }
+
+            <StakingCard person={npc}/>
             {/* <StakingCard/> */}
 
           </div>
 
               {/* title */}
-          <div className="w-1/6 text-5xl font-extrabold text-[#383be2]/80 text-right">
-            <h1>My</h1>
-            <h1>Staking</h1>
-            <h1>History</h1>
+          <div className="w-2/12 text-5xl font-extrabold text-[#383be2]/80 text-right">
+            <h1>Who I</h1>
+            <h1>Staked</h1>
+            <h1>On</h1>
           </div>
 
         </div>

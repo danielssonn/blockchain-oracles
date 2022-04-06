@@ -8,10 +8,10 @@ const StakerList = () => {
   return (
     <div className="p-6 rounded-r-lg bg-white/60 ">
 
-      <h4 className="font-semibold text-right text-xl text-[#5D5FEF] mb-3">My Network</h4>
+      <h4 className="font-semibold text-right text-xl text-[#5D5FEF] mb-3">Who Staked On Me</h4>
 
-      {/* <h4 className="mb-3 text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
-        <span className="text-sm text-[#5753C9] py-2 font-thin rounded-full">Hi Alex, Wen MacBay just staked on you!</span>
+      {/* <h4 className="mb-3 text-xl text-right font-semibold text-transparent bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
+        <span className="text-sm text-[#5753C9] py-2 font-thin rounded-full">3 Stakers | 600 Tokens</span>
       </h4> */}
 
       {['Wen MacBay', 'Yianna Lindsay', 'Safeer Shwetz'].map((n, i) =>

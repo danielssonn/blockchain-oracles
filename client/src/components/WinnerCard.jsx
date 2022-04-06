@@ -24,7 +24,7 @@ const WinnerCard = () => {
 
         <div className="flex items-center mb-2">
           <div className="w-1/2" >
-            <p className="text-xs font-thin text-stone-600">Stacked</p>
+            <p className="text-xs font-thin text-stone-600">Staked</p>
             <p className="font-normal">100 Tokens</p>
           </div>
 
