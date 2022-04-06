@@ -42,7 +42,7 @@ const Staking = () => {
     totalStakers: 0
   })
 
-  const colleagues = [{ value: 'Lorenz', label: 'Lorenz Ruskin' }]
+  const colleagues = [{ value: 'Lorenz', label: 'Lorenz Ruskin' }, { value: 'Wen', label: 'Wen MacBay' }]
 
   const stakingData = [
     {
@@ -51,11 +51,17 @@ const Staking = () => {
       jobTitle: 'Application Developer, Frontline Technology',
       stakingPool: 670,
       totalStakers: 12
+    },
+    {
+      profile: 'nf1',
+      fullName: 'Wen MacBay',
+      jobTitle: 'Application Developer, Frontline Technology',
+      stakingPool: 670,
+      totalStakers: 12
     }
   ]
 
   const npc = {
-
     profile: 'nf7',
     fullName: 'Aleida Hussain',
     jobTitle: '2022 Annual Achiever Candidate',
@@ -92,9 +98,10 @@ const Staking = () => {
     }
   }
 
-  const handleChange = e => {
+  const handleSelectionChange = e => {
+    console.log(e)
     setSelectedColleague(e.value)
-    setColleagueStakingData(stakingData[0])
+    setColleagueStakingData(stakingData.find(d => d.fullName === e.label))
     setColleagueSelected(true)
   }
 
@@ -118,7 +125,7 @@ const Staking = () => {
         {/* icons & profile */}
         <div className="w-1/3 flex justify-end items-center">
           <div className="text-base mr-3 font-semibold text-stone-800 text-right">
-            <p>Hi, Alex Dean</p>
+            <p>Alex Dean</p>
           </div>
           <div className="relative w-1/12 flex justify-center items-center">
             <img id="profile" src={IMAGES.face} alt="profile-image" className="w-4/5 z-10" />
@@ -132,7 +139,7 @@ const Staking = () => {
           </div>
 
           {!currentAccount && <button
-              className="py-2 px-6 font-semibold text-white bg-[#5841f0] rounded-lg"
+              className="py-2 px-6 font-semibold text-[#5841f0] border border-[#5841f0] rounded-lg"
               onClick={connectWallet}>Connect Wallet
             </button>
           }
@@ -164,14 +171,14 @@ const Staking = () => {
 
           </div>
 
+          {/* details */}
+          <div className="w-5/12">
+            <StakerDetails stakeeChanger={handleSelectionChange}/>
+          </div>
+
           {/* staking list */}
           <div className="w-4/12">
             <StakerList/>
-          </div>
-
-          {/* details */}
-          <div className="w-5/12">
-            <StakerDetails/>
           </div>
 
         </div>
@@ -184,10 +191,10 @@ const Staking = () => {
         </div>
 
         {/* staking investments */}
-        <div className="flex bg-[#E5F3FF] rounded-lg p-6 mb-4">
+        <div className="flex bg-[#E5F3FF]/70 rounded-lg p-6 mb-4">
 
           {/* search */}
-          <div className="w-3/12 mr-2">
+          <div className="w-4/12 mr-2">
 
              {/* search */}
               <div className="flex items-center bg-white rounded-md mb-4">
@@ -196,7 +203,7 @@ const Staking = () => {
                   options={colleagues}
                   placeholder={'search your colleague here'}
                   styles={selectStyle}
-                  onChange={handleChange}
+                  onChange={handleSelectionChange}
                   className="border-2 border-white p-2 focus:outline-none w-full rounded-r-md"/>
 
               </div>
@@ -211,7 +218,7 @@ const Staking = () => {
           </div>
 
           {/* details */}
-          <div className="w-6/12 mx-2">
+          <div className="w-8/12 mx-2">
 
             {/* stakee */}
             <div className="flex bg-white/60 rounded-lg py-8 pl-8 pr-12 items-center justify-center">
@@ -220,24 +227,31 @@ const Staking = () => {
                   <img src={IMAGES[`${colleagueStakingData.profile}`]} alt="person1" className="w-4/5 rounded-full bg-white drop-shadow-lg"/>
                 </div>
 
-                <div className="w-2/3 flex flex-col">
-                  <p className="text-[#3926AD] text-xl font-bold ">{colleagueStakingData.fullName}</p>
-                  <p className="text-xs font-thin text-stone-600 mb-2">{colleagueStakingData.jobTitle}</p>
+                <div className="w-2/3 pr-10">
+                  {/* <p className="text-[#383be2]/80 pb-4 text-right">
+                    {awardCountDown} Days To Next Announcement
+                  </p> */}
+                  <div className= "flex flex-col ">
 
-                  <div className="flex justify-between items-center border-b pb-2">
-                    <p>Tokens in Pool</p>
-                    <p>{colleagueStakingData.stakingPool}</p>
+                    <p className="text-[#3926AD] text-xl font-bold ">{colleagueStakingData.fullName}</p>
+                    <p className="text-xs font-thin text-stone-600 mb-2">{colleagueStakingData.jobTitle}</p>
+
+                    <div className="flex justify-between items-center border-b pb-2">
+                      <p>Tokens in Pool</p>
+                      <p>{colleagueStakingData.stakingPool}</p>
+                    </div>
+
+                    <div className="flex justify-between items-center border-b pb-2">
+                      <p>Total Stakers</p>
+                      <p>{colleagueStakingData.totalStakers}</p>
+                    </div>
+
+                    <div className="flex items-center mt-4">
+                      <input type="number" ref={stakeInput} placeholder='0 token' required pattern="[0-9]*" className="w-2/3 p-2 focus:outline-none rounded-l-md border-2 border-white focus:border-[#5841f0]" disabled={!colleagueSelected}/>
+                      <button className="w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]" onClick={onStakeHandler} disabled={!colleagueSelected}>Stake</button>
+                    </div>
                   </div>
 
-                  <div className="flex justify-between items-center border-b pb-2">
-                    <p>Total Stakers</p>
-                    <p>{colleagueStakingData.totalStakers}</p>
-                  </div>
-
-                  <div className="flex items-center mt-4">
-                    <input type="number" ref={stakeInput} placeholder='0 token' required pattern="[0-9]*" className="w-2/3 p-2 focus:outline-none rounded-l-md border-2 border-white focus:border-[#5841f0]" disabled={!colleagueSelected}/>
-                    <button className="w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]" onClick={onStakeHandler} disabled={!colleagueSelected}>Stake</button>
-                  </div>
                 </div>
 
             </div>
@@ -245,7 +259,7 @@ const Staking = () => {
           </div>
 
           {/* count down rebasing circle */}
-          <div className="w-3/12 bg-sand bg-right-bottom bg-no-repeat rounded-lg px-8 flex flex-col justify-center items-center">
+          {/* <div className="w-3/12 bg-sand bg-right-bottom bg-no-repeat rounded-lg px-8 flex flex-col justify-center items-center">
             <h4 className="text-xl font-semibold text-[#383be2]/80">
               To Next Winner
             </h4>
@@ -257,7 +271,7 @@ const Staking = () => {
               {awardCountDown} Days
             </h4>
 
-          </div>
+          </div> */}
 
         </div>
 
