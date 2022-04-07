@@ -40,4 +40,4 @@ https://kovan.etherscan.io/address/0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E#co
 
 ## Digital Identity Contract
 
-https://kovan.etherscan.io/address/0xdcc71468c067849bA0297f5eb35920bAbB48d11B#code
+https://kovan.etherscan.io/address/0x6A64f3ba3ff31a8D23d6EE62cA6aBac6C1AFD713#code
