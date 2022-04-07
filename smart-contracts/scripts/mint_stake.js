@@ -9,15 +9,15 @@ const web3 = createAlchemyWeb3(ALCHEMY_API_URL)
 
 
 const  stakingTokencABI = require("../artifacts/contracts/StakingToken.sol/StakingToken.json")
-const  stakingTokenAddress = "0x464841A4d01d299873f6815190061B350159bCF0"
+const  stakingTokenAddress = "0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E"
 const  stakingTokenContract = new web3.eth.Contract(stakingTokencABI.abi, stakingTokenAddress)
 
 const stakingContractABI = require("../artifacts/contracts/Staking.sol/Staking.json")
-const stakingContractAddress = "0xc798a6AeFc2d099c1066d786F15C86be57A1f3F0"
+const stakingContractAddress = "0x4295500Ee314F2C0159cf2d9fBE4914C03477dA1"
 const stakingContract = new web3.eth.Contract(stakingContractABI.abi, stakingContractAddress)
 
-// const stakee = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6";
-const stakee = '0x89E3428b4d48130e7f19a5217e78cb16f8D4180A';
+const stakee = "0xFf961b90F914bB9c3d2B839DDdF6C1c926B712E6";
+// const stakee = '0x89E3428b4d48130e7f19a5217e78cb16f8D4180A';
 const staker = '0xC6f5fA770492d1FB49220b94518f47841bB6Db9e';
 
 
@@ -96,6 +96,25 @@ async function stakeTokens(){
 
 }
 
+/**
+ * 3. Stake!
+ */
+ async function getStakes(){
+
+    const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
+        
+        const tx = {
+            from: PUBLIC_KEY,
+            to: stakingContractAddress,
+            nonce: nonce,
+            gas: 500000,
+            data: stakingContract.methods.getAllStakes(PUBLIC_KEY).encodeABI(),
+        }    
+    
+    await signAndSend(tx);
+
+}
+
 async function signAndSend(tx){
   
     const signed  = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY);
@@ -105,10 +124,11 @@ async function signAndSend(tx){
 
 async function  main(){
     
-    await mintTokens();
+    // await mintTokens();
     // await transferTokens();
     // await approve();
     // await stakeTokens();  
+    await getStakes();
 
 }
 

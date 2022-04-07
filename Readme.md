@@ -3,12 +3,9 @@
 **[Incentive theory](/Incentives.md)**
 ![](./assets/Tokenomics.png)
 
-
 ## Design Overview
 
-
 ![](./assets/Award%20Contract.png)
-
 
 ## Staking Contract Details
 
@@ -27,7 +24,7 @@ https://kovan.etherscan.io/address/0x4295500Ee314F2C0159cf2d9fBE4914C03477dA1#co
 - [x] Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
 - [x] This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
 - [x] Awards can then be minted
-- [x] ETH will be moved from the Award budget, and vested for the winner for a vesting period 
+- [x] ETH will be moved from the Award budget, and vested for the winner for a vesting period
 - [x] ETH in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
 - [x] Award will only be minted if there is available budget
 - [x] Award will not be minted for organizers
@@ -41,5 +38,6 @@ https://kovan.etherscan.io/address/0x46830946Bcb254a7f68870ddeef656DFDFF7e491#co
 
 https://kovan.etherscan.io/address/0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E#code
 
+## Digital Identity Contract
 
-
+https://kovan.etherscan.io/address/0xdcc71468c067849bA0297f5eb35920bAbB48d11B#code
