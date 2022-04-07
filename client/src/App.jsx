@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Staking } from './pages'
+import { Landing } from './pages'
 
 const App = () => {
   useEffect(() => {
@@ -10,7 +10,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen">
-      <Staking />
+      <Landing />
     </div>
   )
 }

@@ -114,7 +114,7 @@ const Staking = () => {
   }
 
   return (
-    <div className="bg-dashboard bg-center bg-cover min-h-screen min-w-full px-24 py-8">
+    <div className="bg-dashboard bg-center bg-cover min-h-screen min-w-full px-6 xl:px-24 py-8">
 
       {/* top nav bar */}
       <div className="flex justify-between items-center">
@@ -123,7 +123,7 @@ const Staking = () => {
         <img src={IMAGES.cibc} alt="logo" className="w-1/12 px-3" />
 
         {/* icons & profile */}
-        <div className="w-1/3 flex justify-end items-center">
+        <div className="xl:w-1/3 w-2/3 flex justify-end items-center">
           <div className="text-base mr-3 font-semibold text-stone-800 text-right">
             <p>Alex Dean</p>
           </div>
@@ -138,7 +138,7 @@ const Staking = () => {
             <FiMoreVertical className="text-[#5D5FEF] text-lg m-3"/>
           </div>
 
-          {!currentAccount && <button
+          {/* {!currentAccount && <button
               className="py-2 px-6 font-semibold text-[#5841f0] border border-[#5841f0] rounded-lg"
               onClick={connectWallet}>Connect Wallet
             </button>
@@ -148,7 +148,7 @@ const Staking = () => {
               className="py-2 px-6 font-semibold border border-[#5841f0] rounded-lg"
               onClick={connectWallet}>Wallet Connected
             </button>
-          }
+          } */}
 
         </div>
 
@@ -163,7 +163,7 @@ const Staking = () => {
           <div className="w-3/12">
 
             <div className="rounded-lg mr-2 py-6 pr-6 bg-trophy bg-contain bg-no-repeat flex flex-col">
-              <div className="rounded-lg p-4 text-transparent text-6xl font-extrabold bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
+              <div className="rounded-lg p-4 text-transparent xl:text-6xl text-4xl font-extrabold bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
                 <h1 className="mb-4">Work Together</h1>
                 <h1>Win Together</h1>
               </div>

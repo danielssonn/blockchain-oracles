@@ -16,6 +16,9 @@ import nf7 from './4.png'
 import nf8 from './1.png'
 import nf9 from './9.png'
 import user from './user-ph.png'
+import wallet from './wallet.png'
+import id from './badge.png'
+import tokens from './tokens.png'
 
 const bgs = {
   bg1,
@@ -37,7 +40,10 @@ const IMAGES = {
   nf9,
   crown,
   cibc,
-  user
+  user,
+  wallet,
+  id,
+  tokens
 }
 
 export default IMAGES
