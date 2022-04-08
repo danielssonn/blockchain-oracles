@@ -13,7 +13,7 @@ const StakingCard = ({ person }) => {
 
         <div className="text-center">
           <h4 className="font-semibold text-gray-700">{person.fullName}</h4>
-          {/* <p className="font-thin text-xs text-gray-700">{person.jobTitle}</p> */}
+          <p className="font-thin text-xs text-gray-700">{person.jobTitle}</p>
         </div>
 
         <BiLockAlt className="text-gray-700/60 text-2xl m-3 cursor-pointer"/>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 
 // import contractABI, contractAddress
-import { stakingABI, awardABI, stakingTknABI, stakingTknContractAddress, stakingContractAddress, awardContractAddress } from '../utils/constants'
+import { stakingABI, awardABI, stakingTknABI, digitalIdABI, digitalIdContractAddress, stakingTknContractAddress, stakingContractAddress, awardContractAddress } from '../utils/constants'
 import { user, NPCs } from '../utils/UserMapping'
 
 export const TransactionContext = React.createContext()
@@ -15,15 +15,23 @@ const signer = provider.getSigner()
 const stakingContract = new ethers.Contract(stakingContractAddress, stakingABI, signer)
 const awardContract = new ethers.Contract(awardContractAddress, awardABI, signer)
 const stakingTknContract = new ethers.Contract(stakingTknContractAddress, stakingTknABI, signer)
+const digitalIdContract = new ethers.Contract(digitalIdContractAddress, digitalIdABI, signer)
 
 const hex2number = (hex) => {
   return ethers.utils.formatEther(hex) * 1000000000000000000
 }
 
 export const TransactionProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState('')
   const [currentAccount, setCurrentAccount] = useState('')
   const [awardCountDown, setAwardCountDown] = useState(0)
   const [stakedArr, setStakedArr] = useState([])
+
+  const setUserIdentity = async (name) => {
+    setCurrentUser(name)
+    console.log(currentAccount)
+    await digitalIdContract.setName(currentAccount, name)
+  }
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -34,8 +42,7 @@ export const TransactionProvider = ({ children }) => {
       if (accounts.length) {
         console.log('accounts', accounts)
         setCurrentAccount(accounts[0])
-        getAwardCountDownDays()
-        getAllStakes(accounts[0])
+        checkUserName(accounts[0])
       } else {
         console.log('No accounts found')
       }
@@ -44,15 +51,46 @@ export const TransactionProvider = ({ children }) => {
     }
   }
 
+  // check if user's address has token, mint tokens if not
+  const mintToken = async (addr) => {
+    const mintTx = await stakingTknContract.mint(addr, 250)
+
+    const rc = await mintTx.wait()
+
+    console.log(rc)
+
+    const { event } = rc.events.find(e => {
+      return e.event === 'Minted' || e.event === 'NotMinted'
+    })
+
+    console.log(event)
+
+    console.log('event in minttoken', event)
+
+    return event === 'Minted'
+  }
+
+  // check user's name in DigitalIdentity contract
+  const checkUserName = async (addr) => {
+    const name = await digitalIdContract.getName(addr)
+    console.log(name)
+    setCurrentUser(name)
+  }
+
   const connectWallet = async () => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
 
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
-
       setCurrentAccount(accounts[0])
-      getAwardCountDownDays()
-      getAllStakes(accounts[0])
+
+      const tokenMinted = await mintToken(accounts[0])
+
+      if (!tokenMinted) {
+        await checkUserName(accounts[0])
+      }
+
+      return tokenMinted
     } catch (error) {
       console.log(error)
 
@@ -154,7 +192,7 @@ export const TransactionProvider = ({ children }) => {
 
   return (
     <TransactionContext.Provider
-      value={{ connectWallet, currentAccount, stake, awardCountDown, stakedArr }}
+      value={{ connectWallet, currentAccount, stake, currentUser, setCurrentUser, setUserIdentity }}
     >
       {children}
     </TransactionContext.Provider>
