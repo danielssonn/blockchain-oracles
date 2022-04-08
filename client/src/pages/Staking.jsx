@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react'
 // components
 import { Balance, StakingCard, NavBar } from '../components'
 import { TransactionContext } from '../context/TransactionContext'
+import { colleagues, colleaguesInfoData, colleagueDataTemplate } from '../utils/Identities'
 
 import Select from 'react-select'
 
@@ -17,56 +18,11 @@ const Staking = () => {
   const { stake, currentUser } = useContext(TransactionContext)
 
   const [selectedColleague, setSelectedColleague] = useState('Someone')
-  const [LorenzStaked, setLorenzStaked] = useState(false)
   const [colleagueSelected, setColleagueSelected] = useState(false)
   const [availableStakingTokens, setAvailableStakingTokens] = useState(250)
   const [stakedTokens, setStakedTokens] = useState(0)
-  const [selectedColleagueInfo, setSelectedColleagueInfo] = useState({
-    profile: 'user',
-    fullName: 'Your Colleague Name',
-    jobTitle: 'Check your colleague\'s staking details',
-    stakingPool: 0,
-    totalStakers: 0
-  })
-
+  const [selectedColleagueInfo, setSelectedColleagueInfo] = useState(colleagueDataTemplate)
   const [stakedColleagues, setStakedColleagues] = useState([])
-
-  const colleagues = [{ value: 'Lorenz', label: 'Lorenz Ruskin' }, { value: 'Wen', label: 'Wen MacBay' }, { value: 'Aleida', label: 'Aleida Hussain' }]
-
-  const stakingData = [
-    {
-      profile: 'nf8',
-      fullName: 'Lorenz Ruskin',
-      jobTitle: 'Application Developer, Frontline Technology',
-      stakingPool: 500,
-      totalStakers: 8
-    },
-    {
-      profile: 'nf1',
-      fullName: 'Wen MacBay',
-      jobTitle: 'Project Manager, Personal Lending',
-      stakingPool: 670,
-      totalStakers: 4
-    },
-    {
-      profile: 'nf7',
-      fullName: 'Aleida Hussain',
-      jobTitle: 'Project Manager, Personal Lending',
-      stakingPool: 300,
-      totalStakers: 5
-    }
-  ]
-
-  const addNewStakingCard = (colleague) => {
-    console.log(colleague)
-    colleague.staked = stakeInput.current.value
-    colleague.stakingPool += parseInt(stakeInput.current.value)
-    console.log(colleague.jobTitle)
-    // colleague.jobTitle = '2022 Annual Achiever Candidate'
-    colleague.totalStakers += 1
-    colleague.time = 1
-    setLorenzStaked(true)
-  }
 
   const onStakeHandler = e => {
     const v = parseInt(stakeInput.current.value)
@@ -74,12 +30,13 @@ const Staking = () => {
       alert('You don\'t have enough tokens to stake.')
     }
 
-    if (v > 0 && !LorenzStaked && v <= availableStakingTokens) {
+    if (v > 0 && stakedColleagues.length < 2 && v <= availableStakingTokens) {
       setAvailableStakingTokens(availableStakingTokens - v)
       setStakedTokens(stakedTokens + v)
-      stake(v)
-      setStakedColleagues(() => stakedColleagues.push(selectedColleagueInfo))
-      addNewStakingCard(selectedColleagueInfo)
+
+      setStakedColleagues((old) => [...old, selectedColleagueInfo])
+
+      stake(v, selectedColleagueInfo.address)
     } else {
       console.log('staking must > 0, stop adding new card')
     }
@@ -88,7 +45,7 @@ const Staking = () => {
   const handleSelectionChange = e => {
     console.log(e)
     setSelectedColleague(e.value)
-    setSelectedColleagueInfo(stakingData.find(d => d.fullName === e.label))
+    setSelectedColleagueInfo(colleaguesInfoData.find(d => d.fullName === e.label))
     setColleagueSelected(true)
   }
 
@@ -99,8 +56,6 @@ const Staking = () => {
       boxShadow: 'none'
     })
   }
-
-  console.log('currentUser:', currentUser)
 
   return (
     <div className="bg-dashboard flex flex-col justify-center items-center bg-center bg-cover min-h-screen min-w-full px-6 xl:px-24 xl:py-24 py-8">
@@ -198,7 +153,6 @@ const Staking = () => {
         </div>
 
         {/* my staking list */}
-        {/* bg-team bg-left bg-contain bg-no-repeat */}
         <div className="rounded-lg w-full p-6 bg-[#E5F3FF] flex justify-center items-center bg-team bg-right bg-contain bg-no-repeat">
 
            {/* title */}
@@ -210,16 +164,13 @@ const Staking = () => {
 
           <div className="flex items-center w-10/12 justify-start">
 
-            {/* staking card */}
-
-            {LorenzStaked
+            {/* staking history */}
+            {stakedColleagues.length > 0
               ? (
-              <StakingCard person={selectedColleagueInfo}/>)
+                  stakedColleagues.map((person, i) => <StakingCard key={i} person={person}/>)
+                )
               : null
             }
-
-            {/* <StakingCard person={npc}/> */}
-            {/* <StakingCard/> */}
 
           </div>
 
