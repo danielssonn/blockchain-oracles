@@ -14,7 +14,7 @@
 - [x] Two ERC20 tokens drive staking - StakingToken and RewardToken
 - [x] StakingTokens are distributed to everyone
 - [x] Supply and distribution of RewardTokens is controlled to increase value and decrease inflationary pressure
-- [x] Staking allows staking, withdrawals and reward management
+- [x] Staking contract allows staking, withdrawals and reward management
 - [x] Award contract will rebalance the staking rewards upon minting Award winners
 
 https://kovan.etherscan.io/address/0xa6519f0701ac7a5b8d14dc76cf6592fe18d20027#code
@@ -45,7 +45,7 @@ https://kovan.etherscan.io/address/0x06B8B5B2179Df6b01Cd4a9cb0268fF6fd340B67E#co
 ## Reward Token
 
 - [x] Reward Tokens will be minted acording to the Tokenomics model
-- [x] Some parameters of the model will include number of StakingTokens staked, duration of the stake, success of the stakee ...
+- [x] Tokenomics model will include number of StakingTokens staked, duration of the stake, success of the stakee
 - [x] Reward Tokens has monetary characteristics, has economic value and needs to be inflation controlled
 - [x] The exact tokenomic model is TBD, and is the very next component on the Roadmap
 
