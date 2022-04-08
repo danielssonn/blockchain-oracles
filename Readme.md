@@ -36,8 +36,23 @@ https://kovan.etherscan.io/address/0x3B263598094F56245e538c056628137043dA84F5#co
 
 ## Staking Token
 
+- [x] Initial balance of Staking tokens is be minted for each participant, upon wallet connection
+- [x] Staking Tokens can be added to wallet using the Import Token feature
+- [x] Staking Token is a utility token, without economic value
+
 https://kovan.etherscan.io/address/0x06B8B5B2179Df6b01Cd4a9cb0268fF6fd340B67E#code
 
+## Reward Token
+
+- [x] Reward Tokens will be minted acording to the Tokenomics model
+- [x] Some parameters of the model will include number of StakingTokens staked, duration of the stake, success of the stakee ...
+- [x] Reward Tokens has monetary characteristics, has economic value and needs to be inflation controlled
+- [x] The exact tokenomic model is TBD, and is the very next component on the Roadmap
+
 ## Digital Identity Contract
+
+- [x] To represent people vs wallet addresses in the system, this contract provides the identity mapping
+- [x] Upon intital wallet connect, user chooses an identity and this contract is ammened
+- [x] This is a 'mock' contract, eventually should be replaced by a solution that extends to AD, SSO etc.
 
 https://kovan.etherscan.io/address/0x6A64f3ba3ff31a8D23d6EE62cA6aBac6C1AFD713#code
