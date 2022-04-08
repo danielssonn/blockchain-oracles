@@ -8,7 +8,7 @@ Bridging the connection between the blockchain (on-chain) and the outside world 
 
 # You Got The Gift, But It Looks Like You're Waiting For Something.
 
-![](https://github.com/danielssonn/blockchain-oracles/blob/224084dcf3304cf6c4e4ccec9d80e13983945d57/assets/Chainlink%20Architecture.png)
+![alt text](../assets/Chainlink%20Architecture.png)
 
 ## Yes, that Oracle. What this does:
 

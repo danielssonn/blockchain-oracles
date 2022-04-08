@@ -1,6 +1,6 @@
 ## Stake in Success - new incentive system for success recognition
 
-**[Incentive theory](/Incentives.md)**
+**[Incentive theory](./Incentives.md)**
 ![](./assets/Tokenomics.png)
 
 ## Design Overview
