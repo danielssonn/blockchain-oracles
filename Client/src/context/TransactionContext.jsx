@@ -96,7 +96,6 @@ export const TransactionProvider = ({ children }) => {
       if (!ethereum) return alert('Please install MetaMask.')
 
       // transfer
-
       const transferTX = await stakingTknContract.transfer(currentAccount, tokens)
       const transferRc = await transferTX.wait()
       console.log(transferRc)

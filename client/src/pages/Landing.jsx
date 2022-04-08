@@ -71,7 +71,7 @@ const Landing = () => {
 
       {/* Dapp name */}
       <div className="rounded-lg p-4 text-transparent xl:text-6xl text-4xl font-extrabold bg-clip-text bg-gradient-to-br from-[#3926AD] to-[#C367D6]">
-        <h1>CIBC Stars</h1>
+        <h1>CIBC Starz</h1>
       </div>
 
       {/* step cards */}
