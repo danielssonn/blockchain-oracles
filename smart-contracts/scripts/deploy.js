@@ -31,6 +31,13 @@ async function main() {
   console.log("Award contract deployed to address:", award.address)
 
 
+
+  // const DigitalIdentity = await ethers.getContractFactory("DigitalIdentity")
+  // const digitalIdentity = await DigitalIdentity.deploy()
+  // await digitalIdentity.deployed()
+  // console.log("Award contract deployed to address:", digitalIdentity.address)
+
+
   // 1. deploy StakingToken
   // 2. deploy RewardToken
   // 3. deploy Oracles - see ../../oracles 

@@ -1,8 +1,8 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat")
 
-describe("Basic Staking", function () {
 
+describe("Token minting", function(){
     before(async function () {
 
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
@@ -15,18 +15,45 @@ describe("Basic Staking", function () {
         rewardTKN = await RewardToken.deploy();
 
         staking = await Staking.deploy(stakingTKN.address, rewardTKN.address);
-        await stakingTKN.transfer(addr1.address, 10)
-        await stakingTKN.approve(staking.address, 10);
-        await staking.stake(addr1.address, 10);
+
 
     })
+    it("Should mint some tokens", async function () {
+        await stakingTKN.mint(addr1.address, 10)
+        expect(await stakingTKN.balanceOf(addr1.address)).to.equal(10)
+        
+   
+    });
 
-    it("Should update stakin balance", async function () {
+    it("Should not mint any more tokens", async function () {
+        await stakingTKN.mint(addr1.address, 10)
+        expect(await stakingTKN.balanceOf(addr1.address)).to.equal(10)
+        
+   
+    });
+
+describe("Basic Staking", function () {
+
+    before(async function(){
+        await stakingTKN.approve(staking.address, 10);
+        await staking.stake(addr1.address, 10);
+    })
+
+    it("Should still not mint any more tokens", async function () {
+        await stakingTKN.mint(addr1.address, 10)
+        expect(await stakingTKN.balanceOf(addr1.address)).to.equal(10)
+        
+   
+    });
+
+    it("Should update staking balance", async function () {
+        
 
         expect(await staking.nominatorStakesBalance(owner.address,addr1.address)).to.equal(10)
         
    
     });
+
 
     it("Should update stakers list", async function () {
 
@@ -45,12 +72,20 @@ describe("Basic Staking", function () {
         before(async function () {
             await staking.unStake(addr1.address, 10);
         })
-        it("Should update stakin balance", async function () {
+        it("Should update stakingTKN balance", async function () {
 
             expect(await staking.nominatorStakesBalance(owner.address,addr1.address)).to.equal(0)
             
        
         });
+
+        it("Should stiiiiill not mint any more tokens", async function () {
+            await stakingTKN.mint(addr1.address, 10)
+            expect(await stakingTKN.balanceOf(addr1.address)).to.equal(10)
+            
+       
+        });
+
         it("Should remove from stakers list after withdrawal", async function () {
 
             expect(staking.nomineeStakers(addr1.address, 0)).to.be.reverted
@@ -66,3 +101,4 @@ describe("Basic Staking", function () {
 
 }
 )
+} )

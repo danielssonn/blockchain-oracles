@@ -6,22 +6,27 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./StakingToken.sol";
 import "./RewardToken.sol";
-import "hardhat/console.sol";
 
+/**
+ * Staking creates an incentive model for anyone to stake into other people's success
+ * Once a person gets recognized for their achievement, everyone who staked in them is also rewarded
+ * Two ERC20 tokens drive staking - StakingToken and RewardToken
+ * StakingTokens are distributed to everyone
+ * Supply and distribution of RewardTokens is controlled to increase value and decrease inflationary pressure
+ * Staking contract allows staking, withdrawals and reward management
+ * Award contract will rebalance the staking rewards upon minting Award winners
+ */
 contract Staking is Ownable, ReentrancyGuard {
     // Two ERC20 Tokens to drive staking and rewards
     IERC20 public rewardsToken;
     IERC20 public stakingToken;
 
-    uint256 public rewardRate = 100;
     uint256 public lastUpdateTime;
-    uint256 public rewardPerTokenStored;
 
     // Total stakes and individual stake balances and rewards
     uint256 private _totalStakes;
     mapping(address => uint256) private _balances;
     mapping(address => uint256) public rewards;
-    mapping(address => uint256) public userRewardPerTokenPaid;
 
     // Individual mominators and their nominees with stakes
     mapping(address => address[]) public nomineeStakers;
@@ -29,15 +34,18 @@ contract Staking is Ownable, ReentrancyGuard {
         public nominatorStakesBalance;
     mapping(address => address[]) public nominatorStakes;
 
+    // Stakers and Stakees
     mapping(address => uint256) public stakes;
     mapping(address => uint256) public stakers;
-
 
     constructor(address _stakingToken, address _rewardsToken) {
         stakingToken = IERC20(_stakingToken);
         rewardsToken = IERC20(_rewardsToken);
     }
 
+    /**
+     *
+     */
     function stake(address _nominee, uint256 _amount) public nonReentrant {
         // 1. update the staking balance for the staker and their stake. Could something go wrong here?
         nominatorStakesBalance[msg.sender][_nominee] =
@@ -54,7 +62,7 @@ contract Staking is Ownable, ReentrancyGuard {
 
         // 4. update total stakes and staker
         stakes[msg.sender]++;
-        stakers[_nominee]++; 
+        stakers[_nominee]++;
 
         // 5. get the stake transferred
         stakingToken.transferFrom(msg.sender, address(this), _amount);
@@ -63,31 +71,31 @@ contract Staking is Ownable, ReentrancyGuard {
         emit Staked(msg.sender, _amount);
     }
 
-    function rebalanceStakes(address winner) public onlyOwner {
+    /**
+     * Once the Award contract determines a new achiever, it will call this method to rebalance all stakes
+     * Stake rebalancing will reward stakers with stakes in achievers
+     * Should become non view function once implemented
+     */
+    function rebalanceStakes(address winner) public view onlyOwner {
         // find everyone who has staked in the winner
         for (uint256 i = 0; i < nomineeStakers[winner].length; ++i) {
-            // give them 10x?
-            nominatorStakesBalance[nomineeStakers[winner][i]][winner] = 10;
-
-            // The full Tokenomic model will be implemented here
-
+            // !!!! The actual tokenomic model will be implemented here !!!
         }
     }
 
-    function unStake(address _nominee, uint256 _amount)
-        external
-        nonReentrant
-        updateReward(msg.sender)
-    {
+    /**
+     * Stake reversal. Need to think if this an economic action and should result in burn of tokens ...
+     */
+    function unStake(address _nominee, uint256 _amount) external nonReentrant {
         // 1.Update the staking balance for the staker and their stake. Could something go wrong here?
 
         nominatorStakesBalance[msg.sender][_nominee] =
             nominatorStakesBalance[msg.sender][_nominee] -
             _amount;
 
-         // 2. update total stakes and staker
+        // 2. update total stakes and staker
         stakes[msg.sender]--;
-        stakers[_nominee]--; 
+        stakers[_nominee]--;
         // 3. remove the staker from nominee's list, if the staking balance is zero
 
         if (nominatorStakesBalance[msg.sender][_nominee] == 0) {
@@ -118,44 +126,15 @@ contract Staking is Ownable, ReentrancyGuard {
         emit Unstaked(msg.sender, _amount);
     }
 
-    function harvest() external updateReward(msg.sender) {
+    /**
+     * Transfer or Reward Tokens to owner's wallet
+     */
+    function harvest() external {
         uint256 reward = rewards[msg.sender];
         rewards[msg.sender] = 0;
         rewardsToken.transfer(msg.sender, reward);
-        emit Harvested(msg.sender,reward);
+        emit Harvested(msg.sender, reward);
     }
-
-    function rewardPerToken() public view returns (uint256) {
-        if (_totalStakes == 0) {
-            return rewardPerTokenStored;
-        }
-        return
-            rewardPerTokenStored +
-            (((block.timestamp - lastUpdateTime) * rewardRate * 1e18) /
-                _totalStakes);
-    }
-
-    function earned(address account) public view returns (uint256) {
-        return
-            ((_balances[account] *
-                (rewardPerToken() - userRewardPerTokenPaid[account])) / 1e18) +
-            rewards[account];
-    }
-
-    modifier updateReward(address account) {
-        rewardPerTokenStored = rewardPerToken();
-        lastUpdateTime = block.timestamp;
-
-        rewards[account] = earned(account);
-        userRewardPerTokenPaid[account] = rewardPerTokenStored;
-        _;
-    }
-
-
-    // funky solidity getters for the two arrays of stakers and stakees
-    // mapping(address => address[]) public nomineeStakers;
-    // mapping(address => address[]) public nominatorStakes;
-
 
     // Some funky Solidity stuff to return the mapping values ...
     function getAllStakes(address staker)
@@ -165,7 +144,6 @@ contract Staking is Ownable, ReentrancyGuard {
     {
         address[] memory ret = new address[](stakes[staker]);
         for (uint256 i = 0; i < stakes[staker]; i++) {
-
             ret[i] = nominatorStakes[staker][i];
         }
         return ret;
