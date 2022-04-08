@@ -10,21 +10,20 @@ import "./interfaces/IOracleClient.sol";
 import "./AwardCertificate.sol";
 import "./Staking.sol";
 
-
 /**
-*   Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
-*   This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
-*   Awards can then be minted
-*   ETH award will be moved from the Award budget, and vested for the winner for a vesting period
-*   ETH award in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
-*   Award will only be minted if there is available budget
-*   Award will not be minted for organizers
-*   NFT certificate will be minted for each award
-*   On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list' via Oracle
-*   Off-chain HR check will be performed to ensure the award winner is still an employee when collecting award
-*   
-*   Minting of award will rebalance and rebase all stakes in Staking contract
-*/
+ *   Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
+ *   This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
+ *   Awards can then be minted
+ *   ETH award will be moved from the Award budget, and vested for the winner for a vesting period
+ *   ETH award in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
+ *   Award will only be minted if there is available budget
+ *   Award will not be minted for organizers
+ *   NFT certificate will be minted for each award
+ *   On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list' via Oracle
+ *   Off-chain HR check will be performed to ensure the award winner is still an employee when collecting award
+ *
+ *   Minting of award will rebalance and rebase all stakes in Staking contract
+ */
 contract Award is Ownable {
     // oracleClient to get to off chain HR
     IOracleClient public hrAdapter;
@@ -46,20 +45,19 @@ contract Award is Ownable {
     address awardCertificateContract =
         0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
-    address stakingToken = 0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E;
+    address stakingToken = 0x06B8B5B2179Df6b01Cd4a9cb0268fF6fd340B67E;
 
     address rewardToken = 0xbe3b60170D7d86776e6C8d350685d16e32477952;
 
     // date until when will this award run
 
-    uint awardCycleLength = 52 weeks; 
-    
-    uint public awardDate = 0; 
+    uint256 awardCycleLength = 52 weeks;
+
+    uint256 public awardDate = 0;
 
     // deploy on the fly
     AwardCertificate public awardCertificate;
     Staking public awardStaking;
-
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) public wonAwards;
@@ -106,7 +104,6 @@ contract Award is Ownable {
     {
         awardCertificateContract = nftContractAddress;
     }
-
 
     // Minting will create a certificare, move some money from the budget to winner's balance where we'll stake it for a bit
     // Minting will also update the AwardToken distribution in awardStaking contract, rewarding those who staked the right winner

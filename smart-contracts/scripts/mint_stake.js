@@ -9,7 +9,7 @@ const web3 = createAlchemyWeb3(ALCHEMY_API_URL)
 
 
 const  stakingTokencABI = require("../artifacts/contracts/StakingToken.sol/StakingToken.json")
-const  stakingTokenAddress = "0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E"
+const  stakingTokenAddress = "0x06B8B5B2179Df6b01Cd4a9cb0268fF6fd340B67E"
 const  stakingTokenContract = new web3.eth.Contract(stakingTokencABI.abi, stakingTokenAddress)
 
 const stakingContractABI = require("../artifacts/contracts/Staking.sol/Staking.json")
@@ -125,10 +125,10 @@ async function signAndSend(tx){
 async function  main(){
     
     // await mintTokens();
-    // await transferTokens();
+    await transferTokens();
     // await approve();
     // await stakeTokens();  
-    await getStakes();
+    // await getStakes();
 
 }
 
