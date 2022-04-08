@@ -46,7 +46,7 @@ describe("Basic Staking", function () {
    
     });
 
-    it("Should update stakin balance", async function () {
+    it("Should update staking balance", async function () {
         
 
         expect(await staking.nominatorStakesBalance(owner.address,addr1.address)).to.equal(10)
@@ -72,7 +72,7 @@ describe("Basic Staking", function () {
         before(async function () {
             await staking.unStake(addr1.address, 10);
         })
-        it("Should update stakin balance", async function () {
+        it("Should update stakingTKN balance", async function () {
 
             expect(await staking.nominatorStakesBalance(owner.address,addr1.address)).to.equal(0)
             
