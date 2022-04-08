@@ -105,7 +105,7 @@ contract Award is Ownable {
         awardCertificateContract = nftContractAddress;
     }
 
-    // Minting will create a certificare, move some money from the budget to winner's balance where we'll stake it for a bit
+    // Minting will create a certificate, move some money from the budget to winner's balance where we'll stake it for a bit
     // Minting will also update the AwardToken distribution in awardStaking contract, rewarding those who staked the right winner
     // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract through DAO voting!
     // For now, we'll select an arbitrary winner and rebase all stakes in Staking contract
