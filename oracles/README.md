@@ -16,7 +16,8 @@ Bridging the connection between the blockchain (on-chain) and the outside world 
 - [x] Ex: to collect a vested crypto award, winner must still be an employee
 - [x] Ex: the walet address used must successfully pass on-chain AML check
 - [x] Resolved via Chainlink Node, with external adapter written in Node.js making the API call to mock services deployed to AWS API gateaway
-- [x] Contracts get updated with API response within the same block transaction.
+- [x] Contracts get updated with API response within the same block transaction. See ERC677 for details
+- [x] LINK token (ERC677) is spent by the Oracles
 
 ## Ethereum
 
