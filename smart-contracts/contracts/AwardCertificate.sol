@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-
-
+/*
+ * ERC721 (NFT) certificate will be minted for each award
+ */
 contract AwardCertificate is ERC721URIStorage, Ownable {
     // ERC721 tokenIds
     using Counters for Counters.Counter;

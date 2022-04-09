@@ -25,10 +25,10 @@ async function main() {
   // console.log("HR Oracle contract deployed to address:", hrAdapter.address)
 
 
-  const Award = await ethers.getContractFactory("Award")
-  const award = await Award.deploy('0x5fbd2a860d007d54c5b698b0efcd150f8c8cc7d1', '0x6771a1bebac8ff6affc2b88f6240b694675af251')
-  await award.deployed()
-  console.log("Award contract deployed to address:", award.address)
+  // const Award = await ethers.getContractFactory("Award")
+  // const award = await Award.deploy('0x5fbd2a860d007d54c5b698b0efcd150f8c8cc7d1', '0x6771a1bebac8ff6affc2b88f6240b694675af251')
+  // await award.deployed()
+  // console.log("Award contract deployed to address:", award.address)
 
 
 

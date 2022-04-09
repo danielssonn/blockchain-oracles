@@ -3,10 +3,10 @@ pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
-
 /**
-* Chainlink Oracle to perform AML check against external API
-*/
+ * Chainlink Oracle to perform AML check against external API
+ * For Chainlink node configuration and adapters setup, see ../adapters/config
+ */
 contract AMLAdapter is ChainlinkClient {
     using Chainlink for Chainlink.Request;
     uint256 public result;
@@ -14,13 +14,12 @@ contract AMLAdapter is ChainlinkClient {
     bytes32 public jobId;
     uint256 private fee;
 
-
     constructor() {
         setPublicChainlinkToken();
 
         oracle = 0x0000000000000000000000000000000000000000;
 
-        // jobs are defined in chainlink console, see ./config/ for defintions examples
+        // jobs are defined in chainlink console, see ../adapters/config/ for defintions examples
         jobId = "";
         fee = 0.1 * 10**18; // (Varies by network and job)
     }
