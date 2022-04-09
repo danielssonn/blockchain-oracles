@@ -1,4 +1,9 @@
 
+
+/**
+* HR service business logic
+* HTTP Status 200 makes the check pass
+*/
 const handleRequest = (input, callback) => {
 
     let responseCode = 200;
@@ -19,7 +24,9 @@ const handleRequest = (input, callback) => {
 
 }
 
-// Lambda wrapper
+/**
+ * Lambda function wrapper for the service
+ */
 exports.handler = (event, context, callback) => {
 
 

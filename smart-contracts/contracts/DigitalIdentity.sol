@@ -3,7 +3,8 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * Mock Digital Identity contract. Enables mapping of wallet address to more human Identity.
+ * Digital Identity contract. Enables mapping of wallet address to more human Identity.
+ * Simple contract to prove the pattern, eventually should be replaced by a solution that extends to AD, SSO etc.
  */
 
 contract DigitalIdentity is Ownable {
