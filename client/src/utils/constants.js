@@ -9,7 +9,7 @@ export const awardABI = award.abi
 export const stakingTknABI = stakingToken.abi
 export const digitalIdABI = digitalId.abi
 
-export const stakingContractAddress = '0x4295500Ee314F2C0159cf2d9fBE4914C03477dA1'
-export const awardContractAddress = '0x46830946Bcb254a7f68870ddeef656DFDFF7e491'
-export const stakingTknContractAddress = '0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E'
+export const stakingContractAddress = '0xA6519F0701aC7A5B8D14Dc76Cf6592fE18D20027'
+export const awardContractAddress = '0x3B263598094F56245e538c056628137043dA84F5'
+export const stakingTknContractAddress = '0x06B8B5B2179Df6b01Cd4a9cb0268fF6fd340B67E'
 export const digitalIdContractAddress = '0x6A64f3ba3ff31a8D23d6EE62cA6aBac6C1AFD713'
