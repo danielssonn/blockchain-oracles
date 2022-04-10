@@ -10,21 +10,20 @@ import "./interfaces/IOracleClient.sol";
 import "./AwardCertificate.sol";
 import "./Staking.sol";
 
-
 /**
-*   Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
-*   This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
-*   Awards can then be minted
-*   ETH award will be moved from the Award budget, and vested for the winner for a vesting period
-*   ETH award in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
-*   Award will only be minted if there is available budget
-*   Award will not be minted for organizers
-*   NFT certificate will be minted for each award
-*   On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list' via Oracle
-*   Off-chain HR check will be performed to ensure the award winner is still an employee when collecting award
-*   
-*   Minting of award will rebalance and rebase all stakes in Staking contract
-*/
+ *   Awards contract has an overall budget, that can be augmented by addToAwardsBudget()
+ *   This will be a real transfer of ETH, the sender must be valid and have the amount of ETH in their account
+ *   Awards can then be minted
+ *   ETH award will be moved from the Award budget, and vested for the winner for a vesting period
+ *   ETH award in the individual award can be withdrawn, if vesting period has passed by withdrawAwardETH
+ *   Award will only be minted if there is available budget
+ *   Award will not be minted for organizers
+ *   NFT certificate will be minted for each award
+ *   On-chan AML check will be performed on winner's wallet to ensure it is not on a 'bad list' via Oracle
+ *   Off-chain HR check will be performed to ensure the award winner is still an employee when collecting award
+ *
+ *   Minting of award will rebalance and rebase all stakes in Staking contract
+ */
 contract Award is Ownable {
     // oracleClient to get to off chain HR
     IOracleClient public hrAdapter;
@@ -46,20 +45,19 @@ contract Award is Ownable {
     address awardCertificateContract =
         0x5A510a87A6769b9205DbD52A8AA94D6b6f238760;
 
-    address stakingToken = 0xC328fbdD2E352b032A3aC393f014DE5b82D83f6E;
+    address stakingToken = 0x06B8B5B2179Df6b01Cd4a9cb0268fF6fd340B67E;
 
     address rewardToken = 0xbe3b60170D7d86776e6C8d350685d16e32477952;
 
     // date until when will this award run
 
-    uint awardCycleLength = 52 weeks; 
-    
-    uint public awardDate = 0; 
+    uint256 awardCycleLength = 52 weeks;
 
-    // deploy on the fly
+    uint256 public awardDate = 0;
+
+    // deploy Award certificate contract, Staking contracts
     AwardCertificate public awardCertificate;
     Staking public awardStaking;
-
 
     // Winner can have mutiple awards, concurrently
     mapping(address => mapping(uint256 => uint256)) public wonAwards;
@@ -67,14 +65,11 @@ contract Award is Ownable {
     // Manage when the user won, to enable vesting
     mapping(address => mapping(uint256 => uint256)) public wonTimestamps;
 
-    // Keep track of mintend NFTs - winner - awardIdx - itemId on the NFT contract
+    // Keep track of mintend certificates - winner - awardIdx - itemId on the certificate contract
     mapping(address => mapping(uint256 => uint256)) public mintedCertificates;
 
     // Number of wins for each winner
     mapping(address => uint256) public winerAwardCount;
-
-    // Unique hash representing the winner in off-chain systems
-    mapping(address => bytes32) public winnerOffChain;
 
     // Manage the AML pass
     mapping(address => bool) public winnerAMLCheck;
@@ -99,7 +94,7 @@ contract Award is Ownable {
         totalAwardBudget = totalAwardBudget + msg.value;
     }
 
-    // We can change the ERC721 certificate that will be minted for each award
+    // We can change the ERC721 certificates that will be minted for each award
     function setCertificateContract(address nftContractAddress)
         public
         onlyOwner
@@ -107,10 +102,9 @@ contract Award is Ownable {
         awardCertificateContract = nftContractAddress;
     }
 
-
-    // Minting will create a certificare, move some money from the budget to winner's balance where we'll stake it for a bit
-    // Minting will also update the AwardToken distribution in awardStaking contract, rewarding those who staked the right winner
-    // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won in another contract through DAO voting!
+    // Minting will create a certificate, move some money from the budget to winner's balance where we'll vest it for a bit
+    // Minting will also update the Reward Token distribution in Staking contract, rewarding those who staked the right winner
+    // This is where we can eventually make the whole process Smart Contract based, incl. deciding who won through DAO voting ...
     // For now, we'll select an arbitrary winner and rebase all stakes in Staking contract
     function mintWinner(address winner, string memory tokenURI)
         public
@@ -133,14 +127,13 @@ contract Award is Ownable {
         wonAwards[winner][awardNumberForWinner] = singleAwardAmount;
         wonTimestamps[winner][awardNumberForWinner] = block.timestamp;
         mintedCertificates[winner][awardNumberForWinner] = nftItemId;
-        winnerOffChain[winner] = keccak256(abi.encodePacked(winner));
 
         awardStaking.rebalanceStakes(winner);
 
         totalAwardBudget = totalAwardBudget - singleAwardAmount;
     }
 
-    // Withdraw the monetary award, but only if vested ...
+    // Withdraw the crypto award, but only if vested ...
     // This is real ETH, equivalent to stock or cash awards
     function withdrawAwardETH(uint256 awardNumber) public payable {
         require(
@@ -156,6 +149,7 @@ contract Award is Ownable {
         wonAwards[msg.sender][awardNumber] = 0;
     }
 
+    // Check balance of the crypto award
     function getAwardETHBalance(address winnerAddress, uint256 awardNumber)
         public
         view
@@ -164,7 +158,7 @@ contract Award is Ownable {
         return wonAwards[winnerAddress][awardNumber];
     }
 
-    // Some funky Solidity stuff to return the mapping value ...
+    // Some funky Solidity stuff to return mapping values - cannot return state based collections, need to  transform to memory variables
     function getAllAwards(address winnerAddress)
         public
         view
@@ -195,6 +189,7 @@ contract Award is Ownable {
         return ret;
     }
 
+    // Each award can vest for some time, makimg it only transferable after the vesting period
     function isAwardVested(address winnerAddress, uint256 awardNumber)
         public
         view
@@ -211,6 +206,7 @@ contract Award is Ownable {
         return false;
     }
 
+    // Helpers to get award certificate details
     function getAwardCertificateItemId(
         address winnerAddress,
         uint256 awardNumber
@@ -222,11 +218,12 @@ contract Award is Ownable {
         return awardCertificateContract;
     }
 
-    // Award amount in Wei
+    // Award amount in Wei - contract owner can change the amount of crypto award
     function setAwardAmountETH(uint256 amount) public onlyOwner {
         singleAwardAmount = amount;
     }
 
+    // Crypto award vesting time - contract owner can change
     function setAwardVestingTime(uint256 vestingTimeInDays) public onlyOwner {
         awardVestingTime = vestingTimeInDays;
     }

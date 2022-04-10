@@ -1,3 +1,7 @@
+/**
+* AML service business logic
+* HTTP Status 200 makes the check pass
+*/
 
 const handleRequest = (input, callback) => {
 
@@ -19,7 +23,9 @@ const handleRequest = (input, callback) => {
 
 }
 
-// Lambda wrapper
+/**
+ * Lambda function wrapper for the service
+ */
 exports.handler = (event, context, callback) => {
 
 
@@ -31,7 +37,6 @@ exports.handler = (event, context, callback) => {
         })
     })
 }
-
 
 // Should we want to run straight up vs. as a lambda
 module.exports.handleRequest = handleRequest
