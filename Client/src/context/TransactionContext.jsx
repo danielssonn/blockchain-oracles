@@ -6,26 +6,31 @@ import { stakingABI, awardABI, stakingTknABI, digitalIdABI, digitalIdContractAdd
 
 export const TransactionContext = React.createContext()
 
+// ethereum object from window, initiate provider and signer
 const { ethereum } = window
-
 const provider = new ethers.providers.Web3Provider(ethereum)
 const signer = provider.getSigner()
 
+// smart contract objects
 const stakingContract = new ethers.Contract(stakingContractAddress, stakingABI, signer)
-const awardContract = new ethers.Contract(awardContractAddress, awardABI, signer)
 const stakingTknContract = new ethers.Contract(stakingTknContractAddress, stakingTknABI, signer)
 const digitalIdContract = new ethers.Contract(digitalIdContractAddress, digitalIdABI, signer)
+const awardContract = new ethers.Contract(awardContractAddress, awardABI, signer)
 
+// context provider
 export const TransactionProvider = ({ children }) => {
+  // states
   const [currentUser, setCurrentUser] = useState('')
   const [currentAccount, setCurrentAccount] = useState('')
 
+  // save user's name and address mapping in digitalIdentity contract
   const setUserIdentity = async (name) => {
     setCurrentUser(name)
     console.log(currentAccount)
     await digitalIdContract.setName(currentAccount, name)
   }
 
+  // check if wallet is connect
   const checkIfWalletIsConnected = async () => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
@@ -44,7 +49,7 @@ export const TransactionProvider = ({ children }) => {
     }
   }
 
-  // check if user's address has token, mint tokens if not
+  // check if token already minted by user wallet address, mint tokens if not
   const mintToken = async (addr) => {
     const mintTx = await stakingTknContract.mint(addr, 250)
 
@@ -63,13 +68,14 @@ export const TransactionProvider = ({ children }) => {
     return event === 'Minted'
   }
 
-  // check user's name in DigitalIdentity contract
+  // lookup user's name in DigitalIdentity contract
   const checkUserName = async (addr) => {
     const name = await digitalIdContract.getName(addr)
     console.log(name)
     setCurrentUser(name)
   }
 
+  // connect to user's wallet
   const connectWallet = async () => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
@@ -91,21 +97,22 @@ export const TransactionProvider = ({ children }) => {
     }
   }
 
+  // stake tokens to stakee's address
   const stake = async (tokens, stakeeAddress) => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
 
-      // transfer
+      // transfer token to stakingTokenContract
       const transferTX = await stakingTknContract.transfer(currentAccount, tokens)
       const transferRc = await transferTX.wait()
       console.log(transferRc)
 
-      // approve
+      // approve above transaction
       const approveTX = await stakingTknContract.approve(stakingContractAddress, tokens)
       const approveRc = await approveTX.wait()
       console.log(approveRc)
 
-      // stake
+      // stake tokens to stakee
       const stakeTX = await stakingContract.stake(stakeeAddress, tokens)
       const stakeRc = await stakeTX.wait()
       console.log(stakeRc)
@@ -117,6 +124,7 @@ export const TransactionProvider = ({ children }) => {
     }
   }
 
+  // check if wallet is connected every time page is rerendered
   useEffect(() => {
     checkIfWalletIsConnected()
   }, [])
