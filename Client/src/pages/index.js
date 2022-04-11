@@ -1,2 +1,2 @@
-export { default as Nominee } from './Nominee';
-export { default as Nominator } from './Nominator';
+export { default as Staking } from './Staking'
+export { default as Landing } from './Landing'

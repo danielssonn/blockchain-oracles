@@ -13,6 +13,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon{
+  border-radius: 50%;
+background: linear-gradient(145deg, #ffffff, #e6e6e6);
+box-shadow:  25px 25px 49px #d4d4d4,
+             -25px -25px 49px #ffffff;
+}
+
+.underline-behind{
+  background: linear-gradient(#f7d011, #f7d011) 0 90% / 100% 12px no-repeat;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
