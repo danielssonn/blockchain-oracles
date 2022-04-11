@@ -124,6 +124,11 @@ export const TransactionProvider = ({ children }) => {
     }
   }
 
+  // load user identity from smart contract
+  const loadEntity = async () => {
+    return digitalIdContract.getDirectory()
+  }
+
   // check if wallet is connected every time page is rerendered
   useEffect(() => {
     checkIfWalletIsConnected()
@@ -131,7 +136,7 @@ export const TransactionProvider = ({ children }) => {
 
   return (
     <TransactionContext.Provider
-      value={{ connectWallet, currentAccount, stake, currentUser, setCurrentUser, setUserIdentity }}
+      value={{ connectWallet, currentAccount, stake, currentUser, setCurrentUser, setUserIdentity, loadEntity, checkUserName }}
     >
       {children}
     </TransactionContext.Provider>
