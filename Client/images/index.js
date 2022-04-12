@@ -7,8 +7,8 @@ import nf1 from './nf-1.png'
 import nf2 from './nf-2.png'
 import nf3 from './nf-3.png'
 import cibc from './cibc.png'
-import nf7 from './4.png'
-import nf8 from './1.png'
+import nf4 from './4.png'
+import nf5 from './1.png'
 import user from './user-ph.png'
 import wallet from './wallet.png'
 import tokens from './tokens.png'
@@ -24,8 +24,8 @@ const IMAGES = {
   nf1,
   nf2,
   nf3,
-  nf7,
-  nf8,
+  nf4,
+  nf5,
   cibc,
   user,
   wallet,

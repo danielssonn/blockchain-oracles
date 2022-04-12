@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 
 // import contractABI, contractAddress
 import { stakingABI, awardABI, stakingTknABI, digitalIdABI, digitalIdContractAddress, stakingTknContractAddress, stakingContractAddress, awardContractAddress } from '../utils/constants'
+import { fetchEmployeeIdDate } from '../utils/Identities'
 
 export const TransactionContext = React.createContext()
 
@@ -22,11 +23,12 @@ export const TransactionProvider = ({ children }) => {
   // states
   const [currentUser, setCurrentUser] = useState('')
   const [currentAccount, setCurrentAccount] = useState('')
+  const [colleagueOptions, setColleagueOptions] = useState([])
+  const [colleaguesInfoData, setColleaguesInfoData] = useState([])
 
   // save user's name and address mapping in digitalIdentity contract
   const setUserIdentity = async (name) => {
     setCurrentUser(name)
-    console.log(currentAccount)
     await digitalIdContract.setName(currentAccount, name)
   }
 
@@ -38,7 +40,6 @@ export const TransactionProvider = ({ children }) => {
       const accounts = await ethereum.request({ method: 'eth_accounts' })
 
       if (accounts.length) {
-        console.log('accounts', accounts)
         setCurrentAccount(accounts[0])
         checkUserName(accounts[0])
       } else {
@@ -55,15 +56,9 @@ export const TransactionProvider = ({ children }) => {
 
     const rc = await mintTx.wait()
 
-    console.log(rc)
-
     const { event } = rc.events.find(e => {
       return e.event === 'Minted' || e.event === 'NotMinted'
     })
-
-    console.log(event)
-
-    console.log('event in minttoken', event)
 
     return event === 'Minted'
   }
@@ -71,7 +66,6 @@ export const TransactionProvider = ({ children }) => {
   // lookup user's name in DigitalIdentity contract
   const checkUserName = async (addr) => {
     const name = await digitalIdContract.getName(addr)
-    console.log(name)
     setCurrentUser(name)
   }
 
@@ -105,19 +99,14 @@ export const TransactionProvider = ({ children }) => {
       // transfer token to stakingTokenContract
       const transferTX = await stakingTknContract.transfer(currentAccount, tokens)
       const transferRc = await transferTX.wait()
-      console.log(transferRc)
 
       // approve above transaction
       const approveTX = await stakingTknContract.approve(stakingContractAddress, tokens)
       const approveRc = await approveTX.wait()
-      console.log(approveRc)
 
       // stake tokens to stakee
       const stakeTX = await stakingContract.stake(stakeeAddress, tokens)
       const stakeRc = await stakeTX.wait()
-      console.log(stakeRc)
-
-      console.log(`staking ${tokens} tokens`)
     } catch (error) {
       console.log(error)
       throw new Error('No ethereum object')
@@ -129,14 +118,33 @@ export const TransactionProvider = ({ children }) => {
     return digitalIdContract.getDirectory()
   }
 
+  const loadIdentitiesFromContract = async () => {
+    if (!ethereum) return alert('Please install MetaMask.')
+
+    const accounts = await ethereum.request({ method: 'eth_accounts' })
+    const userAddr = accounts[0]
+
+    const addrArray = await loadEntity()
+
+    addrArray.map(async addr => {
+      if (addr.toLowerCase() !== userAddr.toLowerCase()) {
+        const name = await digitalIdContract.getName(addr)
+        setColleagueOptions((old) => [...old, { value: name, label: name }])
+        const employeeData = await fetchEmployeeIdDate(addr, name)
+        setColleaguesInfoData((data) => [...data, employeeData])
+      }
+    })
+  }
+
   // check if wallet is connected every time page is rerendered
   useEffect(() => {
     checkIfWalletIsConnected()
+    // loadIdentitiesFromContract()
   }, [])
 
   return (
     <TransactionContext.Provider
-      value={{ connectWallet, currentAccount, stake, currentUser, setCurrentUser, setUserIdentity, loadEntity, checkUserName }}
+      value={{ loadIdentitiesFromContract, connectWallet, colleagueOptions, colleaguesInfoData, currentAccount, stake, currentUser, setCurrentUser, setUserIdentity, loadEntity, checkUserName }}
     >
       {children}
     </TransactionContext.Provider>

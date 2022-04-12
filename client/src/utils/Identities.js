@@ -1,28 +1,31 @@
-import { useContext } from 'react'
-import { TransactionContext } from '../context/TransactionContext'
+export const colleagueDataTemplate = {
+  profile: 'user',
+  fullName: 'Your Colleague Name',
+  jobTitle: 'Check your colleague\'s staking details',
+  stakingPool: 0,
+  totalStakers: 0
+}
 
-const { loadEntity, checkUserName } = useContext(TransactionContext)
+export const colleaguesInfoData = []
 
-export class EmployeeID {
-  constructor () {
-    this.colleagueDataTemplate = {
-      profile: 'user',
-      fullName: 'Your Colleague Name',
-      jobTitle: 'Check your colleague\'s staking details',
-      stakingPool: 0,
-      totalStakers: 0
-    }
+const randomProfileImage = () => {
+  return `nf${Math.floor(Math.random() * 5 + 1)}`
+}
 
-    this.colleagues = [{ value: '', label: '' }]
-    this.colleaguesInfoData = []
-  }
+const randomNumber = (max) => {
+  return Math.floor(Math.random() * max)
+}
 
-  async getEmployeeIdData () {
-    const employeeAddress = await loadEntity()
-    employeeAddress.map(async addr => {
-      const name = await checkUserName(addr)
-      this.colleagues.value = name
-      this.colleagues.label = name
-    })
+export const fetchEmployeeIdDate = (address, fullName) => {
+  return {
+    address,
+    profile: randomProfileImage(),
+    fullName,
+    jobTitle: 'Check your colleague\'s staking details',
+    stakingPool: randomNumber(50) * 10,
+    totalStakers: randomNumber(10),
+    staked: 0,
+    time: 0
+
   }
 }
