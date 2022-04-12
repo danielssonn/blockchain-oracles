@@ -1,21 +1,23 @@
 
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 // components
 import { Balance, StakingCard, NavBar } from '../components'
 import { TransactionContext } from '../context/TransactionContext'
-import { colleagues, colleaguesInfoData, colleagueDataTemplate } from '../utils/Identities'
+import { colleagueDataTemplate } from '../utils/Identities'
 
 import Select from 'react-select'
 
 // assets
 import IMAGES from '../../images'
 
+// icons
 import { RiSearchLine } from 'react-icons/ri'
+import { CgSpinner } from 'react-icons/cg'
 
 const Staking = () => {
   const stakeInput = React.createRef()
 
-  const { stake, currentUser } = useContext(TransactionContext)
+  const { stake, currentUser, colleagueOptions, colleaguesInfoData, loadIdentitiesFromContract } = useContext(TransactionContext)
 
   const [selectedColleague, setSelectedColleague] = useState('Someone')
   const [colleagueSelected, setColleagueSelected] = useState(false)
@@ -23,8 +25,10 @@ const Staking = () => {
   const [stakedTokens, setStakedTokens] = useState(0)
   const [selectedColleagueInfo, setSelectedColleagueInfo] = useState(colleagueDataTemplate)
   const [stakedColleagues, setStakedColleagues] = useState([])
+  const [staking, setStaking] = useState(false)
 
-  const onStakeHandler = e => {
+  const onStakeHandler = async () => {
+    setStaking(true)
     const v = parseInt(stakeInput.current.value)
     if (v > availableStakingTokens) {
       alert('You don\'t have enough tokens to stake.')
@@ -33,17 +37,17 @@ const Staking = () => {
     if (v > 0 && stakedColleagues.length < 2 && v <= availableStakingTokens) {
       setAvailableStakingTokens(availableStakingTokens - v)
       setStakedTokens(stakedTokens + v)
+      selectedColleagueInfo.staked = v
 
+      await stake(v, selectedColleagueInfo.address)
+      setStaking(false)
       setStakedColleagues((old) => [...old, selectedColleagueInfo])
-
-      stake(v, selectedColleagueInfo.address)
     } else {
       console.log('staking must > 0, stop adding new card')
     }
   }
 
   const handleSelectionChange = e => {
-    console.log(e)
     setSelectedColleague(e.value)
     setSelectedColleagueInfo(colleaguesInfoData.find(d => d.fullName === e.label))
     setColleagueSelected(true)
@@ -56,6 +60,10 @@ const Staking = () => {
       boxShadow: 'none'
     })
   }
+
+  useEffect(() => {
+    loadIdentitiesFromContract()
+  }, [])
 
   return (
     <div className="bg-dashboard flex flex-col justify-center items-center bg-center bg-cover min-h-screen min-w-full px-6 xl:px-24 xl:py-24 py-8">
@@ -98,7 +106,7 @@ const Staking = () => {
               <div className="flex items-center bg-white rounded-md mb-4">
                 <RiSearchLine className="m-3"/>
                 <Select
-                  options={colleagues}
+                  options={colleagueOptions}
                   placeholder={'search your colleague here'}
                   styles={selectStyle}
                   onChange={handleSelectionChange}
@@ -132,7 +140,7 @@ const Staking = () => {
 
                       <div className="flex items-center mt-4">
                         <input type="number" ref={stakeInput} placeholder='0 token' required pattern="[0-9]*" className="w-2/3 p-2 focus:outline-none rounded-l-md border-2 border-white focus:border-[#5841f0]" disabled={!colleagueSelected}/>
-                        <button className="w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]" onClick={onStakeHandler} disabled={!colleagueSelected}>Stake</button>
+                        <button className="flex justify-center items-center w-1/3 p-2 bg-[#5841f0] text-white font-semibold rounded-r-md border-2 border-[#5841f0]" onClick={onStakeHandler} disabled={!colleagueSelected}>{staking ? 'Staking' : 'Stake'}  {staking ? <CgSpinner className="ml-1 animate-spin"/> : ''}</button>
                       </div>
                     </div>
 

@@ -37,7 +37,6 @@ const Landing = () => {
 
     const mint = await connectWallet()
 
-    console.log('mint:', mint)
     setMinted(mint)
 
     // bypass mint() - testing only
