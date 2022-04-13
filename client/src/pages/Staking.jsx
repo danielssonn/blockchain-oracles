@@ -41,7 +41,7 @@ const Staking = () => {
 
       await stake(v, selectedColleagueInfo.address)
       setStaking(false)
-      setStakedColleagues((old) => [...old, selectedColleagueInfo])
+      setStakedColleagues((old) => [selectedColleagueInfo].concat(old))
     } else {
       console.log('staking must > 0, stop adding new card')
     }
