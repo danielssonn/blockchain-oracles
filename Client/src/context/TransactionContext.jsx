@@ -52,7 +52,7 @@ export const TransactionProvider = ({ children }) => {
 
   // check if token already minted by user wallet address, mint tokens if not
   const mintToken = async (addr) => {
-    const mintTx = await stakingTknContract.mint(addr, 250)
+    const mintTx = await stakingTknContract.mint(addr, ethers.utils.parseEther('250'))
 
     const rc = await mintTx.wait()
 
@@ -96,16 +96,18 @@ export const TransactionProvider = ({ children }) => {
     try {
       if (!ethereum) return alert('Please install MetaMask.')
 
+      const parsedAmount = ethers.utils.parseEther(tokens.toString())
+      
       // transfer token to stakingTokenContract
-      const transferTX = await stakingTknContract.transfer(currentAccount, tokens)
+      const transferTX = await stakingTknContract.transfer(currentAccount, parsedAmount)
       const transferRc = await transferTX.wait()
 
       // approve above transaction
-      const approveTX = await stakingTknContract.approve(stakingContractAddress, tokens)
+      const approveTX = await stakingTknContract.approve(stakingContractAddress, parsedAmount)
       const approveRc = await approveTX.wait()
 
       // stake tokens to stakee
-      const stakeTX = await stakingContract.stake(stakeeAddress, tokens)
+      const stakeTX = await stakingContract.stake(stakeeAddress, parsedAmount)
       const stakeRc = await stakeTX.wait()
     } catch (error) {
       console.log(error)
