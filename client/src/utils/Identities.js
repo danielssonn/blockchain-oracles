@@ -13,7 +13,7 @@ const randomProfileImage = () => {
 }
 
 const randomNumber = (max) => {
-  return Math.floor(Math.random() * max)
+  return Math.floor(Math.random() * max + 1)
 }
 
 export const fetchEmployeeIdDate = (address, fullName) => {
