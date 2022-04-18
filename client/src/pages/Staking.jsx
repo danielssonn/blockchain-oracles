@@ -35,13 +35,14 @@ const Staking = () => {
     }
 
     if (v > 0 && stakedColleagues.length < 2 && v <= availableStakingTokens) {
+      await stake(v, selectedColleagueInfo.address)
+
       setAvailableStakingTokens(availableStakingTokens - v)
       setStakedTokens(stakedTokens + v)
       selectedColleagueInfo.staked = v
-
-      await stake(v, selectedColleagueInfo.address)
-      setStaking(false)
       setStakedColleagues((old) => [selectedColleagueInfo].concat(old))
+
+      setStaking(false)
     } else {
       console.log('staking must > 0, stop adding new card')
     }
@@ -161,10 +162,10 @@ const Staking = () => {
         </div>
 
         {/* my staking list */}
-        <div className="rounded-lg w-full p-6 bg-[#E5F3FF] flex justify-center items-center bg-team bg-right bg-contain bg-no-repeat">
+        <div className="rounded-lg w-full p-6 bg-[#E5F3FF] flex justify-center items-center bg-team bg-right-bottom bg-contain bg-no-repeat">
 
            {/* title */}
-          <div className="w-2/12 text-5xl font-extrabold text-[#383be2]/80 text">
+          <div className="w-2/12 text-5xl font-extrabold text-[#383be2]/80 my-6">
             <h1>Who I</h1>
             <h1>Staked</h1>
             <h1>On</h1>

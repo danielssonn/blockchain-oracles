@@ -98,10 +98,6 @@ export const TransactionProvider = ({ children }) => {
 
       const parsedAmount = ethers.utils.parseEther(tokens.toString())
       
-      // transfer token to stakingTokenContract
-      const transferTX = await stakingTknContract.transfer(currentAccount, parsedAmount)
-      const transferRc = await transferTX.wait()
-
       // approve above transaction
       const approveTX = await stakingTknContract.approve(stakingContractAddress, parsedAmount)
       const approveRc = await approveTX.wait()
