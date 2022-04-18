@@ -17,12 +17,11 @@ import { CgSpinner } from 'react-icons/cg'
 const Staking = () => {
   const stakeInput = React.createRef()
 
-  const { stake, currentUser, colleagueOptions, colleaguesInfoData, loadIdentitiesFromContract } = useContext(TransactionContext)
+  const { stake, stakedTokenList, currentUser, stakedTokens, setStakedTokens, setAvailableStakingTokenBalance, availableStakingTokenBalance, colleagueOptions, colleaguesInfoData, loadIdentitiesFromContract } = useContext(TransactionContext)
 
   const [selectedColleague, setSelectedColleague] = useState('Someone')
   const [colleagueSelected, setColleagueSelected] = useState(false)
-  const [availableStakingTokens, setAvailableStakingTokens] = useState(250)
-  const [stakedTokens, setStakedTokens] = useState(0)
+
   const [selectedColleagueInfo, setSelectedColleagueInfo] = useState(colleagueDataTemplate)
   const [stakedColleagues, setStakedColleagues] = useState([])
   const [staking, setStaking] = useState(false)
@@ -30,14 +29,14 @@ const Staking = () => {
   const onStakeHandler = async () => {
     setStaking(true)
     const v = parseInt(stakeInput.current.value)
-    if (v > availableStakingTokens) {
+    if (v > availableStakingTokenBalance) {
       alert('You don\'t have enough tokens to stake.')
     }
 
-    if (v > 0 && stakedColleagues.length < 2 && v <= availableStakingTokens) {
+    if (v > 0 && stakedColleagues.length < 2 && v <= availableStakingTokenBalance) {
       await stake(v, selectedColleagueInfo.address)
 
-      setAvailableStakingTokens(availableStakingTokens - v)
+      setAvailableStakingTokenBalance(availableStakingTokenBalance - v)
       setStakedTokens(stakedTokens + v)
       selectedColleagueInfo.staked = v
       setStakedColleagues((old) => [selectedColleagueInfo].concat(old))
@@ -50,8 +49,10 @@ const Staking = () => {
 
   const handleSelectionChange = e => {
     setSelectedColleague(e.value)
-    setSelectedColleagueInfo(colleaguesInfoData.find(d => d.fullName === e.label))
+    setSelectedColleagueInfo(colleaguesInfoData.find(d => d.address === e.addr))
     setColleagueSelected(true)
+
+    console.log(stakedTokenList)
   }
 
   const selectStyle = {
@@ -157,7 +158,7 @@ const Staking = () => {
         {/* balance */}
         <div className="my-4 w-full">
 
-          <Balance available={availableStakingTokens} staked={stakedTokens}/>
+          <Balance available={availableStakingTokenBalance} staked={stakedTokens}/>
 
         </div>
 

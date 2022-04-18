@@ -25,6 +25,9 @@ export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState('')
   const [colleagueOptions, setColleagueOptions] = useState([])
   const [colleaguesInfoData, setColleaguesInfoData] = useState([])
+  const [availableStakingTokenBalance, setAvailableStakingTokenBalance] = useState(0)
+  const [stakedTokenList, setStakedList] = useState(0)
+  const [stakedTokens, setStakedTokens] = useState(0)
 
   // save user's name and address mapping in digitalIdentity contract
   const setUserIdentity = async (name) => {
@@ -97,7 +100,7 @@ export const TransactionProvider = ({ children }) => {
       if (!ethereum) return alert('Please install MetaMask.')
 
       const parsedAmount = ethers.utils.parseEther(tokens.toString())
-      
+
       // approve above transaction
       const approveTX = await stakingTknContract.approve(stakingContractAddress, parsedAmount)
       const approveRc = await approveTX.wait()
@@ -116,6 +119,50 @@ export const TransactionProvider = ({ children }) => {
     return digitalIdContract.getDirectory()
   }
 
+  const loadStakingBalance = async (userAddr) => {
+    const stkBalanceBN = await stakingTknContract.balanceOf(userAddr)
+    const stkBalance = parseInt(ethers.utils.formatEther(stkBalanceBN))
+
+    setAvailableStakingTokenBalance(stkBalance)
+  }
+
+  // load user's staking status data from contract
+  const loadUserStakingStatus = async () => {
+    const accounts = await ethereum.request({ method: 'eth_accounts' })
+    const userAddr = accounts[0]
+
+    await loadStakingBalance(userAddr)
+
+    const allStakes = await stakingContract.getAllStakes(userAddr)
+    await loadStakedData(allStakes, userAddr)
+
+    const { stakedList, totalStakedTkn } = await loadStakedData(allStakes, userAddr)
+
+    setStakedList(stakedList)
+    setStakedTokens(totalStakedTkn)
+  }
+
+  const loadStakedData = async (allStakes, userAddr) => {
+    const stakedList = {}
+    let totalStakedTkn = 0
+
+    for (let index = 0; index < allStakes.length; index++) {
+      const name = await digitalIdContract.getName(allStakes[index])
+      const bBN = await stakingContract.nominatorStakesBalance(userAddr, allStakes[index])
+      const b = parseInt(ethers.utils.formatEther(bBN))
+      totalStakedTkn += b
+
+      if (allStakes[index] in stakedList) {
+        stakedList[allStakes[index]].balance += b
+      } else {
+        stakedList[allStakes[index]] = { name, balance: b }
+      }
+    }
+
+    return { stakedList, totalStakedTkn }
+  }
+
+  // load all entities from ID contract
   const loadIdentitiesFromContract = async () => {
     if (!ethereum) return alert('Please install MetaMask.')
 
@@ -127,7 +174,7 @@ export const TransactionProvider = ({ children }) => {
     addrArray.map(async addr => {
       if (addr.toLowerCase() !== userAddr.toLowerCase()) {
         const name = await digitalIdContract.getName(addr)
-        setColleagueOptions((old) => [...old, { value: name, label: name }])
+        setColleagueOptions((old) => [...old, { value: name, label: name, addr }])
         const employeeData = await fetchEmployeeIdDate(addr, name)
         setColleaguesInfoData((data) => [...data, employeeData])
       }
@@ -137,12 +184,12 @@ export const TransactionProvider = ({ children }) => {
   // check if wallet is connected every time page is rerendered
   useEffect(() => {
     checkIfWalletIsConnected()
-    // loadIdentitiesFromContract()
+    loadUserStakingStatus()
   }, [])
 
   return (
     <TransactionContext.Provider
-      value={{ loadIdentitiesFromContract, connectWallet, colleagueOptions, colleaguesInfoData, currentAccount, stake, currentUser, setCurrentUser, setUserIdentity, loadEntity, checkUserName }}
+      value={{ loadIdentitiesFromContract, setStakedTokens, stakedTokens, stakedTokenList, availableStakingTokenBalance, connectWallet, colleagueOptions, colleaguesInfoData, currentAccount, stake, currentUser, setCurrentUser, setUserIdentity, loadEntity, checkUserName, setAvailableStakingTokenBalance }}
     >
       {children}
     </TransactionContext.Provider>
