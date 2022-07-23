@@ -1,4 +1,3 @@
-# CIBC Stars - DAPP Frontend
 
 
 ## Design Overview
